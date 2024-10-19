@@ -1,7 +1,6 @@
 local options = {
     -- UI
     termguicolors = true,
-    winblend = 10,
     -- Indentation
     autoindent = true,
     smartindent = true,
@@ -20,3 +19,6 @@ local options = {
 }
 
 for option, value in pairs(options) do vim.opt[option] = value end
+
+-- Match theme set by terminal
+vim.cmd("highlight Normal ctermbg=NONE guibg=NONE")

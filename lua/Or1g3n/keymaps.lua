@@ -29,3 +29,19 @@ map('n', 'n', 'nzz', { noremap = true, silent = true }) -- Keep cursor center
 map('n', 'N', 'Nzz', { noremap = true, silent = true }) -- Keep cursor center
 map('n', '<C-u>', '<C-u>zz', { noremap = true, silent = true }) -- Keep cursor center
 map('n', '<C-d>', '<C-d>zz', { noremap = true, silent = true }) -- Keep cursor center
+
+-- Copy / Paste
+map('n', '<Leader>y', '"+y', { noremap = true, silent = true }) -- Copy motion into clipboard 
+map('n', '<Leader>Y', '"+Y', { noremap = true, silent = true }) -- Copy line into clipboard 
+map('v', '<Leader>y', '"+y', { noremap = true, silent = true }) -- Copy selection into clipboard
+map('x', '<Leader>p', '"_dP', { noremap = true, silent = true }) -- Paste but keep existing yank buffer 
+
+-- Delete
+map('n', '<Leader>d', '"_d', { noremap = true, silent = true }) -- Delete motion but keep existing yank buffer
+map('v', '<Leader>d', '"_d', { noremap = true, silent = true }) -- Delete selection keep existing yank buffer
+
+-- Line manipulation 
+map('v', 'K', ":m '<-2<CR>gv=gv", { noremap = true, silent = true }) -- Move lines up 
+map('v', 'J', ":m '>+1<CR>gv=gv", { noremap = true, silent = true }) -- Move lines down
+map('n', 'J', 'mzJ`z', { noremap = true, silent = true }) -- Linearize line but maintain cursor position 
+

@@ -44,3 +44,7 @@ map.set('v', '<Leader>d', '"_d', { noremap = true, silent = true, desc = "Delete
 map.set('v', 'K', ":m '<-2<CR>gv=gv", { noremap = true, silent = true, desc = "Move lines up" })
 map.set('v', 'J', ":m '>+1<CR>gv=gv", { noremap = true, silent = true, desc = "Move lines down" })
 map.set('n', 'J', 'mzJ`z', { noremap = true, silent = true, desc = "Join lines while maintaining cursor position" })
+map.set('n', '<Tab>', '>>_', { noremap = true, silent = true, desc = "Indent in normal mode using tab" })
+map.set('n', '<S-Tab>', '<<_', { noremap = true, silent = true, desc = "Dedent in normal mode using tab" })
+map.set('v', '<Tab>', '>gv', { noremap = true, silent = true, desc = "Indent in normal mode using tab" })
+map.set('v', '<S-Tab>', '<gv', { noremap = true, silent = true, desc = "Dedent in normal mode using tab" })

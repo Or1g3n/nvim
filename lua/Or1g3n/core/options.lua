@@ -16,6 +16,8 @@ local options = {
     smartcase = true,
     -- File
     title = false,
+    --Shell
+    -- sh = "C:/Users/chris/scoop/apps/nu/current/nu.exe"
 }
 -- Set all options
 for option, value in pairs(options) do vim.opt[option] = value end

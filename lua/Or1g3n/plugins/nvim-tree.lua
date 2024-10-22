@@ -98,7 +98,10 @@ return {
                 },
                 highlight_git = "all",
             },
-            on_attach = my_on_attach,
+	    live_filter = {
+		always_show_folders = false,
+	    },
+	    on_attach = my_on_attach,
         })
     end
 }

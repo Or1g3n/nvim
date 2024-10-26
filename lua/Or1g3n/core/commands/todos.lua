@@ -16,39 +16,62 @@ local function update_todos()
     -- Open the file and read lines
     local lines = fn.readfile(todos_file)
     local today_exists = false
-    local previous_day_header = nil
     local unchecked_items = {}
-    local collecting_children = false
-    local parent_indent_level = nil
-
-    -- Check for today's header and gather unchecked items from the last day
-    for i, line in ipairs(lines) do
-        if line:match("^# " .. date_today) then
-            today_exists = true
-            break
-        elseif line:match("^# %d%d%d%d%-%d%d%-%d%d") then
-            previous_day_header = i
-            collecting_children = false  -- Stop collecting when a new header is found
-        elseif previous_day_header and line:match("^%- %[ %]") then
-            local indent_level = #line:match("^%s*")  -- Determine the indentation level
-
-            -- Start a new unchecked parent task or continue with a sibling task
-            if parent_indent_level == nil or indent_level <= parent_indent_level then
-                table.insert(unchecked_items, line)
-                parent_indent_level = indent_level
-                collecting_children = true
-            elseif collecting_children and indent_level > parent_indent_level then
-                -- Include child task only if collecting and it's indented
-                table.insert(unchecked_items, line)
+    local indent_level = nil
+    local start_collecting = nil
+    local max_date = nil
+    local current_date = nil
+    local inside_previous_date = false
+    local lines_to_remove = {}  -- To store indices of lines to remove
+    
+    -- Loop through file and find max date header
+    for i, line in ipairs(lines) do 
+        if line:match('^# %d%d%d%d%-%d%d%-%d%d') then
+            current_date = line:match('%d%d%d%d%-%d%d%-%d%d')
+            if max_date == nil or current_date > max_date then
+                max_date = current_date
             end
-        elseif previous_day_header and not line:match("^%- %[ %]") and not line:match("^# %d%d%d%d%-%d%d%-%d%d") then
-            -- If we encounter a non-task line (not a task or a header), stop collecting children
-            collecting_children = false
         end
     end
 
-    -- If today’s header doesn’t exist and the previous day is present, add it and transfer unchecked items
-    if not today_exists and previous_day_header then
+    -- Check if today is present in file
+    if max_date == date_today then
+        today_exists = true
+    end
+    
+    -- If today is not present find max_date then collect all unchecked tasks and subtasks
+    if today_exists == false then 
+        for i, line in ipairs(lines) do
+            if line:match('^# %d%d%d%d%-%d%d%-%d%d') and line:match('%d%d%d%d%-%d%d%-%d%d') == max_date then
+                inside_previous_date = true
+            end
+
+            if inside_previous_date then
+                if line:match('%- %[[ xX]%]') then
+                    indent_level = #line:match('^%s*')
+                    if indent_level == 0 then
+                        if line:match('%- %[ %]') then
+                            start_collecting = true
+                            table.insert(unchecked_items, line)
+			    table.insert(lines_to_remove, i)
+                        else
+                            start_collecting = false
+                        end
+                    else
+                        if start_collecting then
+                            table.insert(unchecked_items, line)
+			    table.insert(lines_to_remove, i)
+                        end
+                    end
+                end
+            end
+        end
+
+	-- Remove lines after collecting unchecked items
+        for i = #lines_to_remove, 1, -1 do  -- Remove from the end to avoid index shifting
+            table.remove(lines, lines_to_remove[i])
+        end
+        
         table.insert(lines, "")  -- Ensure a blank line before new header
         table.insert(lines, "# " .. date_today)
         table.insert(lines, "")  -- Ensure a blank line after the header
@@ -67,6 +90,5 @@ end
 
 -- Define a command for easy access
 vim.api.nvim_create_user_command("UpdateTodos", update_todos, {})
-
 -- Set up keybinding to call :UpdateTodos
 vim.api.nvim_set_keymap("n", "<leader>t", ":UpdateTodos<CR>", { noremap = true, silent = true })

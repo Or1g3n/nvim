@@ -47,7 +47,7 @@ local function update_todos()
             end
 
             if inside_previous_date then
-                if line:match('%- %[[ xX]%]') then
+                if line:match('%- %[[ xX]%]') or line:match('%- ') then
                     indent_level = #line:match('^%s*')
                     if indent_level == 0 then
                         if line:match('%- %[ %]') then

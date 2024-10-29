@@ -17,7 +17,7 @@ return {
             end
 
             vim.keymap.set("n", "<C-]>",          api.tree.change_root_to_node,       opts("CD"))
-            vim.keymap.set("n", "<A-l>",          api.tree.change_root_to_node,       opts("CD"))
+            vim.keymap.set("n", "<A-o>",          api.tree.change_root_to_node,       opts("CD"))
             vim.keymap.set("n", "<C-e>",          api.node.open.replace_tree_buffer,  opts("Open: In Place"))
             vim.keymap.set("n", "<C-k>",          api.node.show_info_popup,           opts("Info"))
             vim.keymap.set("n", "<C-r>",          api.fs.rename_sub,                  opts("Rename: Omit Filename"))
@@ -101,6 +101,9 @@ return {
             },
 	    live_filter = {
 		always_show_folders = false,
+	    },
+	    filters = {
+		custom = { '^\\.git' }	
 	    },
 	    on_attach = my_on_attach,
         })

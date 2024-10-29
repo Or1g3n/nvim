@@ -3,6 +3,9 @@ local map = vim.keymap -- for conciseness
 -- Escape trigger
 map.set('i', 'jj', '<Esc>', { noremap = true, silent = true, desc = "Exit insert mode" })
 
+-- Jumping
+map.set('n', '<A-o>', '<C-]>', { noremap = true, silent = true, desc = "Jump to definition" })
+
 -- File operations 
 map.set('n', '<Leader>w', ':w<CR>', { noremap = true, silent = true, desc = "Save file" })
 map.set('n', '<Leader>q', ':q!<CR>', { noremap = true, silent = true, desc = "Quit without saving" })
@@ -17,6 +20,32 @@ map.set('n', '<C-Left>', '<C-W><C-h>', { noremap = true, silent = true, desc = "
 map.set('n', '<C-Right>', '<C-W><C-l>', { noremap = true, silent = true, desc = "Navigate right" })
 map.set('n', '<C-Up>', '<C-W><C-k>', { noremap = true, silent = true, desc = "Navigate up" })
 map.set('n', '<C-Down>', '<C-W><C-j>', { noremap = true, silent = true, desc = "Navigate down" })
+-- Buffer layout 
+map.set('n', '<Leader>h', ':wincmd H<CR>', { noremap = true, silent = true, desc = "Move buffer left" })
+map.set('n', '<Leader>l', ':wincmd L<CR>', { noremap = true, silent = true, desc = "Move buffer right" })
+map.set('n', '<Leader>k', ':wincmd K<CR>', { noremap = true, silent = true, desc = "Move buffer up" })
+map.set('n', '<Leader>j', ':wincmd J<CR>', { noremap = true, silent = true, desc = "Move buffer down" })
+map.set('n', '<A-j>', ':resize +2<CR>', { noremap = true, silent = true, desc = "Increase buffer height" })
+map.set('n', '<A-k>', ':resize -2<CR>', { noremap = true, silent = true, desc = "Decrease buffer height" })
+-- Resize width (left or right based on active window position)
+map.set('n', '<A-l>', function()
+    local col = vim.fn.winnr() -- Get current window number in current row
+    if col == 1 then
+        vim.cmd 'vertical resize +2' -- Increase width if on the left
+    else
+        vim.cmd 'vertical resize -2' -- Decrease width if on the right
+    end
+end, { noremap = true, silent = true, desc = "Adjust width based on position" })
+
+map.set('n', '<A-h>', function()
+    local col = vim.fn.winnr() -- Get current window number in current row
+    if col == 1 then
+        vim.cmd 'vertical resize -2' -- Decrease width if on the left
+    else
+        vim.cmd 'vertical resize +2' -- Increase width if on the right
+    end
+end, { noremap = true, silent = true, desc = "Adjust width based on position" })
+
 
 -- Auto find and replace
 map.set('n', '<Leader>ra', 'yiw:%s/<C-r>"//gc<Left><Left><Left>', { noremap = true, silent = false, desc = "Replace all occurrences of word" })

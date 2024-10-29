@@ -12,15 +12,52 @@ return {
 	local actions = require('telescope.actions')
 
 	telescope.setup({
+	    pickers = {
+		find_files = {
+		    hidden = true
+		}
+	    },
 	    defaults = {
 		mappings = {
 		    i = {
-			["<esc>"] = require('telescope.actions').close, -- close telescope picker
+			-- ["<esc>"] = require('telescope.actions').close, -- close telescope picker
 			['<C-k>'] = actions.move_selection_previous, -- move to prev result
 			['<C-j>'] = actions.move_selection_next, -- move to next result
 			['<C-q>'] = actions.send_selected_to_qflist + actions.open_qflist,
 		    }
-		}
+		},
+		file_ignore_patterns = {
+		    -- Version control
+		    "^%.git[\\/]",  -- Ignore Git directories
+		    -- OS/System files
+		    "%.dll$",  -- Windows DLLs
+		    "%.exe$",  -- Windows executables
+		    "%.tmp$",  -- Temp files
+		    -- Fonts files
+		    "%.[ot]tf$",  -- Font files
+		    -- Application/Document files
+		    "%.pdf$",  -- PDF files
+		    "%.docx?$",  -- Word documents
+		    "%.xlsx?$",  -- Excel files
+		    "%.pptx?$",  -- PowerPoint files
+		    -- Media files
+		    "%.png$", "%.jpe?g$", "%.gif$",  -- Image files
+		    "%.svg$", "%.ico$",  -- Vector/other images
+		    "%.mp[34]$", "%.mkv$", "%.avi$", "%.mov$",  -- Video files
+		    "%.wav$", "%.flac$", "%.aac$", "%.ogg$",  -- Audio files
+		    -- Compressed archives
+		    "%.zip$", "%.tar$", "%.tar.gz$", "%.rar$", "%.7z$",
+		    -- Node/Package dependencies
+		    "^node_modules[\\/]", "^vendor[\\/]",  -- Node.js and PHP dependencies
+		    -- Large files for data/machine learning
+		    "%.npz$", "%.h5$", "%.csv$", "%.tfrecord$",  -- Data files
+		    "%.db$", "%.sqlite3?$",  -- Database files
+		    "%.log$",  -- Log files
+		    -- IDE/editor config
+		    "^%.idea[\\/]", "^%.vscode[\\/]", "^%.nuget[\\/]", -- IDE settings (IntelliJ, VSCode)
+		    "%.swp$", "%.swo$",  -- Vim swap files
+		    "^__pycache__[\\/]",  -- Python bytecode cache
+		},
 	    }
 	})
 
@@ -29,7 +66,8 @@ return {
 	-- set keymaps
 	local map = vim.keymap
 
-	map.set('n', '<leader><leader>', ':Telescope find_files<CR>', { desc = 'Fuzzy find files in cwd' })
+	-- map.set('n', '<leader><leader>', ':Telescope find_files<CR>', { desc = 'Fuzzy find files in cwd' })
+	map.set('n', '<leader><leader>', ':lua require("telescope.builtin").find_files({ cwd = vim.fn.expand("%:p:h")})<CR>', { desc = 'Fuzzy find files from current buffer dir' })
 	map.set('n', '<leader>fb', ':Telescope buffers<CR>', { desc = 'Fuzzy find open buffers' })
 	map.set('n', '<leader>fc', ':Telescope grep_string<CR>', { desc = 'Fuzzy string under cursor in cwd' })
 	map.set('n', '<leader>fh', ':Telescope help_tags<CR>', { desc = 'Fuzzy find help tags' })

@@ -7,7 +7,7 @@ return {
       -- Set your colorscheme configuration here
       require('tokyonight').setup({
         style = "storm", -- Choose between "storm", "moon", "night", "day"
-        transparent = false, -- Enable terminal transparency
+        transparent = true, -- Enable terminal transparency
         terminal_colors = true, -- Use terminal colors
         styles = {
           sidebars = "transparent", -- Transparent sidebars (like nvim-tree)

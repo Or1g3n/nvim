@@ -2,7 +2,7 @@ local fn = vim.fn
 local cmd = vim.cmd
 
 -- Function to handle todos.md automation
-local function update_todos()
+local function markdown_update_todos()
     -- Get current date and home directory path
     local date_today = os.date("%Y-%m-%d")
     local home_dir = os.getenv("HOME") or os.getenv("USERPROFILE")  -- Cross-platform home directory
@@ -124,6 +124,6 @@ local function update_todos()
 end
 
 -- Define a command for easy access
-vim.api.nvim_create_user_command("UpdateTodos", update_todos, {})
--- Set up keybinding to call :UpdateTodos
-vim.api.nvim_set_keymap("n", "<leader>t", ":UpdateTodos<CR>", { noremap = true, silent = true })
+vim.api.nvim_create_user_command("MarkdownUpdateTodos", markdown_update_todos, { desc = "Markdown: Open Todos markdown file and run date entry automation"})
+-- Set up keybinding to call :MarkdownUpdateTodos
+vim.api.nvim_set_keymap("n", "<leader>t", ":MarkdownUpdateTodos<CR>", { noremap = true, silent = true })

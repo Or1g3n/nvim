@@ -67,13 +67,13 @@ return {
 	local map = vim.keymap
 
 	-- map.set('n', '<leader><leader>', ':Telescope find_files<CR>', { desc = 'Fuzzy find files in cwd' })
-	map.set('n', '<leader><leader>', ':lua require("telescope.builtin").find_files({ cwd = vim.fn.expand("%:p:h")})<CR>', { desc = 'Fuzzy find files from current buffer dir' })
-	map.set('n', '<leader>fb', ':Telescope buffers<CR>', { desc = 'Fuzzy find open buffers' })
-	map.set('n', '<leader>fc', ':Telescope grep_string<CR>', { desc = 'Fuzzy string under cursor in cwd' })
-	map.set('n', '<leader>fh', ':Telescope help_tags<CR>', { desc = 'Fuzzy find help tags' })
-	map.set('n', '<leader>fr', ':Telescope oldfiles<CR>', { desc = 'Fuzzy find recent files' })
-	map.set('n', '<leader>fs', ':Telescope live_grep<CR>', { desc = 'Fuzzy find string in cwd' })
-	map.set('n', '<leader>ft', ':Telescope<CR>', { desc = 'Fuzzy find Telescope functions' })
+	map.set('n', '<leader><leader>', ':lua require("telescope.builtin").find_files({ cwd = vim.fn.expand("%:p:h")})<CR>', { desc = 'Telescope: Fuzzy find files from current buffer dir' })
+	map.set('n', '<leader>fb', ':Telescope buffers<CR>', { desc = 'Telescope: Fuzzy find open buffers' })
+	map.set('n', '<leader>fc', ':Telescope grep_string<CR>', { desc = 'Telescope: Fuzzy string under cursor in cwd' })
+	map.set('n', '<leader>fh', ':Telescope help_tags<CR>', { desc = 'Telescope: Fuzzy find help tags' })
+	map.set('n', '<leader>fr', ':Telescope oldfiles<CR>', { desc = 'Telescope: Fuzzy find recent files' })
+	map.set('n', '<leader>fs', ':Telescope live_grep<CR>', { desc = 'Telescope: Fuzzy find string in cwd' })
+	map.set('n', '<leader>ft', ':Telescope<CR>', { desc = 'Telescope: Fuzzy find Telescope functions' })
 
     end
 }

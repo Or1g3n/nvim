@@ -10,7 +10,7 @@ return {
         transparent = false, -- Enable terminal transparency
         terminal_colors = true, -- Use terminal colors
         styles = {
-          sidebars = "transparent", -- Transparent sidebars (like nvim-tree)
+          -- sidebars = "transparent", -- Transparent sidebars (like nvim-tree)
           floats = "transparent", -- Transparent floating windows
         },
       })

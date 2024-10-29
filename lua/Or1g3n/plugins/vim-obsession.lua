@@ -3,7 +3,7 @@ return {
     config = function()	 
 	local home_dir = os.getenv("HOME") or os.getenv("USERPROFILE")  -- Cross-platform home directory
         local session_dir = home_dir .. "/.nvim-sessions"  -- Directory for session files
-        local session_file = session_dir .. "/session.vim"  -- Path to session file
+        _G.session_file = session_dir .. "/session.vim"  -- Path to session file
 
         -- Create the directory if it doesn't exist
         if vim.fn.isdirectory(session_dir) == 0 then

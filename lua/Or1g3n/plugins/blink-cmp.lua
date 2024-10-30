@@ -32,20 +32,22 @@ return {
 	-- for keymap, all values may be string | string[]
 	-- use an empty table to disable a keymap
 	keymap = {
-	    show = '<C-space>',
-	    hide = '<C-e>',
-	    accept = '<Tab>',
-	    select_and_accept = {},
-	    select_prev = { '<Up>', '<C-p>', '<C-k>' },
-	    select_next = { '<Down>', '<C-n>', '<C-j>' },
+		['<C-space>'] = { 'show', 'show_documentation', 'hide_documentation' },
+		['<C-e>'] = { 'hide' },
+		['<C-y>'] = { 'select_and_accept' },
 
-	    show_documentation = '<C-space>',
-	    hide_documentation = '<C-space>',
-	    scroll_documentation_up = '<C-b>',
-	    scroll_documentation_down = '<C-f>',
+		['<Up>'] = { 'select_prev', 'fallback' },
+		['<Down>'] = { 'select_next', 'fallback' },
+		['<C-k>'] = { 'select_prev', 'fallback' },
+		['<C-j>'] = { 'select_next', 'fallback' },
+		['<C-p>'] = { 'select_prev', 'fallback' },
+		['<C-n>'] = { 'select_next', 'fallback' },
 
-	    snippet_forward = '<Tab>',
-	    snippet_backward = '<S-Tab>',
+		['<C-b>'] = { 'scroll_documentation_up', 'fallback' },
+		['<C-f>'] = { 'scroll_documentation_down', 'fallback' },
+
+		['<Tab>'] = { 'snippet_forward', 'fallback' },
+		['<S-Tab>'] = { 'snippet_backward', 'fallback' },
 	},
     }
 }

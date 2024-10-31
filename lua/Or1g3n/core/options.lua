@@ -1,7 +1,7 @@
 local options = {
     -- UI
     termguicolors = true,
-    showmode = true, -- set to false if lualine plugin enabled
+    showmode = false, -- set to false if lualine plugin enabled
     -- Indentation
     autoindent = true,
     smartindent = true,

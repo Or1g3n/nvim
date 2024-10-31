@@ -25,12 +25,14 @@ map.set('n', '<Leader>h', ':wincmd H<CR>', { noremap = true, silent = true, desc
 map.set('n', '<Leader>l', ':wincmd L<CR>', { noremap = true, silent = true, desc = "Buffer: Move right" })
 map.set('n', '<Leader>k', ':wincmd K<CR>', { noremap = true, silent = true, desc = "Buffer: Move up" })
 map.set('n', '<Leader>j', ':wincmd J<CR>', { noremap = true, silent = true, desc = "Buffer: Move down" })
+map.set('n', '<A-=>', ':wincmd =<CR>', { noremap = true, silent = true, desc = "Buffer: Rebalance layout" })
 map.set('n', '<A-j>', ':resize +2<CR>', { noremap = true, silent = true, desc = "Buffer: Increase height" })
 map.set('n', '<A-k>', ':resize -2<CR>', { noremap = true, silent = true, desc = "Buffer: Decrease height" })
 -- Resize width (left or right based on active window position)
 map.set('n', '<A-l>', function()
+    local max_windows  = #vim.api.nvim_list_wins()
     local col = vim.fn.winnr() -- Get current window number in current row
-    if col ~= 1 then
+    if col == max_windows then
 	vim.cmd 'vertical resize -2' -- Decrease width if on the right
     else
 	vim.cmd 'vertical resize +2' -- Increase width if on the left
@@ -38,8 +40,9 @@ map.set('n', '<A-l>', function()
 end, { noremap = true, silent = true, desc = "Buffer: Adjust width based on position" })
 
 map.set('n', '<A-h>', function()
+    local max_windows  = #vim.api.nvim_list_wins()
     local col = vim.fn.winnr() -- Get current window number in current row
-    if col ~= 1 then
+    if col == max_windows then
 	vim.cmd 'vertical resize +2' -- Increase width if on the right
     else
 	vim.cmd 'vertical resize -2' -- Decrease width if on the left

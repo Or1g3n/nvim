@@ -35,6 +35,8 @@ return {
 	    dashboard.button("h", "  Open help search", ":Telescope help_tags <CR>"), -- Note this assumes that vim-obsession config exists with global session_file defined
 	    dashboard.button("t", "  Open todos list", ":MarkdownUpdateTodos <CR>"), -- Note this assumes that vim-obsession config exists with global session_file defined
             dashboard.button("c", "  Search config files", ":lua require('telescope.builtin').find_files({ cwd= vim.fn.stdpath('config'), prompt_title = 'Find Config Files' })<CR>"),
+            dashboard.button("?c", "  Show commands", ":Telescope commands <CR>"),
+            dashboard.button("?k", "  Show keymaps", ":Telescope keymaps <CR>"),
             dashboard.button("q", "󰩈  Quit Neovim", ":qa<CR>"),
         }
 

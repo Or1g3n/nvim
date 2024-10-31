@@ -20,6 +20,7 @@ require("lazy").setup({
     spec = {
 	-- import your plugins
 	{ import = "Or1g3n.plugins" },
+	{ import = "Or1g3n.plugins.lsp" },
     },
     checker = {
 	-- automatically check for plugin updates

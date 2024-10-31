@@ -46,8 +46,6 @@ return {
 	    "                            ",  -- Extra padding lines to move footer down
 	    "                            ",  -- Extra padding lines to move footer down
 	    "                            ",  -- Extra padding lines to move footer down
-	    "                            ",  -- Extra padding lines to move footer down
-	    "                            ",  -- Extra padding lines to move footer down
             " Welcome to Neovim, Christopher!",
         }
 

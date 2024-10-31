@@ -27,9 +27,9 @@ local function markdown_update_todos()
     local current_sub_header = nil
     local header_added = false
     local final_lines = {}
-    
+
     -- Loop through file and find max date header. Also remove empty lines (will be added back later)
-    for i, line in ipairs(lines) do 
+    for i, line in ipairs(lines) do
         if line:match('^# %d%d%d%d%-%d%d%-%d%d') then
             current_date = line:match('%d%d%d%d%-%d%d%-%d%d')
             if max_date == nil or current_date > max_date then
@@ -44,9 +44,9 @@ local function markdown_update_todos()
     if max_date == date_today then
         today_exists = true
     end
-    
+
     -- If today is not present find max_date then collect all unchecked tasks and subtasks
-    if today_exists == false then 
+    if today_exists == false then
 	-- Remove all empty lines
         for i = #lines_to_remove, 1, -1 do  -- Remove from the end to avoid index shifting
             table.remove(lines, lines_to_remove[i])
@@ -96,9 +96,9 @@ local function markdown_update_todos()
         for i = #lines_to_remove, 1, -1 do  -- Remove from the end to avoid index shifting
             table.remove(lines, lines_to_remove[i])
         end
-        
+
         table.insert(lines, "# " .. date_today)
-        
+
         -- Extend lines with unchecked items, preserving their structure
         for _, item in ipairs(unchecked_items) do
             table.insert(lines, item)
@@ -111,11 +111,11 @@ local function markdown_update_todos()
 	    elseif line:match('^#') or (i + 1 <= #lines and lines[i + 1]:match('^#')) then
 		table.insert(final_lines, line)
 		table.insert(final_lines, '')
-	    else 
+	    else
 		table.insert(final_lines, line)
 	    end
 	end
-        
+
         fn.writefile(final_lines, todos_file)
     end
 
@@ -126,14 +126,14 @@ end
 -- Define a command for easy access
 vim.api.nvim_create_user_command("MarkdownUpdateTodos", markdown_update_todos, { desc = "Markdown: Open Todos markdown file and run date entry automation"})
 -- Set up keybinding to call :MarkdownUpdateTodos
-vim.api.nvim_set_keymap("n", "<leader>t", ":MarkdownUpdateTodos<CR>", 
-    { 
-	noremap = true, 
-	silent = true, 
-	callback = function() 
-	    if vim.bo.filetype ~= "NvimTree" then 
-		vim.cmd("MarkdownUpdateTodos") 
-	    end 
-	end 
+vim.api.nvim_set_keymap("n", "<leader>t", ":MarkdownUpdateTodos<CR>",
+    {
+	noremap = true,
+	silent = true,
+	callback = function()
+	    if vim.bo.filetype ~= "NvimTree" then
+		vim.cmd("MarkdownUpdateTodos")
+	    end
+	end
     }
 )

@@ -32,7 +32,7 @@ return {
 	-- for keymap, all values may be string | string[]
 	-- use an empty table to disable a keymap
 	keymap = {
-	    ['<C-Space>'] = { 'show', 'show_documentation', 'hide_documentation' },
+	    ['<C-m>'] = { 'show', 'show_documentation', 'hide_documentation' },
 	    ['<C-e>'] = { 'hide' },
 	    ['<C-y>'] = { 'select_and_accept' },
 	    ['<Tab>'] = { 'select_and_accept', 'snippet_forward', 'fallback' },

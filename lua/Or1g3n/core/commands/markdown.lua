@@ -1,5 +1,4 @@
 local fn = vim.fn
-local cmd = vim.cmd
 
 local map = vim.keymap
 local command = vim.api.nvim_create_user_command

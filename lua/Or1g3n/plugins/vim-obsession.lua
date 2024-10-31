@@ -1,6 +1,6 @@
 return {
     'tpope/vim-obsession',
-    config = function()	 
+    config = function()
 	local home_dir = os.getenv("HOME") or os.getenv("USERPROFILE")  -- Cross-platform home directory
         local session_dir = home_dir .. "/.nvim-sessions"  -- Directory for session files
         _G.session_file = session_dir .. "/session.vim"  -- Path to session file
@@ -14,7 +14,7 @@ return {
         if vim.fn.filereadable(session_file) == 0 then
             vim.fn.writefile({}, session_file)
         end
-	
+
 	-- Set keymaps
 	local map = vim.keymap
 

@@ -1,10 +1,11 @@
 -- Define your preferred default colorscheme here
 local default_colorscheme = "tokyonight"
+local load_all = true  -- Set to true to load all colorschemes eagerly
 
 return {
     {
 	'folke/tokyonight.nvim',
-	lazy = default_colorscheme ~= "tokyonight",  -- Load lazily unless it's the default
+	lazy = not (load_all or default_colorscheme == 'tokyonight'),  -- Eagerly load if default or load_all is true
 	priority = 1000,
 	config = function()
 	    require('tokyonight').setup({
@@ -22,7 +23,7 @@ return {
     },
     {
 	"ellisonleao/gruvbox.nvim",
-	lazy = default_colorscheme ~= "gruvbox",
+	lazy = not (load_all or default_colorscheme == 'gruvbox'),  -- Eagerly load if default or load_all is true
 	priority = 1000,
 	config = function()
 	    require("gruvbox").setup({
@@ -57,7 +58,7 @@ return {
     {
 	"rose-pine/neovim",
 	name = "rose-pine",
-	lazy = default_colorscheme ~= "rose-pine",
+	lazy = not (load_all or default_colorscheme == 'rose-pine'),  -- Eagerly load if default or load_all is true
 	priority = 1000,
 	config = function()
 	    require("rose-pine").setup({

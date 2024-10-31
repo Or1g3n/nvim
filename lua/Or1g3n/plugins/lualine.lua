@@ -68,5 +68,13 @@ return {
         },
       },
     })
-  end,
+
+    -- Auto-refresh lualine theme on colorscheme change
+    vim.cmd [[
+	augroup LualineColorscheme
+	autocmd!
+	autocmd ColorScheme * lua require('lualine').setup { options = { theme = vim.g.colors_name } }
+	augroup END
+    ]]
+end,
 }

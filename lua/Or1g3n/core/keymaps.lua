@@ -30,19 +30,19 @@ map.set('n', '<A-k>', ':resize -2<CR>', { noremap = true, silent = true, desc = 
 -- Resize width (left or right based on active window position)
 map.set('n', '<A-l>', function()
     local col = vim.fn.winnr() -- Get current window number in current row
-    if col == 1 then
-        vim.cmd 'vertical resize +2' -- Increase width if on the left
+    if col ~= 1 then
+	vim.cmd 'vertical resize -2' -- Decrease width if on the right
     else
-        vim.cmd 'vertical resize -2' -- Decrease width if on the right
+	vim.cmd 'vertical resize +2' -- Increase width if on the left
     end
 end, { noremap = true, silent = true, desc = "Buffer: Adjust width based on position" })
 
 map.set('n', '<A-h>', function()
     local col = vim.fn.winnr() -- Get current window number in current row
-    if col == 1 then
-        vim.cmd 'vertical resize -2' -- Decrease width if on the left
+    if col ~= 1 then
+	vim.cmd 'vertical resize +2' -- Increase width if on the right
     else
-        vim.cmd 'vertical resize +2' -- Increase width if on the right
+	vim.cmd 'vertical resize -2' -- Decrease width if on the left
     end
 end, { noremap = true, silent = true, desc = "Buffer: Adjust width based on position" })
 
@@ -64,6 +64,13 @@ map.set('n', '<Leader>y', '"+y', { noremap = true, silent = true, desc = "Editor
 map.set('n', '<Leader>Y', '"+Y', { noremap = true, silent = true, desc = "Editor: Copy line into clipboard" })
 map.set('v', '<Leader>y', '"+y', { noremap = true, silent = true, desc = "Editor: Copy selection into clipboard" })
 map.set('x', '<Leader>p', '"_dP', { noremap = true, silent = true, desc = "Editor: Paste without overwriting clipboard" })
+vim.api.nvim_create_autocmd('TextYankPost', {
+  desc = 'Editor: Highlight when copying text',
+  group = vim.api.nvim_create_augroup('or1g3n-highlight-yank', { clear = true }),
+  callback = function()
+    vim.highlight.on_yank()
+  end,
+})
 
 -- Delete
 map.set('n', '<Leader>d', '"_d', { noremap = true, silent = true, desc = "Editor: Delete motion but keep yank buffer" })

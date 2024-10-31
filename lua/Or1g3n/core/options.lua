@@ -1,6 +1,7 @@
 local options = {
     -- UI
     termguicolors = true,
+    showmode = true, -- set to false if lualine plugin enabled
     -- Indentation
     autoindent = true,
     smartindent = true,
@@ -9,6 +10,7 @@ local options = {
     number = true,
     relativenumber = true,
     scrolloff = 10,
+    cursorline = true,
     -- Search
     hlsearch = false,
     incsearch = true,

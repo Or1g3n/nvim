@@ -6,6 +6,7 @@ return {
     },
     config = function()
 	local lspconfig = require("lspconfig")
+	local util = require('lspconfig.util')
 	local map = vim.keymap -- for conciseness
 
 	-- Keymaps for LSP
@@ -70,8 +71,50 @@ return {
 	    },
 	})
 
+	-- -- Configure Pyright for Python
+	-- lspconfig.pyright.setup {
+	--     cmd = { vim.fn.stdpath("data") .. "/mason/bin/pyright-langserver", "--stdio" },
+	--     single_file_support = true,
+	--     settings = {
+	-- 	pyright = {
+	-- 	    -- Using Ruff's import organizer
+	-- 	    disableOrganizeImports = true,
+	-- 	},
+	-- 	python = {
+	-- 	    analysis = {
+	-- 		-- Ignore all files for analysis to exclusively use Ruff for linting
+	-- 		ignore = { '*' },
+	-- 	    },
+	-- 	},
+	--     },
+	-- }
+
 	-- Configure Pyright for Python
-	lspconfig.pyright.setup({})
+	lspconfig.pyright.setup({
+	    cmd = { vim.fn.stdpath("data") .. "/mason/bin/pyright-langserver", "--stdio" },
+	    single_file_support = true,
+	    root_dir = function(fname)
+		-- Use the directory of the current file or fallback to current working directory if no project root is found
+		return util.find_git_ancestor(fname) or util.path.dirname(fname)
+	    end,
+	    settings = {
+		pyright = {
+		    disableOrganizeImports = true,  -- Using Ruff's import organizer
+		},
+		python = {
+		    analysis = {
+			-- ignore = { '*' },
+			-- Ignore all files for analysis to exclusively use Ruff for linting
+			diagnosticMode = "openFilesOnly",
+		    },
+		},
+	    },
+	})
+
+	-- -- Configure Pyright for Python
+	-- lspconfig.ruff.setup({
+	--     cmd = { vim.fn.stdpath("data") .. "/mason/bin/ruff-lsp" },
+	-- })
 
 	-- Configure Marksman for Markdown
 	lspconfig.marksman.setup({

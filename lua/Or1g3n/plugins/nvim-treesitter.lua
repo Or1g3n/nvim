@@ -4,6 +4,7 @@ return {
     build = ":TSUpdate",
     dependencies = {
 	"windwp/nvim-ts-autotag",
+	"nushell/tree-sitter-nu",
     },
     config = function()
 	-- import nvim-treesitter plugin

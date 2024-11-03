@@ -111,6 +111,9 @@ local function markdown_update_todos()
 	    elseif line:match('^#') or (i + 1 <= #lines and lines[i + 1]:match('^#')) then
 		table.insert(final_lines, line)
 		table.insert(final_lines, '')
+	    elseif not line:match('^|') and i + 1 <= #lines and lines[i + 1]:match('^|') then
+		table.insert(final_lines, line)
+		table.insert(final_lines, '')
 	    else
 		table.insert(final_lines, line)
 	    end

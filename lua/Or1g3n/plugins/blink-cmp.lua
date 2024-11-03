@@ -24,7 +24,16 @@ return {
 	nerd_font_variant = 'mono',
 
 	-- experimental auto-brackets support
-	-- accept = { auto_brackets = { enabled = true } },
+	-- accept = {
+	--     auto_brackets = {
+	-- 	enabled = true,
+	-- 	default_brackets = {
+	-- 	    '(',')',
+	-- 	    '{','}',
+	-- 	    '"',"'",
+	-- 	}
+	--     }
+	-- },
 
 	-- experimental signature help support
 	trigger = { signature_help = { enabled = true } },

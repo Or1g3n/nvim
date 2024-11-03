@@ -11,9 +11,10 @@ return {
 
 	-- configure treesitter
 	treesitter.setup({ -- enable syntax highlighting
-	    auto_install = true,
+	    auto_install = false,
 	    sync_install = false,
 	    ignore_install = {},
+	    modules = {},
 	    highlight = {
 		enable = true,
 	    },
@@ -44,15 +45,15 @@ return {
 		"vimdoc",
 		"yaml",
 	    },
-	    --    incremental_selection = {
-	    -- enable = true,
-	    -- keymaps = {
-	    --     init_selection = "<C-space>",
-	    --     node_incremental = "<C-space>",
-	    --     scope_incremental = false,
-	    --     node_decremental = "<bs>",
-	    -- },
-	    --    },
+	    incremental_selection = {
+		enable = true,
+		keymaps = {
+		    -- init_selection = "<C-space>",
+		    -- node_incremental = "<C-space>",
+		    -- scope_incremental = false,
+		    -- node_decremental = "<bs>",
+		},
+	    },
 	})
     end,
 }

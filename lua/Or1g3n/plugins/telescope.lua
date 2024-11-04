@@ -1,7 +1,7 @@
 return {
     'nvim-telescope/telescope.nvim',
     branch = '0.1.x',
-    dependencies = { 
+    dependencies = {
 	'nvim-lua/plenary.nvim',
 	{ 'nvim-telescope/telescope-fzf-native.nvim', build = 'make' }, -- for windows must install mingw, gcc, make
 	-- { 'nvim-telescope/telescope-fzf-native.nvim', build = 'cmake -S. -Bbuild -DCMAKE_BUILD_TYPE=Release; cmake --build build --config Release' }, -- for windows must install c++ builds tools (CMake and SDK for Windows 10/11 then add cmake.exe to path)
@@ -24,6 +24,10 @@ return {
 			['<C-k>'] = actions.move_selection_previous, -- move to prev result
 			['<C-j>'] = actions.move_selection_next, -- move to next result
 			['<C-q>'] = actions.send_selected_to_qflist + actions.open_qflist,
+			['<C-s>'] = actions.select_vertical,
+		    },
+		    n = {
+			['<C-s>'] = actions.select_vertical,
 		    }
 		},
 		file_ignore_patterns = {

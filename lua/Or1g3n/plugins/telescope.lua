@@ -78,6 +78,7 @@ return {
 	map.set('n', '<leader>fh', ':Telescope help_tags<CR>', { desc = 'Telescope: Fuzzy find help tags' })
 	map.set('n', '<leader>fr', ":lua require('telescope.builtin').oldfiles({ prompt_title = 'Recent Files' })<CR>", { desc = 'Telescope: Fuzzy find recent files' })
 	map.set('n', '<leader>fgs', ':Telescope live_grep<CR>', { desc = 'Telescope: Fuzzy find string in cwd' })
+	map.set('n', '<leader>fsp', ':Telescope spell_suggest<CR>', { desc = 'Telescope: Fuzzy find spell suggestions' })
 	map.set('n', '<leader>ft', ':Telescope<CR>', { desc = 'Telescope: Fuzzy find Telescope functions' })
 
     end

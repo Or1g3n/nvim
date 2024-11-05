@@ -21,6 +21,7 @@ require("lazy").setup({
 	-- import your plugins
 	{ import = "Or1g3n.plugins" },
 	{ import = "Or1g3n.plugins.lsp" },
+	{ import = "Or1g3n.plugins.debug" },
     },
     checker = {
 	-- automatically check for plugin updates

@@ -78,14 +78,14 @@ return {
             vim.keymap.set("n", "<2-LeftMouse>",  api.node.open.edit,                 opts("Open"))
             vim.keymap.set("n", "<2-RightMouse>", api.tree.change_root_to_node,       opts("CD"))
         end
-		
+
 	-- Set command keymaps. Applies in any buffer.
         local map = vim.keymap -- for conciseness
 
         map.set("n", "<leader>ee", ":NvimTreeToggle<CR>", { desc = "NvimTree: Toggle file explorer" })
 	map.set("n", "<leader>er", ":NvimTreeRefresh<CR>", { desc = "NvimTree: Refresh file explorer" })
 	map.set("n", "<leader>ef", ":NvimTreeFindFileToggle<CR>", { desc = "NvimTree: Toggle file explorer on current file" })
-		
+
         -- Setup options
         nvimtree.setup({
             view = {
@@ -103,7 +103,15 @@ return {
 		always_show_folders = false,
 	    },
 	    filters = {
-		custom = { '^\\.git' }	
+		custom = { '^\\.git' }
+	    },
+	    git = {
+		enable = true,
+		show_on_dirs = true,
+		show_on_open_dirs = true,
+		disable_for_dirs = {},
+		timeout = 1000,
+		cygwin_support = false,
 	    },
 	    on_attach = my_on_attach,
         })

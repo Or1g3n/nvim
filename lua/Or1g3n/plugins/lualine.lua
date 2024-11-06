@@ -6,30 +6,31 @@ return {
 	local lazy_status = require("lazy.status") -- to configure lazy pending updates count
 
 	lualine.setup({
-		--    options = {
-		-- -- theme = my_lualine_theme,
-		-- theme = 'catppuccin',
-		--    },
-		--    sections = {
-		-- lualine_x = {
-		--     {
-		-- 	lazy_status.updates,
-		-- 	cond = lazy_status.has_updates,
-		-- 	color = { fg = "#ff9e64" },
-		--     },
-		--     { "encoding" },
-		--     { "fileformat" },
-		--     { "filetype" },
-		-- },
-		--    },
+	    options = {
+		disabled_filetypes = {
+		    statusline = {
+			'NvimTree',
+		    }
+		},
+		ignore_focus = {
+		    'NvimTree',
+		    'dap-repl',
+		    'dapui_console',
+		    'dapui_scopes',
+		    'dapui_breakpoints',
+		    'dapui_stacks',
+		    'dapui_watches',
+		    'dapui_hover',
+		},
+	    }
 	})
 
 	-- Auto-refresh lualine theme on colorscheme change
-	vim.cmd [[
-	augroup LualineColorscheme
-	autocmd!
-	autocmd ColorScheme * lua require('lualine').setup { options = { theme = vim.g.colors_name } }
-	augroup END
-	]]
+	-- vim.cmd [[
+	--     augroup LualineColorscheme
+	--     autocmd!
+	--     autocmd ColorScheme * lua require('lualine').setup { options = { theme = vim.g.colors_name } }
+	--     augroup END
+	-- ]]
     end,
 }

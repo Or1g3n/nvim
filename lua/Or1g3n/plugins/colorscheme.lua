@@ -107,7 +107,7 @@ return {
 	lazy = not (load_all or default_colorscheme == 'catppuccin'),  -- Eagerly load if default or load_all is true
 	config = function()
 	    require('catppuccin').setup({
-		flavour = "auto", -- latte, frappe, macchiato, mocha
+		flavour = "macchiato", -- latte, frappe, macchiato, mocha
 		background = { -- :h background
 		    light = "latte",
 		    dark = "mocha",

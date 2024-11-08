@@ -1,5 +1,5 @@
 -- Define your preferred default colorscheme here
-local default_colorscheme = "catppuccin"
+local default_colorscheme = "kanagawa"
 local load_all = true  -- Set to true to load all colorschemes eagerly
 
 return {
@@ -159,5 +159,39 @@ return {
 	    end
 	end,
 
-    }
+    },
+    {
+	'rebelot/kanagawa.nvim',
+	lazy = not (load_all or default_colorscheme == 'kanagawa'),  -- Eagerly load if default or load_all is true
+	priority = 1000,
+	config = function()
+	    require('kanagawa').setup({
+		compile = false,             -- enable compiling the colorscheme
+		undercurl = true,            -- enable undercurls
+		commentStyle = { italic = true },
+		functionStyle = {},
+		keywordStyle = { italic = true},
+		statementStyle = { bold = true },
+		typeStyle = {},
+		transparent = false,         -- do not set background color
+		dimInactive = false,         -- dim inactive window `:h hl-NormalNC`
+		terminalColors = true,       -- define vim.g.terminal_color_{-1,17}
+		colors = {                   -- add/modify theme and palette colors
+		    palette = {},
+		    theme = { wave = {}, lotus = {}, dragon = {}, all = {} },
+		},
+		overrides = function(colors) -- add/modify highlights
+		    return {}
+		end,
+		theme = "wave",              -- Load "wave" theme when 'background' option is not set
+		background = {               -- map the value of 'background' option to a theme
+		    dark = "wave",           -- try "dragon" !
+		    light = "lotus"
+		},
+	    })
+	    if default_colorscheme == "kanagawa" then
+		vim.cmd([[colorscheme kanagawa]])
+	    end
+	end,
+    },
 }

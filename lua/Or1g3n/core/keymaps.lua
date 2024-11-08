@@ -59,8 +59,8 @@ map.set('v', '<Leader>rl', 'y:s/<C-r>"//gc<Left><Left><Left>', { noremap = true,
 -- Code navigation
 map.set('n', 'n', 'nzz', { noremap = true, silent = true, desc = "Editor: Next search result centered" })
 map.set('n', 'N', 'Nzz', { noremap = true, silent = true, desc = "Editor: Previous search result centered" })
-map.set('n', '<C-u>', '<C-u>zz', { noremap = true, silent = true, desc = "Editor: Scroll up centered" })
-map.set('n', '<C-d>', '<C-d>zz', { noremap = true, silent = true, desc = "Editor: Scroll down centered" })
+map.set('n', '<C-u>', '2kzz', { noremap = true, silent = true, desc = "Editor: Scroll up centered" })
+map.set('n', '<C-d>', '2jzz', { noremap = true, silent = true, desc = "Editor: Scroll down centered" })
 
 -- Copy / Paste
 map.set('n', '<Leader>y', '"+y', { noremap = true, silent = true, desc = "Editor: Copy motion into clipboard" })

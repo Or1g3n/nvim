@@ -26,8 +26,25 @@ map.set('n', '<Leader>l', ':wincmd L<CR>', { noremap = true, silent = true, desc
 map.set('n', '<Leader>k', ':wincmd K<CR>', { noremap = true, silent = true, desc = "Buffer: Move up" })
 map.set('n', '<Leader>j', ':wincmd J<CR>', { noremap = true, silent = true, desc = "Buffer: Move down" })
 map.set('n', '<A-=>', ':wincmd =<CR>', { noremap = true, silent = true, desc = "Buffer: Rebalance layout" })
-map.set('n', '<A-j>', ':resize +2<CR>', { noremap = true, silent = true, desc = "Buffer: Increase height" })
-map.set('n', '<A-k>', ':resize -2<CR>', { noremap = true, silent = true, desc = "Buffer: Decrease height" })
+-- Resize height (up or down based on active window position)
+map.set('n', '<A-j>', function()
+    local max_windows  = #vim.api.nvim_list_wins()
+    local col = vim.fn.winnr() -- Get current window number in current row
+    if col == max_windows then
+	vim.cmd 'resize -2' -- Decrease height if on the top
+    else
+	vim.cmd 'resize +2' -- Increase height if on the bottom
+    end
+end, { noremap = true, silent = true, desc = "Buffer: Adjust height based on position" })
+map.set('n', '<A-k>', function()
+    local max_windows  = #vim.api.nvim_list_wins()
+    local col = vim.fn.winnr() -- Get current window number in current row
+    if col == max_windows then
+	vim.cmd 'resize +2' -- Increase height if on the top
+    else
+	vim.cmd 'resize -2' -- Decrease height if on the bottom
+    end
+end, { noremap = true, silent = true, desc = "Buffer: Adjust height based on position" })
 -- Resize width (left or right based on active window position)
 map.set('n', '<A-l>', function()
     local max_windows  = #vim.api.nvim_list_wins()
@@ -38,7 +55,6 @@ map.set('n', '<A-l>', function()
 	vim.cmd 'vertical resize +2' -- Increase width if on the left
     end
 end, { noremap = true, silent = true, desc = "Buffer: Adjust width based on position" })
-
 map.set('n', '<A-h>', function()
     local max_windows  = #vim.api.nvim_list_wins()
     local col = vim.fn.winnr() -- Get current window number in current row
@@ -48,7 +64,6 @@ map.set('n', '<A-h>', function()
 	vim.cmd 'vertical resize -2' -- Decrease width if on the left
     end
 end, { noremap = true, silent = true, desc = "Buffer: Adjust width based on position" })
-
 
 -- Auto find and replace
 map.set('n', '<Leader>ra', 'yiw:%s/<C-r>"//gc<Left><Left><Left>', { noremap = true, silent = false, desc = "Editor: Replace all occurrences of word" })

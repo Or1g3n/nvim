@@ -11,6 +11,7 @@ local options = {
     relativenumber = true,
     scrolloff = 10,
     cursorline = true,
+    linebreak = true,
     -- Search
     hlsearch = false,
     incsearch = true,

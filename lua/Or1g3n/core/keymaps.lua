@@ -3,6 +3,11 @@ local map = vim.keymap -- for conciseness
 -- Escape trigger
 map.set('i', 'jj', '<Esc>', { noremap = true, silent = true, desc = "Editor: Exit insert mode" })
 
+-- Select all
+map.set('n', '<Leader>aa', 'ggVG', { noremap = true, silent = true, desc = "Editor: Select all" })
+map.set('n', '<Leader>aj', 'VG', { noremap = true, silent = true, desc = "Editor: Select all down" })
+map.set('n', '<Leader>ak', 'Vgg', { noremap = true, silent = true, desc = "Editor: Select all above" })
+
 -- Jumping
 map.set('n', '<A-o>', '<C-]>', { noremap = true, silent = true, desc = "Editor: Jump to definition" })
 

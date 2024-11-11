@@ -8,4 +8,4 @@ This is my custom Neovim configuration, designed with love and optimized for pro
 - **Organized keymaps**: Every keymap is categorized with a brief description and a pretext header for easy fuzzy finding. Commands are grouped logically for efficiency.
 - **Mnemonic-friendly keymaps**: Keybindings are intuitive, following familiar patterns where possible to enhance usability and reduce cognitive load.
 - **Eye-catching, comfortable themes**: A killer set of themes that are easy on the eyes and a joy to work in.
-- **Must be better than VSCode**: Because Neovim > VSCode
+- **Must be better than VS Code**: Because Neovim > VS Code

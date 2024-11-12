@@ -18,9 +18,9 @@ return {
 	-- Set keymaps
 	local map = vim.keymap
 
-	map.set('n', '<leader>os', ':Obsess ' .. session_file .. '<CR>', { noremap = true, silent = true, desc = "Start saving nvim session" })
-	map.set('n', '<leader>od', ':Obsess!<CR>', { noremap = true, silent = true, desc = "Stop nvim session and delete it" })
-	map.set('n', '<leader>or', ':source ' .. session_file .. '<CR>', { noremap = true, silent = true, desc = "Restore last saved session" })
+	map.set('n', '<leader>os', ':Obsess ' .. session_file .. '<CR>', { noremap = true, silent = true, desc = "Vim-Obsession: Start saving nvim session" })
+	map.set('n', '<leader>od', ':Obsess!<CR>', { noremap = true, silent = true, desc = "Vim-Obsession: Stop nvim session and delete it" })
+	map.set('n', '<leader>or', ':source ' .. session_file .. '<CR>', { noremap = true, silent = true, desc = "Vim-Obsession: Restore last saved session" })
 
     end
 }

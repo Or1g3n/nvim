@@ -27,7 +27,7 @@ return {
         }
 
         dashboard.section.buttons.val = {
-	    dashboard.button("s", "  Open last session", ":source ~/.nvim-sessions/session.vim <CR>"), -- Note this assumes that vim-obsession config exists with global session_file defined
+	    dashboard.button("o", "  Open last session", ":source ~/.nvim-sessions/session.vim <CR>"), -- Note this assumes that vim-obsession config exists with global session_file defined
             dashboard.button("n", "  New file", ":enew <CR>"),
 	    dashboard.button("f", "󰈞  Find file", ":Telescope find_files <CR>"),
             dashboard.button("r", "󰈢  Recent files", ":lua require('telescope.builtin').oldfiles({ prompt_title = 'Recent Files' })<CR>"),

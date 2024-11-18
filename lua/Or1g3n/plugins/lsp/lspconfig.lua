@@ -6,6 +6,7 @@ return {
     },
     config = function()
 	local lspconfig = require("lspconfig")
+	local neodev = require("neodev")
 	local util = require('lspconfig.util')
 	local map = vim.keymap -- for conciseness
 
@@ -61,11 +62,22 @@ return {
 	-- must explicitly call lspconfig.{server}.setup({}) for LSP to attach to Neovim buffer
 	-- passing empty table to .setup({}) will use default configuration for lsp
 
+	-- Configure neodev for better vim api support
+	neodev.setup({})
+
 	-- Configure the Lua language server
 	lspconfig.lua_ls.setup({
 	    settings = {
 		Lua = {
+		    runtime = {
+			version = 'LuaJIT', -- Use LuaJIT for Neovim
+			path = vim.split(package.path, ';'),
+		    },
 		    diagnostics = { globals = { "vim" } }, -- Recognize 'vim' as a global
+		    workspace = {
+			library = vim.api.nvim_get_runtime_file('', true),
+			checkThirdParty = false, -- Disable third-party library checks
+		    },
 		    completion = { callSnippet = "Replace" },
 		},
 	    },

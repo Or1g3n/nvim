@@ -131,6 +131,9 @@ return {
 	-- Configure Marksman for Markdown
 	lspconfig.marksman.setup({
 	    filetypes = { "markdown", "md" },
+	    root_dir = function(fname)
+		return require('lspconfig').util.find_git_ancestor(fname) or vim.fn.getcwd()
+	    end,
 	})
 
     end,

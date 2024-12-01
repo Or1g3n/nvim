@@ -21,9 +21,11 @@ local options = {
     title = false,
     --Shell
     sh = "nu.exe",
-    -- shellcmdflag = "-c", --Ensures that NuShell runs commands in the proper context
-    -- shellxquote = "",  -- Prevents extra quoting issues
-    -- shellslash = true -- Forces Neovim to use forward slashes
+    shellcmdflag = "-c", -- Tells the shell to interpret strings passed from Neovim as commands
+    -- shellslash = true,   -- Forces Neovim to use forward slashes
+    shellxquote = "",    -- Prevents extra quoting issues
+    shellquote = "",	 -- No quotes needed around commands; NuShell handles this internally
+    shellxescape = ""	 -- Not typically needed for NuShell since it handles escaping internally
 }
 -- Set all options
 for option, value in pairs(options) do vim.opt[option] = value end
@@ -32,7 +34,7 @@ for option, value in pairs(options) do vim.opt[option] = value end
 vim.cmd("highlight Normal ctermbg=NONE guibg=NONE")
 
 -- Global configurations
-vim.g.netrw_liststyle = 3 -- Set netrw (:Explorer) list style to tree 
+vim.g.netrw_liststyle = 3 -- Set netrw (:Explorer) list style to tree
 
 -- Markdown folding
 vim.g.markdown_folding = 1

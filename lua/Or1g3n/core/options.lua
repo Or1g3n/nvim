@@ -22,7 +22,7 @@ local options = {
     --Shell
     sh = "nu.exe",
     shellcmdflag = "-c", -- Tells the shell to interpret strings passed from Neovim as commands
-    -- shellslash = true,   -- Forces Neovim to use forward slashes
+    shellslash = true,   -- Forces Neovim to use forward slashes
     shellxquote = "",    -- Prevents extra quoting issues
     shellquote = "",	 -- No quotes needed around commands; NuShell handles this internally
     shellxescape = ""	 -- Not typically needed for NuShell since it handles escaping internally

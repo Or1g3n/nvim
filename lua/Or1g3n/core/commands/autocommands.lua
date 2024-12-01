@@ -11,7 +11,7 @@ vim.api.nvim_create_autocmd("BufReadPre", {
 	vim.o.shellslash = false
 
 	-- Revert shellslash right before Neovim exits
-	vim.api.nvim_create_autocmd("VimLeavePre", {
+	vim.api.nvim_create_autocmd("VimLeavePost", {
 	    buffer = 0,
 	    callback = function()
 		vim.o.shellslash = original_shellslash

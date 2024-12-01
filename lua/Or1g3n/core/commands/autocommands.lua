@@ -10,12 +10,12 @@ vim.api.nvim_create_autocmd("BufReadPre", {
 	-- Temporarily disable shellslash for Git commit messages
 	vim.o.shellslash = false
 
-	-- Revert shellslash right before Neovim exits
-	vim.api.nvim_create_autocmd("VimLeavePost", {
-	    buffer = 0,
-	    callback = function()
-		vim.o.shellslash = original_shellslash
-	    end
-	})
+	-- -- Revert shellslash right before Neovim exits
+	-- vim.api.nvim_create_autocmd("VimLeavePre", {
+	--     buffer = 0,
+	--     callback = function()
+	-- 	vim.o.shellslash = original_shellslash
+	--     end
+	-- })
     end
 })

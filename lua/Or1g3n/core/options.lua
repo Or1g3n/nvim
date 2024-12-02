@@ -19,14 +19,18 @@ local options = {
     smartcase = true,
     -- File
     title = false,
-    --Shell
-    sh = "nu.exe",
-    shellcmdflag = "-c", -- Tells the shell to interpret strings passed from Neovim as commands
-    shellslash = true,   -- Forces Neovim to use forward slashes
-    shellxquote = "",    -- Prevents extra quoting issues
-    shellquote = "",	 -- No quotes needed around commands; NuShell handles this internally
-    shellxescape = ""	 -- Not typically needed for NuShell since it handles escaping internally
 }
+
+-- Check if NuShell is executable and update shell options
+if vim.fn.executable('nu') == 1 then
+    options.sh = "nu.exe"  	-- Set NuShell as the shell
+    options.shellcmdflag = "-c" -- Tells the shell to interpret strings passed from Neovim as commands
+    options.shellslash = true   -- Forces Neovim to use forward slashes
+    options.shellxquote = ""    -- Prevents extra quoting issues
+    options.shellquote = ""	-- No quotes needed around commands; NuShell handles this internally
+    options.shellxescape = ""	-- Not typically needed for NuShell since it handles escaping internally
+end
+
 -- Set all options
 for option, value in pairs(options) do vim.opt[option] = value end
 

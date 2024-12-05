@@ -22,13 +22,17 @@ local options = {
 }
 
 -- Check if NuShell is executable and update shell options
+-- https://github.com/nushell/integrations/blob/main/nvim/init.lua (for detailed descriptions of each setting)
 if vim.fn.executable('nu') == 1 then
-    options.sh = "nu.exe"  	-- Set NuShell as the shell
-    options.shellcmdflag = "-c" -- Tells the shell to interpret strings passed from Neovim as commands
-    options.shellslash = true   -- Forces Neovim to use forward slashes
-    options.shellxquote = ""    -- Prevents extra quoting issues
-    options.shellquote = ""	-- No quotes needed around commands; NuShell handles this internally
-    options.shellxescape = ""	-- Not typically needed for NuShell since it handles escaping internally
+    options.sh = "nu.exe"  				-- Set NuShell as the shell
+    options.shellcmdflag = "--stdin --no-newline -c" 	-- Tells the shell to interpret strings passed from Neovim as commands
+    options.shelltemp = false				-- When set to `false` the stdin pipe will be used instead
+    -- options.shellslash = true   			-- Forces Neovim to use forward slashes
+    options.shellredir = "out+err> %s" 			-- 
+    options.shellxquote = ""    			-- Prevents extra quoting issues
+    options.shellquote = ""				-- No quotes needed around commands; NuShell handles this internally
+    options.shellxescape = ""				-- Not typically needed for NuShell since it handles escaping internally
+    options.shellpipe = "| complete | update stderr { ansi strip } | tee { get stderr | save --force --raw %s } | into record"
 end
 
 -- Set all options

@@ -10,3 +10,12 @@
 -- 	vim.o.shellslash = false
 --     end
 -- })
+
+-- Ensure shellslash is set for Jupytext files
+vim.api.nvim_create_autocmd({"BufReadCmd"}, {
+    pattern = {"*.ipynb"},
+    callback = function()
+        vim.opt_local.shellslash = true
+    end,
+    desc = "Ensure shellslash is set for Jupytext files",
+})

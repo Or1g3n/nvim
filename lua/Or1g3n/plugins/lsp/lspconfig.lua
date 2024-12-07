@@ -2,11 +2,20 @@ return {
     "neovim/nvim-lspconfig",
     event = { "BufReadPre", "BufNewFile" },
     dependencies = {
-	{ "folke/neodev.nvim", opts = {} }, -- Optional for better Lua completions in Neovim config
+	{
+	    "folke/lazydev.nvim",
+	    ft = "lua", -- only load on lua files
+	    opts = {
+		library = {
+		    -- See the configuration section for more details
+		    -- Load luvit types when the `vim.uv` word is found
+		    { path = "${3rd}/luv/library", words = { "vim%.uv" } },
+		},
+	    },
+	},
     },
     config = function()
 	local lspconfig = require("lspconfig")
-	local neodev = require("neodev")
 	local util = require('lspconfig.util')
 	local map = vim.keymap -- for conciseness
 
@@ -61,9 +70,6 @@ return {
 	-- LSP CONFIGS
 	-- must explicitly call lspconfig.{server}.setup({}) for LSP to attach to Neovim buffer
 	-- passing empty table to .setup({}) will use default configuration for lsp
-
-	-- Configure neodev for better vim api support
-	neodev.setup({})
 
 	-- Configure the Lua language server
 	lspconfig.lua_ls.setup({

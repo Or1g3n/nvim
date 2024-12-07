@@ -32,20 +32,28 @@ return {
 	local function run_cell(auto_run)
 	    auto_run = auto_run or false -- default to false
 
+	    -- define cell tags based on filetype
+	    local ft_cell_tags = {
+		python = '# %%',
+		lua = '-- %%'
+	    }
+	    local filetype = vim.bo.filetype
+	    local cell_tag = ft_cell_tags[filetype] or 'No match'
+
 	    -- Set search term to markdown header to easily navigate cells with n, N
-	    vim.cmd(":let @/ = '# %%'")
+	    vim.cmd(":let @/ = '" .. cell_tag .. "'")
 
 	    local cur_line = vim.api.nvim_get_current_line()
 	    local start_pos = nil
 
 	    -- Save the cursor position
-	    if cur_line:match("^# %%") then
+	    if cur_line:match("^" .. cell_tag) then
 		start_pos = vim.fn.line(".")
 	    else
-		start_pos = vim.fn.search("^# %%", "b") -- Search backward for # %%
+		start_pos = vim.fn.search("^" .. cell_tag, "b") -- Search backward for # %%
 	    end
 
-	    local end_pos = vim.fn.search("^# %%", "W") -- Search forward for # %%
+	    local end_pos = vim.fn.search("^" .. cell_tag, "W") -- Search forward for # %%
 	    if end_pos == 0 then
 		end_pos = vim.fn.line("$") -- Select till end of file if no marker below
 	    else

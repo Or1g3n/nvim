@@ -24,7 +24,7 @@ local options = {
 -- Check if NuShell is executable and update shell options
 -- https://github.com/nushell/integrations/blob/main/nvim/init.lua (for detailed descriptions of each setting)
 if vim.fn.executable('nu') == 1 then
-    options.sh = "nu.exe"  				-- Set NuShell as the shell
+    options.sh = "nu"  					-- Set NuShell as the shell
     options.shellcmdflag = "--stdin --no-newline -c" 	-- Tells the shell to interpret strings passed from Neovim as commands
     options.shelltemp = false				-- When set to `false` the stdin pipe will be used instead
     -- options.shellslash = true   			-- Forces Neovim to use forward slashes

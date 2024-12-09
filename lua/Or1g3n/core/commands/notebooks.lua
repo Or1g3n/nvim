@@ -20,7 +20,8 @@ local default_notebook = [[
      },
      "language_info": {
       "codemirror_mode": {
-	"name": "ipython"
+	"name": "ipython",
+	"version": 3
       },
       "file_extension": ".py",
       "mimetype": "text/x-python",

@@ -14,8 +14,15 @@ return {
 	telescope.setup({
 	    pickers = {
 		find_files = {
-		    hidden = true
-		}
+		    hidden = false,
+		    theme = "ivy"
+		},
+		oldfiles = {
+		    theme = "ivy"
+		},
+		help_tags = {
+		    theme = "ivy"
+		},
 	    },
 	    defaults = {
 		mappings = {

@@ -19,3 +19,10 @@ vim.api.nvim_create_autocmd({"BufReadCmd"}, {
     end,
     desc = "Ensure shellslash is set for Jupytext files",
 })
+
+-- Open help buffers as vert splits as opposed to default horizontal
+vim.api.nvim_create_autocmd("FileType", {
+    pattern = { "help", "man", "markdown"},
+    command = "wincmd L",
+    desc = "Open help buffers as vert splits as opposed to default horizontal"
+})

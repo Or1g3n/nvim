@@ -81,6 +81,20 @@ map.set('n', 'n', 'nzz', { noremap = true, silent = true, desc = "Editor: Next s
 map.set('n', 'N', 'Nzz', { noremap = true, silent = true, desc = "Editor: Previous search result centered" })
 map.set('n', '<C-u>', '2kzz', { noremap = true, silent = true, desc = "Editor: Scroll up centered" })
 map.set('n', '<C-d>', '2jzz', { noremap = true, silent = true, desc = "Editor: Scroll down centered" })
+map.set("n", "j", -- Improve nagivating wrapped line behavior
+    function(...)
+	local count = vim.v.count
+	if count == 0 then return "gj" else return "j" end
+    end, 
+    { expr = true }
+)
+map.set("n", "k", -- Improve nagivating wrapped line behavior
+    function(...)
+	local count = vim.v.count
+	if count == 0 then return "gk" else return "k" end
+    end, 
+    { expr = true }
+)
 
 -- Copy / Paste
 map.set('n', '<Leader>y', '"+y', { noremap = true, silent = true, desc = "Editor: Copy motion into clipboard" })

@@ -39,6 +39,7 @@ return {
             dashboard.button("km", "  Show keymaps", ":Telescope keymaps <CR>"),
             dashboard.button("cs", "  Change color-scheme", ":Telescope colorscheme <CR>"),
             dashboard.button("l", "󰒲  Open lazy package manager", ":Lazy <CR>"),
+            dashboard.button("m", "󱌢  Open mason lsp manager", ":Mason <CR>"),
             dashboard.button("q", "󰩈  Quit Neovim", ":qa<CR>"),
         }
 

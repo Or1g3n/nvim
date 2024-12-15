@@ -10,7 +10,7 @@ return {
 	vim.g.molten_wrap_output = true
 
 	vim.g.molten_virt_text_output = true
-	-- vim.g.molten_virt_lines_off_by_1 = true
+	vim.g.molten_virt_lines_off_by_1 = true
 
 	map.set("n", "<A-r><A-i>", ":MoltenInit<CR>", { silent = true, desc = "Molten: Initialize plugin" })
 	map.set("n", "<A-r><A-t>", ":MoltenDeinit<CR>", { silent = true, desc = "Molten: De-initialize plugin" })

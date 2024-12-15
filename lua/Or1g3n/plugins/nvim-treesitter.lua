@@ -64,10 +64,12 @@ return {
 		    goto_next_start = {
 			--- ... other keymaps
 			["]b"] = { query = "@code_cell.inner", desc = "TS Custom: next code block" },
+			["<M-PageDown>"] = { query = "@code_cell.inner", desc = "TS Custom: next code block" },
 		    },
 		    goto_previous_start = {
 			--- ... other keymaps
 			["[b"] = { query = "@code_cell.inner", desc = "TS Custom: previous code block" },
+			["<M-PageUp>"] = { query = "@code_cell.inner", desc = "TS Custom: previous code block" },
 		    },
 		},
 		select = {

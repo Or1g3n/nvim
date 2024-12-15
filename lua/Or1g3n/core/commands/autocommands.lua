@@ -26,3 +26,12 @@ vim.api.nvim_create_autocmd("FileType", {
     command = "wincmd L",
     desc = "Open help buffers as vert splits as opposed to default horizontal"
 })
+
+-- Highlight visual cue when copying text
+vim.api.nvim_create_autocmd('TextYankPost', {
+  desc = 'Editor: Highlight when copying text',
+  group = vim.api.nvim_create_augroup('or1g3n-highlight-yank', { clear = true }),
+  callback = function()
+    vim.highlight.on_yank()
+  end,
+})

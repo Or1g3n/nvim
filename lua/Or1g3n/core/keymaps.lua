@@ -101,13 +101,6 @@ map.set('n', '<Leader>y', '"+y', { noremap = true, silent = true, desc = "Editor
 map.set('n', '<Leader>Y', '"+Y', { noremap = true, silent = true, desc = "Editor: Copy line into clipboard" })
 map.set('v', '<Leader>y', '"+y', { noremap = true, silent = true, desc = "Editor: Copy selection into clipboard" })
 map.set('x', '<Leader>p', '"_dP', { noremap = true, silent = true, desc = "Editor: Paste without overwriting clipboard" })
-vim.api.nvim_create_autocmd('TextYankPost', {
-  desc = 'Editor: Highlight when copying text',
-  group = vim.api.nvim_create_augroup('or1g3n-highlight-yank', { clear = true }),
-  callback = function()
-    vim.highlight.on_yank()
-  end,
-})
 
 -- Delete
 map.set('n', '<Leader>d', '"_d', { noremap = true, silent = true, desc = "Editor: Delete motion but keep yank buffer" })
@@ -121,3 +114,7 @@ map.set('n', '<Tab>', '>>_', { noremap = true, silent = true, desc = "Editor: In
 map.set('n', '<S-Tab>', '<<_', { noremap = true, silent = true, desc = "Editor: Dedent in normal mode using tab" })
 map.set('v', '<Tab>', '>gv', { noremap = true, silent = true, desc = "Editor: Indent in normal mode using tab" })
 map.set('v', '<S-Tab>', '<gv', { noremap = true, silent = true, desc = "Editor: Dedent in normal mode using tab" })
+
+-- Command line autocompletion list navigation
+map.set('c', '<Down>', function() return vim.fn.pumvisible() == 1 and '<C-n>' or '<Down>' end, { expr = true, noremap = true, silent = true, desc = "Command mode: Next item" })
+map.set('c', '<Up>', function() return vim.fn.pumvisible() == 1 and '<C-p>' or '<Up>' end, { expr = true, noremap = true, silent = true, desc = "Command mode: Previous item" })

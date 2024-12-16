@@ -14,7 +14,7 @@ map.set('n', '<A-o>', '<C-]>', { noremap = true, silent = true, desc = "Editor: 
 -- File operations 
 map.set('n', '<Leader>w', ':w<CR>', { noremap = true, silent = true, desc = "Editor: Save file" })
 map.set('n', '<Leader>q', ':q!<CR>', { noremap = true, silent = true, desc = "Editor: Quit without saving" })
-map.set('n', '<Leader>x', ':x<CR>', { noremap = true, silent = true, desc = "Editor: Save and quit" })
+-- map.set('n', '<Leader>x', ':x<CR>', { noremap = true, silent = true, desc = "Editor: Save and quit" })
 
 -- Buffer navigation
 map.set('n', '<C-h>', '<C-W><C-h>', { noremap = true, silent = true, desc = "Buffer: Navigate left" })
@@ -114,7 +114,3 @@ map.set('n', '<Tab>', '>>_', { noremap = true, silent = true, desc = "Editor: In
 map.set('n', '<S-Tab>', '<<_', { noremap = true, silent = true, desc = "Editor: Dedent in normal mode using tab" })
 map.set('v', '<Tab>', '>gv', { noremap = true, silent = true, desc = "Editor: Indent in normal mode using tab" })
 map.set('v', '<S-Tab>', '<gv', { noremap = true, silent = true, desc = "Editor: Dedent in normal mode using tab" })
-
--- Command line autocompletion list navigation
-map.set('c', '<Down>', function() return vim.fn.pumvisible() == 1 and '<C-n>' or '<Down>' end, { expr = true, noremap = true, silent = true, desc = "Command mode: Next item" })
-map.set('c', '<Up>', function() return vim.fn.pumvisible() == 1 and '<C-p>' or '<Up>' end, { expr = true, noremap = true, silent = true, desc = "Command mode: Previous item" })

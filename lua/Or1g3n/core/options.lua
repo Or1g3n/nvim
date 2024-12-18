@@ -19,6 +19,7 @@ local options = {
     smartcase = true,
     -- File
     title = false,
+    swapfile = false,
 }
 
 -- Check if NuShell is executable and update shell options

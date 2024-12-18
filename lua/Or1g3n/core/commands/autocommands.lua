@@ -20,11 +20,20 @@ vim.api.nvim_create_autocmd({"BufReadCmd"}, {
     desc = "Ensure shellslash is set for Jupytext files",
 })
 
+-- HELP BUFFERS
 -- Open help buffers as vert splits as opposed to default horizontal
 vim.api.nvim_create_autocmd("FileType", {
     pattern = { "help", "man", "markdown"},
     command = "wincmd L",
     desc = "Open help buffers as vert splits as opposed to default horizontal"
+})
+-- Turn off diagnostics for help files
+vim.api.nvim_create_autocmd("FileType", {
+  pattern = { "help", "man", "markdown" },
+  callback = function()
+    vim.diagnostic.disable(0) -- Disable diagnostics for the current buffer
+  end,
+  desc = "Disable LSP diagnostics in help files",
 })
 
 -- Highlight visual cue when copying text

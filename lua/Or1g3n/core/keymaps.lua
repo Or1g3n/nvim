@@ -75,6 +75,8 @@ map.set('n', '<Leader>ra', 'yiw:%s/<C-r>"//gc<Left><Left><Left>', { noremap = tr
 map.set('v', '<Leader>ra', 'y:%s/<C-r>"//gc<Left><Left><Left>', { noremap = true, silent = false, desc = "Editor: Replace all occurrences of selection" })
 map.set('n', '<Leader>rl', 'yiw:s/<C-r>"//gc<Left><Left><Left>', { noremap = true, silent = false, desc = "Editor: Replace occurrences of word on line" })
 map.set('v', '<Leader>rl', 'y:s/<C-r>"//gc<Left><Left><Left>', { noremap = true, silent = false, desc = "Editor: Replace occurrences of selection on line" })
+map.set('n', '<Leader>n', 'yiw:let @/ = "<C-r>""<CR>', { noremap = true, silent = false, desc = "Editor: Search word under cursor" })
+map.set('v', '<Leader>n', 'y:let @/ = "<C-r>""<CR>', { noremap = true, silent = false, desc = "Editor: Search highlighted word" })
 
 -- Code navigation
 map.set('n', 'n', 'nzz', { noremap = true, silent = true, desc = "Editor: Next search result centered" })

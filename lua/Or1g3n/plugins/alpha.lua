@@ -31,7 +31,7 @@ return {
             dashboard.button("n", "  New file", ":enew <CR>"),
 	    dashboard.button("f", "󰈞  Find file", ":Telescope find_files <CR>"),
             dashboard.button("r", "󰈢  Recent files", ":lua require('telescope.builtin').oldfiles({ prompt_title = 'Recent Files' })<CR>"),
-            dashboard.button("e", "  Open explorer", ":NvimTreeToggle <CR>"),
+            dashboard.button("e", "  Open explorer", ":lua require('mini.files').open()<CR>"),
 	    dashboard.button("h", "  Open help search", ":Telescope help_tags <CR>"), -- Note this assumes that vim-obsession config exists with global session_file defined
 	    dashboard.button("t", "  Open todos list", ":MarkdownUpdateTodos <CR>"), -- Note this assumes that vim-obsession config exists with global session_file defined
             dashboard.button("sc", "  Search config files", ":lua require('telescope.builtin').find_files({ cwd= vim.fn.stdpath('config'), prompt_title = 'Find Config Files' })<CR>"),

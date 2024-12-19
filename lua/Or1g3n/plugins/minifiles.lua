@@ -59,7 +59,10 @@ return{
 	    }
 	)
 
+	-- Keymaps
 	local map = vim.keymap
+
+	map.set('n', '<Leader>e', ':lua require("mini.files").open()<CR>', { noremap = true, silent = true, desc = "Mini Files: Open file explorer" })
 
     end
 }

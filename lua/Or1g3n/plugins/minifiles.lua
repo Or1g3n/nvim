@@ -4,7 +4,9 @@ return{
     enabled = true,
     dependencies = "nvim-tree/nvim-web-devicons",
     config = function ()
-	require('mini.files').setup(
+	local minifiles = require('mini.files')
+
+	minifiles.setup(
 	    -- No need to copy this inside `setup()`. Will be used automatically.
 	    {
 		-- Customization of shown content
@@ -22,7 +24,7 @@ return{
 		mappings = {
 		    close       = 'q',
 		    go_in       = 'l',
-		    go_in_plus  = 'L',
+		    go_in_plus  = '<CR>',
 		    go_out      = 'h',
 		    go_out_plus = 'H',
 		    mark_goto   = "'",
@@ -62,7 +64,8 @@ return{
 	-- Keymaps
 	local map = vim.keymap
 
-	map.set('n', '<Leader>e', ':lua require("mini.files").open()<CR>', { noremap = true, silent = true, desc = "Mini Files: Open file explorer" })
+	map.set('n', '<Leader>e', function () minifiles.open(vim.api.nvim_buf_get_name(0), true) end, { noremap = true, silent = true, desc = "Mini Files: Open file explorer (file directory)" })
+	map.set('n', '<Leader>E', function () minifiles.open() end, { noremap = true, silent = true, desc = "Mini Files: Open file explorer (cwd)" })
 
     end
 }

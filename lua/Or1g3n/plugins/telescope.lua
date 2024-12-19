@@ -90,9 +90,10 @@ return {
 	map.set('n', '<leader>fb', ':Telescope buffers<CR>', { desc = 'Telescope: Fuzzy find open buffers' })
 	map.set('n', '<leader>fc', ':lua require("telescope.builtin").find_files({ cwd= vim.fn.stdpath("config"), prompt_title = "Find Config Files" })<CR>', { silent = true, desc = 'Telescope: Fuzzy find config files' })
 	map.set('n', '<leader>fgc', ':Telescope grep_string<CR>', { desc = 'Telescope: Fuzzy find string under cursor in cwd' })
-	map.set('n', '<leader>fh', ':Telescope help_tags<CR>', { desc = 'Telescope: Fuzzy find help tags' })
-	map.set('n', '<leader>fr', ":lua require('telescope.builtin').oldfiles({ prompt_title = 'Recent Files' })<CR>", { desc = 'Telescope: Fuzzy find recent files' })
 	map.set('n', '<leader>fgs', ':Telescope live_grep<CR>', { desc = 'Telescope: Fuzzy find string in cwd' })
+	map.set('n', '<leader>fh', ':Telescope help_tags<CR>', { desc = 'Telescope: Fuzzy find help tags' })
+	map.set('n', '<leader>fkm', ':Telescope keymaps<CR>', { desc = 'Telescope: Fuzzy find keymaps' })
+	map.set('n', '<leader>fr', ":lua require('telescope.builtin').oldfiles({ prompt_title = 'Recent Files' })<CR>", { desc = 'Telescope: Fuzzy find recent files' })
 	map.set('n', '<leader>fsp', ':Telescope spell_suggest<CR>', { desc = 'Telescope: Fuzzy find spell suggestions' })
 	map.set('n', '<leader>ft', ':Telescope<CR>', { desc = 'Telescope: Fuzzy find Telescope functions' })
 

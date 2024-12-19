@@ -2,6 +2,7 @@ return {
     "neovim/nvim-lspconfig",
     event = { "BufReadPre", "BufNewFile" },
     dependencies = {
+	'saghen/blink.cmp',
 	{
 	    "folke/lazydev.nvim",
 	    ft = "lua", -- only load on lua files
@@ -15,6 +16,7 @@ return {
 	},
     },
     config = function()
+	local capabilities = require('blink.cmp').get_lsp_capabilities()
 	local lspconfig = require("lspconfig")
 	local map = vim.keymap -- for conciseness
 
@@ -72,6 +74,7 @@ return {
 
 	-- Configure the Lua language server
 	lspconfig.lua_ls.setup({
+	    capabilities = capabilities,
 	    settings = {
 		Lua = {
 		    runtime = {
@@ -91,6 +94,7 @@ return {
 	-- Configure Pyright for Python
 	lspconfig.pyright.setup({
 	    cmd = { vim.fn.stdpath("data") .. "/mason/bin/pyright-langserver", "--stdio" },
+	    capabilities = capabilities,
 	    single_file_support = true,
 	    root_dir = function(fname)
 		-- Use the directory containing the .git folder or fallback to the file's directory
@@ -114,6 +118,7 @@ return {
 	-- Configure Marksman for Markdown
 	lspconfig.marksman.setup({
 	    filetypes = { "markdown", "md" },
+	    capabilities = capabilities,
 	    root_dir = function(fname)
 		-- Use the directory containing the .git folder or fallback to the file's directory
 		local startpath = vim.fs.dirname(fname)

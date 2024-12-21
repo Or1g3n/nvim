@@ -116,3 +116,6 @@ map.set('n', '<Tab>', '>>_', { noremap = true, silent = true, desc = "Editor: In
 map.set('n', '<S-Tab>', '<<_', { noremap = true, silent = true, desc = "Editor: Dedent in normal mode using tab" })
 map.set('v', '<Tab>', '>gv', { noremap = true, silent = true, desc = "Editor: Indent in normal mode using tab" })
 map.set('v', '<S-Tab>', '<gv', { noremap = true, silent = true, desc = "Editor: Dedent in normal mode using tab" })
+
+-- Terminal
+map.set('t', '<Esc><Esc>', '<c-\\><c-n>')

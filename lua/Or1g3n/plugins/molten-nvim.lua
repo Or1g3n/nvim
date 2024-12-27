@@ -5,13 +5,15 @@ return {
     init = function()
 	local map = vim.keymap
 
+	-- Output settings
 	vim.g.molten_output_win_max_height = 12
 	vim.g.molten_auto_open_output = false
 	vim.g.molten_wrap_output = true
-
+	-- Virtual text settings
 	vim.g.molten_virt_text_output = true
 	vim.g.molten_virt_lines_off_by_1 = true
 
+	-- Keymaps
 	map.set("n", "<A-r><A-i>", ":MoltenInit<CR>", { silent = true, desc = "Molten: Initialize plugin" })
 	map.set("n", "<A-r><A-t>", ":MoltenDeinit<CR>", { silent = true, desc = "Molten: De-initialize plugin" })
 	map.set("n", "<A-r><A-d>", ":MoltenDelete<CR>", { silent = true, desc = "Molten: Delete cell" })

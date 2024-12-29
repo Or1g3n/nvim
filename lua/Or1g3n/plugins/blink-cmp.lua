@@ -27,6 +27,13 @@ return{
 	    ['<C-b>'] = { 'scroll_documentation_up', 'fallback' },
 	    ['<C-f>'] = { 'scroll_documentation_down', 'fallback' },
 	},
+	completion = {
+	    menu = {
+		auto_show = function()
+		    return vim.bo.buftype ~= "prompt" and vim.b.completion ~= false and vim.bo.filetype ~= "TelescopePrompt"
+		end,
+	    },
+	},
 	appearance = {
 	    -- Sets the fallback highlight groups to nvim-cmp's highlight groups
 	    -- Useful for when your theme doesn't support blink.cmp

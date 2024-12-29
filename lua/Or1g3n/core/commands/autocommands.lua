@@ -31,7 +31,7 @@ vim.api.nvim_create_autocmd("FileType", {
 vim.api.nvim_create_autocmd("FileType", {
   pattern = { "help", "man", "markdown" },
   callback = function()
-    vim.diagnostic.disable(0) -- Disable diagnostics for the current buffer
+    vim.diagnostic.enable(false, {bufnr=0}) -- Disable diagnostics for the current buffer
   end,
   desc = "Disable LSP diagnostics in help files",
 })

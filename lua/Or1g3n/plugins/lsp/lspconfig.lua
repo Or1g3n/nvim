@@ -2,11 +2,22 @@ return {
     "neovim/nvim-lspconfig",
     event = { "BufReadPre", "BufNewFile" },
     dependencies = {
-	{ "folke/neodev.nvim", opts = {} }, -- Optional for better Lua completions in Neovim config
+	'saghen/blink.cmp',
+	{
+	    "folke/lazydev.nvim",
+	    ft = "lua", -- only load on lua files
+	    opts = {
+		library = {
+		    -- See the configuration section for more details
+		    -- Load luvit types when the `vim.uv` word is found
+		    { path = "${3rd}/luv/library", words = { "vim%.uv" } },
+		},
+	    },
+	},
     },
     config = function()
+	local capabilities = require('blink.cmp').get_lsp_capabilities()
 	local lspconfig = require("lspconfig")
-	local util = require('lspconfig.util')
 	local map = vim.keymap -- for conciseness
 
 	-- Keymaps for LSP
@@ -63,47 +74,40 @@ return {
 
 	-- Configure the Lua language server
 	lspconfig.lua_ls.setup({
+	    capabilities = capabilities,
 	    settings = {
 		Lua = {
+		    runtime = {
+			version = 'LuaJIT', -- Use LuaJIT for Neovim
+			path = vim.split(package.path, ';'),
+		    },
 		    diagnostics = { globals = { "vim" } }, -- Recognize 'vim' as a global
+		    workspace = {
+			library = vim.api.nvim_get_runtime_file('', true),
+			checkThirdParty = false, -- Disable third-party library checks
+		    },
 		    completion = { callSnippet = "Replace" },
 		},
 	    },
 	})
 
-	-- -- Configure Pyright for Python
-	-- lspconfig.pyright.setup {
-	--     cmd = { vim.fn.stdpath("data") .. "/mason/bin/pyright-langserver", "--stdio" },
-	--     single_file_support = true,
-	--     settings = {
-	-- 	pyright = {
-	-- 	    -- Using Ruff's import organizer
-	-- 	    disableOrganizeImports = true,
-	-- 	},
-	-- 	python = {
-	-- 	    analysis = {
-	-- 		-- Ignore all files for analysis to exclusively use Ruff for linting
-	-- 		ignore = { '*' },
-	-- 	    },
-	-- 	},
-	--     },
-	-- }
-
 	-- Configure Pyright for Python
 	lspconfig.pyright.setup({
 	    cmd = { vim.fn.stdpath("data") .. "/mason/bin/pyright-langserver", "--stdio" },
+	    capabilities = capabilities,
 	    single_file_support = true,
 	    root_dir = function(fname)
-		-- Use the directory of the current file or fallback to current working directory if no project root is found
-		return util.find_git_ancestor(fname) or util.path.dirname(fname)
+		-- Use the directory containing the .git folder or fallback to the file's directory
+		local startpath = vim.fs.dirname(fname)
+		local git_root = vim.fs.dirname(vim.fs.find('.git', { path = startpath, upward = true })[1])
+		return git_root or startpath
 	    end,
 	    settings = {
 		pyright = {
-		    disableOrganizeImports = true,  -- Using Ruff's import organizer
+		    disableOrganizeImports = true, -- Using Ruff's import organizer
 		},
 		python = {
 		    analysis = {
-			-- ignore = { '*' },
 			-- Ignore all files for analysis to exclusively use Ruff for linting
 			diagnosticMode = "openFilesOnly",
 		    },
@@ -111,14 +115,16 @@ return {
 	    },
 	})
 
-	-- -- Configure Pyright for Python
-	-- lspconfig.ruff.setup({
-	--     cmd = { vim.fn.stdpath("data") .. "/mason/bin/ruff-lsp" },
-	-- })
-
 	-- Configure Marksman for Markdown
 	lspconfig.marksman.setup({
 	    filetypes = { "markdown", "md" },
+	    capabilities = capabilities,
+	    root_dir = function(fname)
+		-- Use the directory containing the .git folder or fallback to the file's directory
+		local startpath = vim.fs.dirname(fname)
+		local git_root = vim.fs.dirname(vim.fs.find('.git', { path = startpath, upward = true })[1])
+		return git_root or startpath
+	    end,
 	})
 
     end,

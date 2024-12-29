@@ -1,5 +1,5 @@
 -- Define your preferred default colorscheme here
-local default_colorscheme = "kanagawa"
+local default_colorscheme = "catppuccin"
 local load_all = true  -- Set to true to load all colorschemes eagerly
 
 return {

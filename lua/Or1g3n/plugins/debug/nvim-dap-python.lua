@@ -4,7 +4,7 @@ return {
     dependencies = { 'mfussenegger/nvim-dap' },
     ft = 'python',
     config = function()
-	require('dap-python').setup('python3')  -- Adjust if you need a specific virtual environment path
+	require('dap-python').setup('python')  -- Adjust if you need a specific virtual environment path
     end,
 }
 

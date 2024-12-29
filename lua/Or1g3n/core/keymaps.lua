@@ -14,7 +14,7 @@ map.set('n', '<A-o>', '<C-]>', { noremap = true, silent = true, desc = "Editor: 
 -- File operations 
 map.set('n', '<Leader>w', ':w<CR>', { noremap = true, silent = true, desc = "Editor: Save file" })
 map.set('n', '<Leader>q', ':q!<CR>', { noremap = true, silent = true, desc = "Editor: Quit without saving" })
-map.set('n', '<Leader>x', ':x<CR>', { noremap = true, silent = true, desc = "Editor: Save and quit" })
+-- map.set('n', '<Leader>x', ':x<CR>', { noremap = true, silent = true, desc = "Editor: Save and quit" })
 
 -- Buffer navigation
 map.set('n', '<C-h>', '<C-W><C-h>', { noremap = true, silent = true, desc = "Buffer: Navigate left" })
@@ -75,25 +75,34 @@ map.set('n', '<Leader>ra', 'yiw:%s/<C-r>"//gc<Left><Left><Left>', { noremap = tr
 map.set('v', '<Leader>ra', 'y:%s/<C-r>"//gc<Left><Left><Left>', { noremap = true, silent = false, desc = "Editor: Replace all occurrences of selection" })
 map.set('n', '<Leader>rl', 'yiw:s/<C-r>"//gc<Left><Left><Left>', { noremap = true, silent = false, desc = "Editor: Replace occurrences of word on line" })
 map.set('v', '<Leader>rl', 'y:s/<C-r>"//gc<Left><Left><Left>', { noremap = true, silent = false, desc = "Editor: Replace occurrences of selection on line" })
+map.set('n', '<Leader>n', 'yiw:let @/ = "<C-r>""<CR>', { noremap = true, silent = false, desc = "Editor: Search word under cursor" })
+map.set('v', '<Leader>n', 'y:let @/ = "<C-r>""<CR>', { noremap = true, silent = false, desc = "Editor: Search highlighted word" })
 
 -- Code navigation
 map.set('n', 'n', 'nzz', { noremap = true, silent = true, desc = "Editor: Next search result centered" })
 map.set('n', 'N', 'Nzz', { noremap = true, silent = true, desc = "Editor: Previous search result centered" })
 map.set('n', '<C-u>', '2kzz', { noremap = true, silent = true, desc = "Editor: Scroll up centered" })
 map.set('n', '<C-d>', '2jzz', { noremap = true, silent = true, desc = "Editor: Scroll down centered" })
+map.set("n", "j", -- Improve nagivating wrapped line behavior
+    function(...)
+	local count = vim.v.count
+	if count == 0 then return "gj" else return "j" end
+    end, 
+    { expr = true }
+)
+map.set("n", "k", -- Improve nagivating wrapped line behavior
+    function(...)
+	local count = vim.v.count
+	if count == 0 then return "gk" else return "k" end
+    end, 
+    { expr = true }
+)
 
 -- Copy / Paste
 map.set('n', '<Leader>y', '"+y', { noremap = true, silent = true, desc = "Editor: Copy motion into clipboard" })
 map.set('n', '<Leader>Y', '"+Y', { noremap = true, silent = true, desc = "Editor: Copy line into clipboard" })
 map.set('v', '<Leader>y', '"+y', { noremap = true, silent = true, desc = "Editor: Copy selection into clipboard" })
 map.set('x', '<Leader>p', '"_dP', { noremap = true, silent = true, desc = "Editor: Paste without overwriting clipboard" })
-vim.api.nvim_create_autocmd('TextYankPost', {
-  desc = 'Editor: Highlight when copying text',
-  group = vim.api.nvim_create_augroup('or1g3n-highlight-yank', { clear = true }),
-  callback = function()
-    vim.highlight.on_yank()
-  end,
-})
 
 -- Delete
 map.set('n', '<Leader>d', '"_d', { noremap = true, silent = true, desc = "Editor: Delete motion but keep yank buffer" })
@@ -107,3 +116,6 @@ map.set('n', '<Tab>', '>>_', { noremap = true, silent = true, desc = "Editor: In
 map.set('n', '<S-Tab>', '<<_', { noremap = true, silent = true, desc = "Editor: Dedent in normal mode using tab" })
 map.set('v', '<Tab>', '>gv', { noremap = true, silent = true, desc = "Editor: Indent in normal mode using tab" })
 map.set('v', '<S-Tab>', '<gv', { noremap = true, silent = true, desc = "Editor: Dedent in normal mode using tab" })
+
+-- Terminal
+map.set('t', '<Esc><Esc>', '<c-\\><c-n>')

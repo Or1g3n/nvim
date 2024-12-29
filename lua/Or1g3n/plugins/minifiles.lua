@@ -67,5 +67,54 @@ return{
 	map.set('n', '<Leader>e', function () minifiles.open(vim.api.nvim_buf_get_name(0), true) end, { noremap = true, silent = true, desc = "Mini Files: Open file explorer (file directory)" })
 	map.set('n', '<Leader>E', function () minifiles.open() end, { noremap = true, silent = true, desc = "Mini Files: Open file explorer (cwd)" })
 
+	-- Custom Functions
+	-- Open buffers in split or tab
+	local map_open = function(buf_id, lhs, action, direction)
+	    local rhs = function()
+		-- Get the selected file path
+		local file_path = MiniFiles.get_fs_entry().path
+
+		if not file_path then
+		    vim.notify("No file selected", vim.log.levels.WARN)
+		    return
+		end
+
+		if action == "split" then
+		    -- Get the current target window
+		    local cur_target = MiniFiles.get_explorer_state().target_window
+
+		    -- Create a new split and get its window ID
+		    local new_target = vim.api.nvim_win_call(cur_target, function()
+			vim.cmd(direction .. ' split')
+			return vim.api.nvim_get_current_win()
+		    end)
+
+		    -- Set the new target window
+		    MiniFiles.set_target_window(new_target)
+
+		    -- Open the file in the new split
+		    vim.api.nvim_win_set_buf(new_target, vim.fn.bufadd(file_path))
+		elseif action == "tab" then
+		    -- Open the file in a new tab
+		    vim.cmd('tabnew ' .. vim.fn.fnameescape(file_path))
+		end
+	    end
+
+	    -- Map the key with a description
+	    local desc = action == "split" and ('Split ' .. direction) or 'Open in new tab'
+	    vim.keymap.set('n', lhs, rhs, { buffer = buf_id, desc = desc })
+	end
+
+	vim.api.nvim_create_autocmd('User', {
+	    pattern = 'MiniFilesBufferCreate',
+	    callback = function(args)
+		local buf_id = args.data.buf_id
+		-- Map keys for horizontal and vertical splits
+		map_open(buf_id, '<Leader>s', 'split', 'belowright horizontal')
+		map_open(buf_id, '<Leader>v', 'split', 'belowright vertical')
+		-- Map key for opening in a new tab
+		map_open(buf_id, '<Leader>t', 'tab')
+	    end,
+	})
     end
 }

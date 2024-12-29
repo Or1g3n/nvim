@@ -10,6 +10,10 @@ return {
 		disabled_filetypes = {
 		    statusline = {
 			'NvimTree',
+			'alpha',
+			'dashboard',
+			"ministarter",
+			"snacks_dashboard",
 		    }
 		},
 		ignore_focus = {

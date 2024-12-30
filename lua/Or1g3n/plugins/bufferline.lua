@@ -8,7 +8,7 @@ return {
 
 	bufferline.setup({
 	    options = {
-		mode = "buffers",
+		mode = "tabs",
 		offsets = {
 		    {
 			filetype = "NvimTree",

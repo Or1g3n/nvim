@@ -14,6 +14,7 @@ map.set('n', '<A-o>', '<C-]>', { noremap = true, silent = true, desc = "Editor: 
 -- File operations 
 map.set('n', '<Leader>w', ':w<CR>', { noremap = true, silent = true, desc = "Editor: Save file" })
 map.set('n', '<Leader>q', ':q!<CR>', { noremap = true, silent = true, desc = "Editor: Quit without saving" })
+map.set('n', '<Leader>x', ':bd!<CR>', { noremap = true, silent = true, desc = "Editor: Delete buffer without saving" })
 -- map.set('n', '<Leader>x', ':x<CR>', { noremap = true, silent = true, desc = "Editor: Save and quit" })
 
 -- Tabline

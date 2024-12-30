@@ -71,32 +71,27 @@ return{
 	-- Open buffers in split or tab
 	local map_open = function(buf_id, lhs, action, direction)
 	    local rhs = function()
-		-- Get the selected file path
-		local file_path = MiniFiles.get_fs_entry().path
-
-		if not file_path then
-		    vim.notify("No file selected", vim.log.levels.WARN)
-		    return
-		end
-
 		if action == "split" then
 		    -- Get the current target window
-		    local cur_target = MiniFiles.get_explorer_state().target_window
-
+		    local cur_target = minifiles.get_explorer_state().target_window
 		    -- Create a new split and get its window ID
 		    local new_target = vim.api.nvim_win_call(cur_target, function()
 			vim.cmd(direction .. ' split')
 			return vim.api.nvim_get_current_win()
 		    end)
-
 		    -- Set the new target window
-		    MiniFiles.set_target_window(new_target)
-
+		    minifiles.set_target_window(new_target)
 		    -- Open the file in the new split
-		    vim.api.nvim_win_set_buf(new_target, vim.fn.bufadd(file_path))
+		    minifiles.go_in()
 		elseif action == "tab" then
+		    -- Get file path for explorer entry
+		    local file_path = minifiles.get_fs_entry().path
+		    -- Close explorer
+		    minifiles.close()
 		    -- Open the file in a new tab
 		    vim.cmd('tabnew ' .. vim.fn.fnameescape(file_path))
+		    -- Open explorer in new tab
+		    minifiles.open(vim.api.nvim_buf_get_name(0), true)
 		end
 	    end
 
@@ -116,5 +111,6 @@ return{
 		map_open(buf_id, '<Leader>t', 'tab')
 	    end,
 	})
+
     end
 }

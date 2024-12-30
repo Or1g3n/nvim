@@ -8,7 +8,7 @@ return {
 
 	bufferline.setup({
 	    options = {
-		mode = "tabs",
+		mode = "buffers",
 		offsets = {
 		    {
 			filetype = "NvimTree",
@@ -17,7 +17,8 @@ return {
 			separator = true -- use a "true" to enable the default, or set your own character
 		    }
 		},
-		always_show_bufferline = false
+		always_show_bufferline = false,
+		auto_toggle_bufferline = false -- this allows manual setting of showtabline option
 	    },
 	})
     end

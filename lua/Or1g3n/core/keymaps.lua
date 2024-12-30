@@ -16,6 +16,17 @@ map.set('n', '<Leader>w', ':w<CR>', { noremap = true, silent = true, desc = "Edi
 map.set('n', '<Leader>q', ':q!<CR>', { noremap = true, silent = true, desc = "Editor: Quit without saving" })
 -- map.set('n', '<Leader>x', ':x<CR>', { noremap = true, silent = true, desc = "Editor: Save and quit" })
 
+-- Tabline
+map.set('n', '<A-t>',
+    function()
+	if vim.opt.showtabline._value ~= 2 then
+	    vim.opt.showtabline = 2
+	else vim.opt.showtabline = 1
+	end
+    end,
+    { noremap = true, silent = true, desc = "Editor: Toggle tabline (showtabline)" }
+)
+
 -- Buffer navigation
 map.set('n', '<C-h>', '<C-W><C-h>', { noremap = true, silent = true, desc = "Buffer: Navigate left" })
 map.set('n', '<C-l>', '<C-W><C-l>', { noremap = true, silent = true, desc = "Buffer: Navigate right" })
@@ -25,6 +36,9 @@ map.set('n', '<C-Left>', '<C-W><C-h>', { noremap = true, silent = true, desc = "
 map.set('n', '<C-Right>', '<C-W><C-l>', { noremap = true, silent = true, desc = "Buffer: Navigate right" })
 map.set('n', '<C-Up>', '<C-W><C-k>', { noremap = true, silent = true, desc = "Buffer: Navigate up" })
 map.set('n', '<C-Down>', '<C-W><C-j>', { noremap = true, silent = true, desc = "Buffer: Navigate down" })
+map.set('n', '<C-Backspace>', ':bn <CR>', { noremap = true, silent = true, desc = "Buffer: Switch to next buffer" })
+map.set('n', '<S-Backspace>', ':bp <CR>', { noremap = true, silent = true, desc = "Buffer: Switch to previous buffer" })
+
 -- Buffer layout 
 map.set('n', '<Leader>h', ':wincmd H<CR>', { noremap = true, silent = true, desc = "Buffer: Move left" })
 map.set('n', '<Leader>l', ':wincmd L<CR>', { noremap = true, silent = true, desc = "Buffer: Move right" })
@@ -32,43 +46,55 @@ map.set('n', '<Leader>k', ':wincmd K<CR>', { noremap = true, silent = true, desc
 map.set('n', '<Leader>j', ':wincmd J<CR>', { noremap = true, silent = true, desc = "Buffer: Move down" })
 map.set('n', '<A-=>', ':wincmd =<CR>', { noremap = true, silent = true, desc = "Buffer: Rebalance layout" })
 -- Resize height (up or down based on active window position)
-map.set('n', '<A-j>', function()
-    local max_windows  = #vim.api.nvim_list_wins()
-    local col = vim.fn.winnr() -- Get current window number in current row
-    if col == max_windows then
-	vim.cmd 'resize -2' -- Decrease height if on the top
-    else
-	vim.cmd 'resize +2' -- Increase height if on the bottom
-    end
-end, { noremap = true, silent = true, desc = "Buffer: Adjust height based on position" })
-map.set('n', '<A-k>', function()
-    local max_windows  = #vim.api.nvim_list_wins()
-    local col = vim.fn.winnr() -- Get current window number in current row
-    if col == max_windows then
-	vim.cmd 'resize +2' -- Increase height if on the top
-    else
-	vim.cmd 'resize -2' -- Decrease height if on the bottom
-    end
-end, { noremap = true, silent = true, desc = "Buffer: Adjust height based on position" })
+map.set('n', '<A-j>',
+    function()
+	local max_windows  = #vim.api.nvim_list_wins()
+	local col = vim.fn.winnr() -- Get current window number in current row
+	if col == max_windows then
+	    vim.cmd 'resize -2' -- Decrease height if on the top
+	else
+	    vim.cmd 'resize +2' -- Increase height if on the bottom
+	end
+    end,
+    { noremap = true, silent = true, desc = "Buffer: Adjust height based on position" }
+)
+map.set('n', '<A-k>',
+    function()
+	local max_windows  = #vim.api.nvim_list_wins()
+	local col = vim.fn.winnr() -- Get current window number in current row
+	if col == max_windows then
+	    vim.cmd 'resize +2' -- Increase height if on the top
+	else
+	    vim.cmd 'resize -2' -- Decrease height if on the bottom
+	end
+    end,
+    { noremap = true, silent = true, desc = "Buffer: Adjust height based on position" }
+)
 -- Resize width (left or right based on active window position)
-map.set('n', '<A-l>', function()
-    local max_windows  = #vim.api.nvim_list_wins()
-    local col = vim.fn.winnr() -- Get current window number in current row
-    if col == max_windows then
-	vim.cmd 'vertical resize -2' -- Decrease width if on the right
-    else
-	vim.cmd 'vertical resize +2' -- Increase width if on the left
-    end
-end, { noremap = true, silent = true, desc = "Buffer: Adjust width based on position" })
-map.set('n', '<A-h>', function()
-    local max_windows  = #vim.api.nvim_list_wins()
-    local col = vim.fn.winnr() -- Get current window number in current row
-    if col == max_windows then
-	vim.cmd 'vertical resize +2' -- Increase width if on the right
-    else
-	vim.cmd 'vertical resize -2' -- Decrease width if on the left
-    end
-end, { noremap = true, silent = true, desc = "Buffer: Adjust width based on position" })
+map.set('n', '<A-l>',
+    function()
+	local max_windows  = #vim.api.nvim_list_wins()
+	local col = vim.fn.winnr() -- Get current window number in current row
+	if col == max_windows then
+	    vim.cmd 'vertical resize -2' -- Decrease width if on the right
+	else
+	    vim.cmd 'vertical resize +2' -- Increase width if on the left
+	end
+    end,
+    { noremap = true, silent = true, desc = "Buffer: Adjust width based on position" }
+)
+map.set('n', '<A-h>',
+    function()
+	local max_windows  = #vim.api.nvim_list_wins()
+	local col = vim.fn.winnr() -- Get current window number in current row
+	if col == max_windows then
+	    vim.cmd 'vertical resize +2' -- Increase width if on the right
+	else
+	    vim.cmd 'vertical resize -2' -- Decrease width if on the left
+	end
+    end,
+    { noremap = true, silent = true, desc = "Buffer: Adjust width based on position" }
+)
 
 -- Auto find and replace
 map.set('n', '<Leader>ra', 'yiw:%s/<C-r>"//gc<Left><Left><Left>', { noremap = true, silent = false, desc = "Editor: Replace all occurrences of word" })
@@ -87,14 +113,14 @@ map.set("n", "j", -- Improve nagivating wrapped line behavior
     function(...)
 	local count = vim.v.count
 	if count == 0 then return "gj" else return "j" end
-    end, 
+    end,
     { expr = true }
 )
 map.set("n", "k", -- Improve nagivating wrapped line behavior
     function(...)
 	local count = vim.v.count
 	if count == 0 then return "gk" else return "k" end
-    end, 
+    end,
     { expr = true }
 )
 

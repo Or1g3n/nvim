@@ -31,6 +31,10 @@ return {
 		help_tags = {
 		    theme = "ivy"
 		},
+		buffers = {
+		    show_all_buffers = false,
+		    sort_lastused = true,
+		}
 	    },
 	    defaults = {
 		mappings = {

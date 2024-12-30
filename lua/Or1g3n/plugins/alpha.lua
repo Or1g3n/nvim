@@ -36,7 +36,7 @@ return {
 	    dashboard.button("t", "  Open todos list", ":MarkdownUpdateTodos <CR>"), -- Note this assumes that vim-obsession config exists with global session_file defined
             dashboard.button("sc", "  Search config files", ":lua require('telescope.builtin').find_files({ cwd= vim.fn.stdpath('config'), prompt_title = 'Find Config Files' })<CR>"),
             dashboard.button("cm", "  Show commands", ":Telescope commands <CR>"),
-            dashboard.button("km", "  Show keymaps", ":Telescope keymaps <CR>"),
+            dashboard.button("?", "  Show keymaps", ":Telescope keymaps <CR>"),
             dashboard.button("cs", "  Change color-scheme", ":Telescope colorscheme <CR>"),
             dashboard.button("l", "󰒲  Open lazy package manager", ":Lazy <CR>"),
             dashboard.button("m", "󱌢  Open mason lsp manager", ":Mason <CR>"),

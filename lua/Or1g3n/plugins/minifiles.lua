@@ -61,12 +61,6 @@ return{
 	    }
 	)
 
-	-- Keymaps
-	local map = vim.keymap
-
-	map.set('n', '<Leader>e', function () minifiles.open(vim.api.nvim_buf_get_name(0), true) end, { noremap = true, silent = true, desc = "Mini Files: Open file explorer (file directory)" })
-	map.set('n', '<Leader>E', function () minifiles.open() end, { noremap = true, silent = true, desc = "Mini Files: Open file explorer (cwd)" })
-
 	-- Custom Functions
 	-- Open buffers in split or tab
 	local map_open = function(buf_id, lhs, action, direction)
@@ -100,6 +94,10 @@ return{
 	    vim.keymap.set('n', lhs, rhs, { buffer = buf_id, desc = desc })
 	end
 
+	-- Keymaps
+	local map = vim.keymap
+
+	-- Mini.files only keymaps
 	vim.api.nvim_create_autocmd('User', {
 	    pattern = 'MiniFilesBufferCreate',
 	    callback = function(args)
@@ -109,8 +107,13 @@ return{
 		map_open(buf_id, '<Leader>v', 'split', 'belowright vertical')
 		-- Map key for opening in a new tab
 		map_open(buf_id, '<Leader>t', 'tab')
+		-- Map key for preview toggle
+		map.set('n', '<C-p>',function() MiniFiles.config.windows.preview = not MiniFiles.config.windows.preview end, { buffer = buf_id, desc = 'Toggle file preview' })
 	    end,
 	})
 
+	-- Global keymaps
+	map.set('n', '<Leader>e', function () minifiles.open(vim.api.nvim_buf_get_name(0), true) end, { noremap = true, silent = true, desc = "Mini Files: Open file explorer (file directory)" })
+	map.set('n', '<Leader>E', function () minifiles.open() end, { noremap = true, silent = true, desc = "Mini Files: Open file explorer (cwd)" })
     end
 }

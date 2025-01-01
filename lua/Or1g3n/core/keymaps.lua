@@ -38,7 +38,8 @@ map.set('n', '<C-Right>', '<C-W><C-l>', { noremap = true, silent = true, desc = 
 map.set('n', '<C-Up>', '<C-W><C-k>', { noremap = true, silent = true, desc = "Buffer: Navigate up" })
 map.set('n', '<C-Down>', '<C-W><C-j>', { noremap = true, silent = true, desc = "Buffer: Navigate down" })
 map.set('n', '<C-Backspace>', ':bn <CR>', { noremap = true, silent = true, desc = "Buffer: Switch to next buffer" })
-map.set('n', '<S-Backspace>', ':bp <CR>', { noremap = true, silent = true, desc = "Buffer: Switch to previous buffer" })
+map.set('n', '<C-f>', ':bn <CR>', { noremap = true, silent = true, desc = "Buffer: Switch to next buffer" })
+map.set('n', '<C-b>', ':bp <CR>', { noremap = true, silent = true, desc = "Buffer: Switch to previous buffer" })
 
 -- Buffer layout 
 map.set('n', '<Leader>h', ':wincmd H<CR>', { noremap = true, silent = true, desc = "Buffer: Move left" })

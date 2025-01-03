@@ -73,9 +73,9 @@ return{
 	map.set('n', '<Leader>j', ':WinShift down<CR>', { noremap = true, silent = true, desc = "WinShift: Move window down" })
 	map.set('n', '<Leader>k', ':WinShift up<CR>', { noremap = true, silent = true, desc = "WinShift: Move window up" })
 	-- Move far-left, far-right, far-up, far-down
-	map.set('n', '<Leader>H', ':WinShift left<CR>', { noremap = true, silent = true, desc = "WinShift: Move window far-left" })
-	map.set('n', '<Leader>L', ':WinShift right<CR>', { noremap = true, silent = true, desc = "WinShift: Move window far-right" })
-	map.set('n', '<Leader>J', ':WinShift down<CR>', { noremap = true, silent = true, desc = "WinShift: Move window far-down" })
-	map.set('n', '<Leader>K', ':WinShift up<CR>', { noremap = true, silent = true, desc = "WinShift: Move window far-up" })
+	map.set('n', '<Leader>H', ':WinShift far_left<CR>', { noremap = true, silent = true, desc = "WinShift: Move window far-left" })
+	map.set('n', '<Leader>L', ':WinShift far_right<CR>', { noremap = true, silent = true, desc = "WinShift: Move window far-right" })
+	map.set('n', '<Leader>J', ':WinShift far_down<CR>', { noremap = true, silent = true, desc = "WinShift: Move window far-down" })
+	map.set('n', '<Leader>K', ':WinShift far_up<CR>', { noremap = true, silent = true, desc = "WinShift: Move window far-up" })
     end
 }

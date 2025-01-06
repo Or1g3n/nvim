@@ -144,5 +144,18 @@ map.set('n', '<S-Tab>', '<<_', { noremap = true, silent = true, desc = "Editor: 
 map.set('v', '<Tab>', '>gv', { noremap = true, silent = true, desc = "Editor: Indent in normal mode using tab" })
 map.set('v', '<S-Tab>', '<gv', { noremap = true, silent = true, desc = "Editor: Dedent in normal mode using tab" })
 
+-- Format file
+map.set('n', '<Leader>=',
+    function ()
+	-- Save the current cursor position
+	local save_cursor = vim.api.nvim_win_get_cursor(0)
+	-- Re-indent the entire buffer
+	vim.api.nvim_command('normal! gg=G')
+	-- Restore the cursor position
+	vim.api.nvim_win_set_cursor(0, save_cursor)
+    end,
+    { noremap = true, silent = true, desc = "Editor: Auto-indent entire file" }
+)
+
 -- Terminal
 map.set('t', '<Esc><Esc>', '<c-\\><c-n>')

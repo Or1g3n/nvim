@@ -94,6 +94,24 @@ return{
 	    vim.keymap.set('n', lhs, rhs, { buffer = buf_id, desc = desc })
 	end
 
+	-- Set focused directory as current working directory
+	local set_cwd = function()
+	    local path = (MiniFiles.get_fs_entry() or {}).path
+	    if path == nil then
+		return vim.notify('Cursor is not on valid entry')
+	    end
+	    vim.fn.chdir(vim.fs.dirname(path))
+	end
+
+	-- Yank in register full path of entry under cursor
+	local yank_path = function()
+	    local path = (MiniFiles.get_fs_entry() or {}).path
+	    if path == nil then
+		return vim.notify('Cursor is not on valid entry')
+	    end
+	    vim.fn.setreg(vim.v.register, path)
+	end
+
 	-- Keymaps
 	local map = vim.keymap
 
@@ -109,11 +127,29 @@ return{
 		map_open(buf_id, '<Leader>t', 'tab')
 		-- Map key for preview toggle
 		map.set('n', '<C-p>',function() MiniFiles.config.windows.preview = not MiniFiles.config.windows.preview end, { buffer = buf_id, desc = 'Toggle file preview' })
+		-- Map key for change cwd
+		map.set('n', 'g@', set_cwd,   { buffer = buf_id, desc = 'Set cwd' })
+		-- Map key for yank file path
+		map.set('n', 'gy', yank_path, { buffer = buf_id, desc = 'Yank path' })
 	    end,
 	})
 
 	-- Global keymaps
 	map.set('n', '<Leader>e', function () minifiles.open(vim.api.nvim_buf_get_name(0), true) end, { noremap = true, silent = true, desc = "Mini Files: Open file explorer (file directory)" })
 	map.set('n', '<Leader>E', function () minifiles.open() end, { noremap = true, silent = true, desc = "Mini Files: Open file explorer (cwd)" })
+
+	-- Set pre-built bookmarks
+	local set_mark = function(id, path, desc)
+	    MiniFiles.set_bookmark(id, path, { desc = desc })
+	end
+	vim.api.nvim_create_autocmd('User', {
+	    pattern = 'MiniFilesExplorerOpen',
+	    callback = function()
+		set_mark('c', vim.fn.stdpath('config'), 'Config') -- path
+		set_mark('w', vim.fn.getcwd(), 'Working directory') -- callable
+		set_mark('~', '~', 'Home directory')
+		set_mark('r', '~/repos', 'Repos directory')
+	    end,
+	})
     end
 }

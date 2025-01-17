@@ -78,5 +78,43 @@ return {
 	map.set( "n", "<A-r><A-b>", function() run_cell(true) end, { silent = true, desc = "Molten: Auto-identify and run cell" })
 	map.set( "n", "<A-r><A-g>", function() run_cell(false) end, { silent = true, desc = "Molten: Auto-identify and select cell" })
 
+	-- Autcommands
+	-- change the configuration when editing a python file
+	vim.api.nvim_create_autocmd("BufEnter", {
+	    pattern = "*.py",
+	    callback = function(e)
+		if string.match(e.file, ".otter.") then
+		    return
+		end
+		if require("molten.status").initialized() == "Molten" then -- this is kinda a hack...
+		    vim.fn.MoltenUpdateOption("virt_lines_off_by_1", false)
+		    vim.fn.MoltenUpdateOption("virt_text_output", false)
+		    vim.fn.MoltenUpdateOption("molten_auto_open_output", true)
+		else
+		    vim.g.molten_virt_lines_off_by_1 = false
+		    vim.g.molten_virt_text_output = false
+		    vim.g.molten_auto_open_output = false
+		end
+	    end,
+	})
+
+	-- Undo those config changes when we go back to a markdown or quarto file
+	vim.api.nvim_create_autocmd("BufEnter", {
+	    pattern = { "*.qmd", "*.md", "*.ipynb" },
+	    callback = function(e)
+		if string.match(e.file, ".otter.") then
+		    return
+		end
+		if require("molten.status").initialized() == "Molten" then
+		    vim.fn.MoltenUpdateOption("virt_lines_off_by_1", true)
+		    vim.fn.MoltenUpdateOption("virt_text_output", true)
+		    vim.fn.MoltenUpdateOption("molten_auto_open_output", false)
+		else
+		    vim.g.molten_virt_lines_off_by_1 = true
+		    vim.g.molten_virt_text_output = true
+		    vim.g.molten_auto_open_output = false
+		end
+	    end,
+	})
     end,
 }

@@ -27,20 +27,20 @@ return {
 		local opts = { buffer = ev.buf, silent = true }
 
 		-- Set LSP-related keybindings
-		opts.desc = "LSP: Show references"
-		map.set("n", "gR", "<cmd>Telescope lsp_references<CR>", opts)
+		-- opts.desc = "LSP: Show references"
+		-- map.set("n", "gR", "<cmd>Telescope lsp_references<CR>", opts)
 
 		opts.desc = "LSP: Go to declaration"
 		map.set("n", "gD", vim.lsp.buf.declaration, opts)
 
-		opts.desc = "LSP: Show definitions"
-		map.set("n", "gd", "<cmd>Telescope lsp_definitions<CR>", opts)
+		-- opts.desc = "LSP: Show definitions"
+		-- map.set("n", "gd", "<cmd>Telescope lsp_definitions<CR>", opts)
 
-		opts.desc = "LSP: Show implementations"
-		map.set("n", "gi", "<cmd>Telescope lsp_implementations<CR>", opts)
+		-- opts.desc = "LSP: Show implementations"
+		-- map.set("n", "gi", "<cmd>Telescope lsp_implementations<CR>", opts)
 
-		opts.desc = "LSP: Show type definitions"
-		map.set("n", "gt", "<cmd>Telescope lsp_type_definitions<CR>", opts)
+		-- opts.desc = "LSP: Show type definitions"
+		-- map.set("n", "gt", "<cmd>Telescope lsp_type_definitions<CR>", opts)
 
 		opts.desc = "LSP: See available code actions"
 		map.set({ "n", "v" }, "<leader>ca", vim.lsp.buf.code_action, opts)
@@ -48,8 +48,8 @@ return {
 		opts.desc = "LSP: Smart rename"
 		map.set("n", "<leader>rn", vim.lsp.buf.rename, opts)
 
-		opts.desc = "LSP: Show buffer diagnostics"
-		map.set("n", "<leader>D", "<cmd>Telescope diagnostics bufnr=0<CR>", opts)
+		-- opts.desc = "LSP: Show buffer diagnostics"
+		-- map.set("n", "<leader>D", "<cmd>Telescope diagnostics bufnr=0<CR>", opts)
 
 		-- opts.desc = "LSP: Show line diagnostics"
 		-- map.set("n", "<leader>d", vim.diagnostic.open_float, opts)

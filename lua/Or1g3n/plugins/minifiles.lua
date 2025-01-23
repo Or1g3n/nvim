@@ -146,6 +146,7 @@ return{
 	    pattern = 'MiniFilesExplorerOpen',
 	    callback = function()
 		set_mark('c', vim.fn.stdpath('config'), 'Config') -- path
+		set_mark('n', vim.fn.stdpath('data'), 'Nvim-Data') -- path
 		set_mark('w', vim.fn.getcwd(), 'Working directory') -- callable
 		set_mark('~', '~', 'Home directory')
 		set_mark('r', '~/repos', 'Repos directory')

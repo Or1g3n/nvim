@@ -14,8 +14,13 @@ map.set('n', '<A-o>', '<C-]>', { noremap = true, silent = true, desc = "Editor: 
 -- File operations 
 map.set('n', '<Leader>w', ':w<CR>', { noremap = true, silent = true, desc = "Editor: Save file" })
 map.set('n', '<Leader>q', ':q!<CR>', { noremap = true, silent = true, desc = "Editor: Quit without saving" })
-map.set('n', '<Leader>x', ':bd!<CR>', { noremap = true, silent = true, desc = "Editor: Delete buffer without saving" })
+map.set('n', '<Leader>bd', ':bd!<CR>', { noremap = true, silent = true, desc = "Editor: Delete buffer without saving" })
 -- map.set('n', '<Leader>x', ':x<CR>', { noremap = true, silent = true, desc = "Editor: Save and quit" })
+
+-- Source file / lines
+map.set('n', '<Leader>%', ':source %<CR>', { noremap = true, silent = true, desc = "Editor: source file" })
+map.set('n', '<Leader>x', ':.lua<CR>', { noremap = true, silent = true, desc = "Editor: source current line" })
+map.set('v', '<Leader>x', ':lua<CR>', { noremap = true, silent = true, desc = "Editor: source selected lines" })
 
 -- Tabline
 map.set('n', '<A-t>',
@@ -158,4 +163,4 @@ map.set('n', '<Leader>=',
 )
 
 -- Terminal
-map.set('t', '<Esc><Esc>', '<c-\\><c-n>')
+map.set('t', '<Esc><Esc>', '<c-\\><c-n>', { noremap = true, desc = "Terminal: activate normal mode" })

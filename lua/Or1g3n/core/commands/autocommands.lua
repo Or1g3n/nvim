@@ -15,7 +15,7 @@
 vim.api.nvim_create_autocmd({"BufReadCmd"}, {
     pattern = {"*.ipynb"},
     callback = function()
-        vim.opt_local.shellslash = true
+	vim.opt_local.shellslash = true
     end,
     desc = "Ensure shellslash is set for Jupytext files",
 })
@@ -29,18 +29,18 @@ vim.api.nvim_create_autocmd("FileType", {
 })
 -- Turn off diagnostics for help files
 vim.api.nvim_create_autocmd("FileType", {
-  pattern = { "help", "man", "markdown" },
-  callback = function()
-    vim.diagnostic.enable(false, {bufnr=0}) -- Disable diagnostics for the current buffer
-  end,
-  desc = "Disable LSP diagnostics in help files",
+    pattern = { "help", "man", "markdown" },
+    callback = function()
+	vim.diagnostic.enable(false, {bufnr=0}) -- Disable diagnostics for the current buffer
+    end,
+    desc = "Disable LSP diagnostics in help files",
 })
 
 -- Highlight visual cue when copying text
 vim.api.nvim_create_autocmd('TextYankPost', {
-  desc = 'Editor: Highlight when copying text',
-  group = vim.api.nvim_create_augroup('or1g3n-highlight-yank', { clear = true }),
-  callback = function()
-    vim.highlight.on_yank()
-  end,
+    desc = 'Editor: Highlight when copying text',
+    group = vim.api.nvim_create_augroup('or1g3n-highlight-yank', { clear = true }),
+    callback = function()
+	vim.highlight.on_yank()
+    end,
 })

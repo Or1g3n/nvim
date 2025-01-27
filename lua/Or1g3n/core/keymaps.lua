@@ -163,4 +163,4 @@ map.set('n', '<Leader>=',
 )
 
 -- Terminal
-map.set('t', '<Esc><Esc>', '<c-\\><c-n>', { noremap = true, desc = "Terminal: activate normal mode" })
+-- keymaps for terminal moved to ./commands/terminal.lua

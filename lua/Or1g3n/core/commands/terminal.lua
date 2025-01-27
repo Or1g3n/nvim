@@ -41,7 +41,9 @@ local function create_floating_window(opts)
 	col = col,
 	row = row,
 	style = 'minimal', -- No borders or extra UI elements
-	border = 'rounded'
+	border = 'rounded',
+	title = 'Terminal',
+	title_pos = 'center'
     }
 
     -- Create the floating window
@@ -55,12 +57,20 @@ local toggle_terminal = function()
 	state.floating = create_floating_window({ buf = state.floating.buf })
 	if vim.bo[state.floating.buf].buftype ~= 'terminal' then
 	    vim.cmd.terminal()
+	    vim.cmd.startinsert() -- Start in insert mode
 	end
     else
 	vim.api.nvim_win_hide(state.floating.win)
     end
 end
 
--- User command and keymap
+-- USER COMMAND AND KEYMAPS
+local map = vim.keymap
+
+-- Toggle Terminal
 vim.api.nvim_create_user_command('ToggleTerminal', toggle_terminal, {})
-vim.keymap.set('n', '<Leader>~', toggle_terminal, { desc = 'Terminal: Toggle floating terminal' })
+map.set('n', '<Leader>~', toggle_terminal, { desc = 'Terminal: Toggle floating terminal' })
+
+-- General
+map.set('t', '<Esc><Esc>', '<c-\\><c-n>', { noremap = true, desc = "Terminal: activate normal mode" })
+map.set('t', 'jj', '<Esc>', { noremap = true, desc = "Terminal: press escape" })

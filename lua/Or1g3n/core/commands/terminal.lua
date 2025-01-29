@@ -69,7 +69,7 @@ local map = vim.keymap
 
 -- Toggle Terminal
 vim.api.nvim_create_user_command('ToggleTerminal', toggle_terminal, {})
-map.set('n', '<Leader>~', toggle_terminal, { desc = 'Terminal: Toggle floating terminal' })
+map.set('n', '<Leader>t', toggle_terminal, { desc = 'Terminal: Toggle floating terminal' })
 
 -- General
 map.set('t', '<Esc><Esc>', '<c-\\><c-n>', { noremap = true, desc = "Terminal: activate normal mode" })

@@ -274,6 +274,7 @@ return {
 	map.set('n', "<leader>sM", function() snacks.picker.man() end, { desc = "snacks.picker: Search Man Pages" })
 	map.set('n', "<leader>sm", function() snacks.picker.marks() end, { desc = "snacks.picker: Search Marks" })
 	map.set('n', "<leader>sR", function() snacks.picker.resume() end, { desc = "snacks.picker: Search Resume" })
+	map.set({'n','v'}, "<leader>sp", function() snacks.picker.spelling() end, { desc = "snacks.picker: Search spelling" })
 	map.set('n', "<leader>sq", function() snacks.picker.qflist() end, { desc = "snacks.picker: Search Quickfix List" })
 	map.set('n', "<leader>uC", function() snacks.picker.colorschemes() end, { desc = "snacks.picker: Search Colorschemes" })
 	map.set('n', "<leader>qp", function() snacks.picker.projects() end, { desc = "snacks.picker: Search Projects" })

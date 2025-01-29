@@ -129,7 +129,7 @@ end
 -- Define a command for easy access
 vim.api.nvim_create_user_command("MarkdownUpdateTodos", markdown_update_todos, { desc = "Markdown: Open Todos markdown file and run date entry automation"})
 -- Set up keybinding to call :MarkdownUpdateTodos
-vim.api.nvim_set_keymap("n", "<leader>t", ":MarkdownUpdateTodos<CR>",
+vim.api.nvim_set_keymap("n", "<M-m><M-t>", ":MarkdownUpdateTodos<CR>",
     {
 	noremap = true,
 	silent = true,
@@ -137,6 +137,7 @@ vim.api.nvim_set_keymap("n", "<leader>t", ":MarkdownUpdateTodos<CR>",
 	    if vim.bo.filetype ~= "NvimTree" then
 		vim.cmd("MarkdownUpdateTodos")
 	    end
-	end
+	end,
+	desc = "Markdown: Open Todos markdown file and run date entry automation"
     }
 )

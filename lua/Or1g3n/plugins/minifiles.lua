@@ -140,7 +140,11 @@ return{
 
 	-- Set pre-built bookmarks
 	local set_mark = function(id, path, desc)
-	    MiniFiles.set_bookmark(id, path, { desc = desc })
+	    if vim.fn.isdirectory(vim.fn.expand(path)) ~= 0 then
+		MiniFiles.set_bookmark(id, path, { desc = desc })
+	    else
+		vim.notify("MiniFiles: Bookmark path is not valid " .. path, vim.log.levels.INFO)
+	    end
 	end
 	vim.api.nvim_create_autocmd('User', {
 	    pattern = 'MiniFilesExplorerOpen',
@@ -148,6 +152,8 @@ return{
 		set_mark('c', vim.fn.stdpath('config'), 'Config') -- path
 		set_mark('n', vim.fn.stdpath('data'), 'Nvim-Data') -- path
 		set_mark('w', vim.fn.getcwd(), 'Working directory') -- callable
+		set_mark('m', '~/OneDrive - L3Harris Technologies Inc/Notepad++', 'Notes directory')
+		set_mark('p', '~/OneDrive - L3Harris Technologies Inc/Python', 'Python directory')
 		set_mark('~', '~', 'Home directory')
 		set_mark('r', '~/repos', 'Repos directory')
 	    end,

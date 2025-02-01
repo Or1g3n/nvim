@@ -279,11 +279,7 @@ return {
 	map.set('n', "<leader>uC", function() snacks.picker.colorschemes() end, { desc = "snacks.picker: Search Colorschemes" })
 	map.set('n', "<leader>qp", function() snacks.picker.projects() end, { desc = "snacks.picker: Search Projects" })
 	-- LSP
-	map.set('n', "gd", function() snacks.picker.lsp_definitions() end, { desc = "LSP: Goto Definition" })
-	map.set('n', "gr", function() snacks.picker.lsp_references() end, { desc = "LSP: Search References", nowait = true })
-	map.set('n', "gI", function() snacks.picker.lsp_implementations() end, { desc = "LSP: Goto Implementation" })
-	map.set('n', "gy", function() snacks.picker.lsp_type_definitions() end, { desc = "LSP: Goto T[y]pe Definition" })
-	map.set('n', "<leader>ss", function() snacks.picker.lsp_symbols() end, { desc = "LSP: Search LSP Symbols" })
+	-- see lspconfig for snacks.picker based keymaps
 
     end
 }

@@ -14,10 +14,12 @@ return {
 		},
 	    },
 	},
+	'folke/snacks.nvim',
     },
     config = function()
 	local capabilities = require('blink.cmp').get_lsp_capabilities()
 	local lspconfig = require("lspconfig")
+	local snacks = require('snacks')
 	local map = vim.keymap -- for conciseness
 
 	-- Keymaps for LSP
@@ -27,41 +29,45 @@ return {
 		local opts = { buffer = ev.buf, silent = true }
 
 		-- Set LSP-related keybindings
-		-- opts.desc = "LSP: Show references"
-		-- map.set("n", "gR", "<cmd>Telescope lsp_references<CR>", opts)
+		-- snacks.picker based lsp keymaps
+		opts.desc = "LSP: Goto Definition"
+		map.set('n', "gd", function() snacks.picker.lsp_definitions() end, opts)
+
+		opts.desc = "LSP: Search References"
+		opts.nowait = true
+		map.set('n', "gr", function() snacks.picker.lsp_references() end, opts)
+
+		opts.desc = "LSP: Goto Implementation"
+		map.set('n', "gI", function() snacks.picker.lsp_implementations() end, opts)
+
+		opts.desc = "LSP: Goto T[y]pe Definition"
+		map.set('n', "gy", function() snacks.picker.lsp_type_definitions() end, opts)
+
+		opts.desc = "LSP: Search LSP Symbols"
+		map.set('n', "<leader>ss", function() snacks.picker.lsp_symbols() end, opts)
+
+		-- vim built-in based lsp keymaps
+		opts.desc = "LSP: Show documentation for what is under cursor"
+		map.set("n", "K", vim.lsp.buf.hover, opts)
 
 		opts.desc = "LSP: Go to declaration"
 		map.set("n", "gD", vim.lsp.buf.declaration, opts)
 
-		-- opts.desc = "LSP: Show definitions"
-		-- map.set("n", "gd", "<cmd>Telescope lsp_definitions<CR>", opts)
-
-		-- opts.desc = "LSP: Show implementations"
-		-- map.set("n", "gi", "<cmd>Telescope lsp_implementations<CR>", opts)
-
-		-- opts.desc = "LSP: Show type definitions"
-		-- map.set("n", "gt", "<cmd>Telescope lsp_type_definitions<CR>", opts)
-
 		opts.desc = "LSP: See available code actions"
 		map.set({ "n", "v" }, "<leader>ca", vim.lsp.buf.code_action, opts)
-
-		opts.desc = "LSP: Smart rename"
-		map.set("n", "<leader>rn", vim.lsp.buf.rename, opts)
-
-		-- opts.desc = "LSP: Show buffer diagnostics"
-		-- map.set("n", "<leader>D", "<cmd>Telescope diagnostics bufnr=0<CR>", opts)
-
-		-- opts.desc = "LSP: Show line diagnostics"
-		-- map.set("n", "<leader>d", vim.diagnostic.open_float, opts)
-
-		opts.desc = "LSP: Go to previous diagnostic"
-		map.set("n", "[d", vim.diagnostic.goto_prev, opts)
 
 		opts.desc = "LSP: Go to next diagnostic"
 		map.set("n", "]d", vim.diagnostic.goto_next, opts)
 
-		opts.desc = "LSP: Show documentation for what is under cursor"
-		map.set("n", "K", vim.lsp.buf.hover, opts)
+		opts.desc = "LSP: Format document"
+		map.set("n", "<leader>-", vim.lsp.buf.format, opts)
+		-- TODO: figure out how to get conform to work
+
+		opts.desc = "LSP: Go to previous diagnostic"
+		map.set("n", "[d", vim.diagnostic.goto_prev, opts)
+
+		opts.desc = "LSP: Smart rename"
+		map.set("n", "<leader>rn", vim.lsp.buf.rename, opts)
 
 		opts.desc = "LSP: Restart"
 		map.set("n", "<leader>rs", ":LspRestart<CR>", opts)
@@ -71,6 +77,16 @@ return {
 	-- LSP CONFIGS
 	-- must explicitly call lspconfig.{server}.setup({}) for LSP to attach to Neovim buffer
 	-- passing empty table to .setup({}) will use default configuration for lsp
+
+	-- Configure lsp-json for json
+	lspconfig.jsonls.setup({
+	    cmd = { "vscode-json-language-server", "--stdio" },
+	    filetypes = { "json", "jsonc" },
+	    init_options = {
+		provideFormatter = true
+	    },
+	    single_file_support = true
+	})
 
 	-- Configure the Lua language server
 	lspconfig.lua_ls.setup({

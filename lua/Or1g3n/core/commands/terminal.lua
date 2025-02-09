@@ -73,4 +73,12 @@ map.set('n', '<Leader>t', toggle_terminal, { desc = 'Terminal: Toggle floating t
 
 -- General
 map.set('t', '<Esc><Esc>', '<c-\\><c-n>', { noremap = true, desc = "Terminal: activate normal mode" })
-map.set('t', 'jj', '<Esc>', { noremap = true, desc = "Terminal: press escape" })
+
+-- Add jj for escape in terminal but exlcude lazygit
+vim.api.nvim_create_autocmd("TermOpen", {
+    callback = function()
+        if vim.bo.filetype ~= "lazygit" then
+            vim.keymap.set("t", "jj", "<Esc>", { noremap = true, desc = "Terminal: press escape", buffer = true })
+        end
+    end,
+})

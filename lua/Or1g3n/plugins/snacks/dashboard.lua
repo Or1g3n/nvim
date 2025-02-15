@@ -76,6 +76,6 @@ return {
 	}
     },
     keys = {
-	{ mode = 'n', "<A-a>", function() Snacks.dashboard() end, desc = "snacks.dashboard: Open dashboard" },
+	-- { mode = 'n', "<A-a>", function() Snacks.dashboard() end, desc = "snacks.dashboard: Open dashboard" },
     }
 }

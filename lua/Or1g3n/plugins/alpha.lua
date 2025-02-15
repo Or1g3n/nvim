@@ -9,13 +9,6 @@ return {
 	local alpha = require("alpha")
 	local dashboard = require("alpha.themes.dashboard")
 
-	local startup = function()
-	    local lazy_stats = require("lazy.stats").stats()
-	    local ms = (math.floor(lazy_stats.startuptime * 100 + 0.5) / 100)
-	    local icon = "⚡"
-	    return icon .. "Neovim loaded " .. lazy_stats.loaded .. "/" .. lazy_stats.count .." plugins in " .. ms .. "ms"
-	end
-
 	dashboard.section.header.val = {
 	    [[                                                                       ]],
 	    [[                                                                       ]],
@@ -47,10 +40,10 @@ return {
 	    dashboard.button("q", "󰩈  Quit Neovim", ":qa<CR>"),
 	}
 
+	dashboard.section.footer.opts.position = "center"
 	dashboard.section.footer.val = {
 	    "                            ",  -- Extra padding lines to move footer down
-	    "   Welcome to Neovim, Christopher!",
-	    startup()
+	    "      Welcome to Neovim, Christopher!",
 	}
 
 	-- Set keymaps
@@ -60,5 +53,27 @@ return {
 
 	-- Setup alpha
 	alpha.setup(dashboard.config)
+
+	-- Draw Footer After Startup
+	vim.api.nvim_create_autocmd("User", {
+	    once = true,
+	    pattern = "LazyVimStarted",
+	    callback = function()
+		local stats = require("lazy").stats()
+		local ms = (math.floor(stats.startuptime * 100 + 0.5) / 100)
+
+		-- Footer
+		table.insert(dashboard.section.footer.val, "⚡ Neovim loaded "
+		.. stats.loaded
+		.. "/"
+		.. stats.count
+		.. " plugins in "
+		.. ms
+		.. "ms")
+		pcall(vim.cmd.AlphaRedraw)
+		dashboard.section.footer.opts.hl = "AlphaFooter"
+	    end,
+	})
+
     end
 }

@@ -46,4 +46,5 @@ vim.cmd("highlight Normal ctermbg=NONE guibg=NONE")
 vim.g.netrw_liststyle = 3 -- Set netrw (:Explorer) list style to tree
 
 -- Markdown folding
-vim.g.markdown_folding = 1
+vim.g.markdown_folding = 1 -- Auto adds fold markers for markdown
+vim.wo.foldlevel = 9999  -- This prevents the folds from collapsing

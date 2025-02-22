@@ -162,5 +162,8 @@ map.set('n', '<Leader>=',
     { noremap = true, silent = true, desc = "Editor: Auto-indent entire file" }
 )
 
+-- Show messages history
+map.set('n', '<Leader>.', ":new | put =execute('messages') | wincmd J | res -15 <CR>", { noremap = true, silent = true, desc = "Messages: Open message history in bottom buffer" })
+
 -- Terminal
 -- keymaps for terminal moved to ./commands/terminal.lua

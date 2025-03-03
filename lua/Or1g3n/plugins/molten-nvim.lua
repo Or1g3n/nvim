@@ -30,6 +30,19 @@ return {
 	map.set("n", "<A-r><A-n>", ":MoltenNext<CR>", { silent = true, desc = "Molten: Goto next cell" })
 	map.set("n", "<A-r><A-p>", ":MoltenPrev<CR>", { silent = true, desc = "Molten: Goto previous cell" })
 
+	-- Toggle on/off virtual text
+	map.set(
+	    "n", "<A-r><A-v>",
+	    function()
+		if require("molten.status").initialized() == "Molten" and vim.g.molten_virt_text_output then
+		    vim.fn.MoltenUpdateOption("virt_text_output", false)
+		else
+		    vim.fn.MoltenUpdateOption("virt_text_output", true)
+		end
+	    end,
+	    { silent = true, desc = "Molten: Toggle virt_text_output" }
+	)
+
 	-- Define function to auto-find cells
 	local function run_cell(auto_run)
 	    auto_run = auto_run or false -- default to false

@@ -132,6 +132,7 @@ return {
 			["<c-f>"] = "preview_scroll_down",
 			["<c-b>"] = "preview_scroll_up",
 			["<c-v>"] = "edit_vsplit",
+			["<leader>v"] = "edit_vsplit",
 			["<c-s>"] = "edit_split",
 			["<c-j>"] = "list_down",
 			["<c-k>"] = "list_up",

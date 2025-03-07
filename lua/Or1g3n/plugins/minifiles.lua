@@ -153,7 +153,9 @@ return{
 		set_mark('n', vim.fn.stdpath('data'), 'Nvim-Data') -- path
 		set_mark('w', vim.fn.getcwd(), 'Working directory') -- callable
 		set_mark('m', '~/OneDrive - L3Harris Technologies Inc/Notepad++', 'Notes directory')
+		set_mark('o', '~/OneDrive - L3Harris Technologies Inc', 'OneDrive directory')
 		set_mark('p', '~/OneDrive - L3Harris Technologies Inc/Python', 'Python directory')
+		set_mark('h', '~', 'Home directory')
 		set_mark('~', '~', 'Home directory')
 		set_mark('r', '~/repos', 'Repos directory')
 	    end,

@@ -143,6 +143,9 @@ return {
 	    end,
 	})
 
+	-- Configure ZLS for Zig
+	require'lspconfig'.zls.setup{}
+
     end,
 }
 

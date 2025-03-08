@@ -273,8 +273,9 @@ return {
 	{ mode = 'n', "<leader>sM", function() Snacks.picker.man() end, desc = "snacks.picker: Search Man Pages" },
 	{ mode = 'n', "<leader>sm", function() Snacks.picker.marks() end, desc = "snacks.picker: Search Marks" },
 	{ mode = 'n', "<leader>sR", function() Snacks.picker.resume() end, desc = "snacks.picker: Search Resume" },
-	{ mode = {'n','v'}, "<leader>sp", function() Snacks.picker.spelling() end, desc = "snacks.picker: Search spelling" },
+	{ mode = {'n','v'}, "<leader>sp", function() Snacks.picker.spelling() end, desc = "snacks.picker: Search Spelling" },
 	{ mode = 'n', "<leader>sq", function() Snacks.picker.qflist() end, desc = "snacks.picker: Search Quickfix List" },
+	{ mode = 'n', "<leader>su", function() Snacks.picker.undo() end, desc = "snacks.picker: Search Undo History" },
 	{ mode = 'n', "<leader>uC", function() Snacks.picker.colorschemes() end, desc = "snacks.picker: Search Colorschemes" },
 	{ mode = 'n', "<leader>qp", function() Snacks.picker.projects() end, desc = "snacks.picker: Search Projects" },
 	-- LSP

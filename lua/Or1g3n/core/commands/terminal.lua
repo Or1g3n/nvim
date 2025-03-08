@@ -30,7 +30,7 @@ local function create_floating_window(opts)
     if vim.api.nvim_buf_is_valid(opts.buf) then
 	buf = opts.buf
     else
-	buf = vim.api.nvim_create_buf(false, true) -- No file, scrath buffer
+	buf = vim.api.nvim_create_buf(false, false) -- No file
     end
 
     -- Define window configuration

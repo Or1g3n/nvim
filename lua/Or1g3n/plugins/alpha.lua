@@ -31,10 +31,10 @@ return {
 	    dashboard.button("e", "  Open explorer", ":lua require('mini.files').open()<CR>"),
 	    dashboard.button("h", "  Open help search", ":lua Snacks.picker.help() <CR>"), -- Note this assumes that vim-obsession config exists with global session_file defined
 	    dashboard.button("t", "  Open todos list", ":MarkdownUpdateTodos <CR>"), -- Note this assumes that vim-obsession config exists with global session_file defined
-	    dashboard.button("sc", "  Search config files", ":lua Snacks.picker.files({ cwd= vim.fn.stdpath('config') }) <CR>"),
-	    dashboard.button("cm", "  Show commands", ":lua Snacks.picker.commands() <CR>"),
+	    dashboard.button("c", "  Search config files", ":lua Snacks.picker.files({ cwd= vim.fn.stdpath('config') }) <CR>"),
+	    dashboard.button(".", "  Show commands", ":lua Snacks.picker.commands() <CR>"),
 	    dashboard.button("?", "  Show keymaps", ":lua Snacks.picker.keymaps() <CR>"),
-	    dashboard.button("cs", "  Change color-scheme", ":lua Snacks.picker.colorschemes() <CR>"),
+	    dashboard.button("u", "  Change color-scheme", ":lua Snacks.picker.colorschemes() <CR>"),
 	    dashboard.button("l", "󰒲  Open lazy package manager", ":Lazy <CR>"),
 	    dashboard.button("m", "󱌢  Open mason lsp manager", ":Mason <CR>"),
 	    dashboard.button("q", "󰩈  Quit Neovim", ":qa<CR>"),

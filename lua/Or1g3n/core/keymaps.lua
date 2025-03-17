@@ -10,6 +10,8 @@ map.set('n', '<Leader>ak', 'Vgg', { noremap = true, silent = true, desc = "Edito
 
 -- Jumping
 map.set('n', '<A-o>', '<C-]>', { noremap = true, silent = true, desc = "Editor: Jump to definition" })
+map.set('n', 'H', '{', { noremap = true, silent = true, desc = "Editor: Jump to next paragraph" })
+map.set('n', 'L', '}', { noremap = true, silent = true, desc = "Editor: Jump to previous paragraph" })
 
 -- File operations 
 map.set('n', '<Leader>w', ':w<CR>', { noremap = true, silent = true, desc = "Editor: Save file" })
@@ -18,7 +20,13 @@ map.set('n', '<Leader>bd', ':bd!<CR>', { noremap = true, silent = true, desc = "
 -- map.set('n', '<Leader>x', ':x<CR>', { noremap = true, silent = true, desc = "Editor: Save and quit" })
 
 -- Source file / lines
-map.set('n', '<Leader>%', ':source %<CR>', { noremap = true, silent = true, desc = "Editor: source file" })
+map.set('n', '<Leader>%',
+    function()
+	vim.cmd 'source %'
+        vim.notify("File has been sourced!", "info", { id = "source_file" })
+    end,
+    { noremap = true, silent = true, desc = "Editor: source file" }
+)
 map.set('n', '<Leader>x', ':.lua<CR>', { noremap = true, silent = true, desc = "Editor: source current line" })
 map.set('v', '<Leader>x', ':lua<CR>', { noremap = true, silent = true, desc = "Editor: source selected lines" })
 

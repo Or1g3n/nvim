@@ -24,14 +24,20 @@ vim.api.nvim_create_autocmd({"BufReadCmd"}, {
 -- Open help buffers as vert splits as opposed to default horizontal
 vim.api.nvim_create_autocmd("FileType", {
     pattern = { "help", "man", "markdown"},
-    command = "wincmd L",
+    callback = function()
+	if vim.bo.buftype ~= "nofile" then
+	    vim.cmd("wincmd L")
+	end
+    end,
     desc = "Open help buffers as vert splits as opposed to default horizontal"
 })
 -- Turn off diagnostics for help files
 vim.api.nvim_create_autocmd("FileType", {
     pattern = { "help", "man", "markdown" },
     callback = function()
-	vim.diagnostic.enable(false, {bufnr=0}) -- Disable diagnostics for the current buffer
+	if vim.bo.buftype == "help" then
+	    vim.diagnostic.enable(false, {bufnr=0}) -- Disable diagnostics for the current buffer
+	end
     end,
     desc = "Disable LSP diagnostics in help files",
 })

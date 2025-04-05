@@ -27,8 +27,20 @@ map.set('n', '<Leader>%',
     end,
     { noremap = true, silent = true, desc = "Editor: source file" }
 )
-map.set('n', '<Leader>x', ':.lua<CR>', { noremap = true, silent = true, desc = "Editor: source current line" })
-map.set('v', '<Leader>x', ':lua<CR>', { noremap = true, silent = true, desc = "Editor: source selected lines" })
+map.set('n', '<Leader>x', 
+    function()
+	vim.cmd '.lua'
+        vim.notify("Line has been executed!", "info", { id = "execute_line" })
+    end,
+    { noremap = true, silent = true, desc = "Editor: executre current line" }
+)
+vim.keymap.set('v', '<Leader>x', 
+    function()
+        vim.cmd("'<,'>lua")
+	vim.notify("Lines have been executed!", "info", { id = "execute_lines" })
+    end,
+    { noremap = true, silent = true, desc = "Editor: execute selected lines" }
+)
 
 -- Tabline
 map.set('n', '<A-t>',

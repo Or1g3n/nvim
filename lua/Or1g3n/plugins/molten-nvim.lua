@@ -90,6 +90,20 @@ return {
 
 	map.set( "n", "<A-r><A-b>", function() run_cell(true) end, { silent = true, desc = "Molten: Auto-identify and run cell" })
 	map.set( "n", "<A-r><A-g>", function() run_cell(false) end, { silent = true, desc = "Molten: Auto-identify and select cell" })
+	-- map.set( "n", "<S-CR>",
+	--     function()
+	-- 	-- Only run if otter is not active
+	-- 	local buf_number = vim.api.nvim_get_current_buf()
+	-- 	local clients = vim.lsp.get_clients({ name = 'otter-ls'.. '[' .. buf_number .. ']' }) -- the client is always named otter-ls[<buffnr>]
+	-- 	if #clients == 0 then
+	-- 	    vim.notify("Otter is NOT active" .. path, vim.log.levels.INFO)
+	-- 	    -- run_cell(true)
+	-- 	else
+	-- 	    vim.notify("Otter IS active" .. path, vim.log.levels.INFO)
+	-- 	end
+	--     end,
+	--     { silent = true, desc = "Molten: Auto-identify and run cell" }
+	-- )
 
 	-- Autcommands
 	-- change the configuration when editing a python file

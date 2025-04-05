@@ -22,6 +22,28 @@ return {
 	local snacks = require('snacks')
 	local map = vim.keymap -- for conciseness
 
+	-- Diagnostics
+	-- Set global defaults
+	vim.diagnostic.config({
+	    virtual_text = true,
+	    virtual_lines = false
+	})
+	-- Toggle diagnostics
+	map.set("n", "<leader>vt",
+	    function()
+		local new_config = not vim.diagnostic.config().virtual_text
+		vim.diagnostic.config({ virtual_text = new_config })
+	    end,
+	    { desc = "Toggle diagnostic virtual text" }
+	)
+	map.set("n", "<leader>vl",
+	    function()
+		local new_config = not vim.diagnostic.config().virtual_lines
+		vim.diagnostic.config({ virtual_lines = new_config })
+	    end,
+	    { desc = "Toggle diagnostic virtual lines" }
+	)
+
 	-- Keymaps for LSP
 	vim.api.nvim_create_autocmd("LspAttach", {
 	    group = vim.api.nvim_create_augroup("UserLspConfig", {}),

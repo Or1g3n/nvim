@@ -20,27 +20,35 @@ map.set('n', '<Leader>bd', ':bd!<CR>', { noremap = true, silent = true, desc = "
 -- map.set('n', '<Leader>x', ':x<CR>', { noremap = true, silent = true, desc = "Editor: Save and quit" })
 
 -- Source file / lines
-map.set('n', '<Leader>%',
-    function()
-	vim.cmd 'source %'
-        vim.notify("File has been sourced!", "info", { id = "source_file" })
+vim.api.nvim_create_autocmd("FileType", {
+    pattern = { "lua"},
+    callback = function(args)
+	local bufnr = args.buf
+
+	vim.keymap.set('n', '<Leader>%',
+	    function()
+		vim.cmd 'source %'
+		vim.notify("File has been sourced!", "info", { id = "source_file" })
+	    end,
+	    { noremap = true, silent = true, desc = "Editor: source file", buffer = bufnr }
+	)
+	vim.keymap.set('n', '<Leader>x',
+	    function()
+		vim.cmd '.lua'
+		vim.notify("Line has been executed!", "info", { id = "execute_line" })
+	    end,
+	    { noremap = true, silent = true, desc = "Editor: execute current line", buffer = bufnr }
+	)
+	vim.keymap.set('v', '<Leader>x',
+	    function()
+		vim.cmd("'<,'>lua")
+		vim.notify("Lines have been executed!", "info", { id = "execute_lines" })
+	    end,
+	    { noremap = true, silent = true, desc = "Editor: execute selected lines", buffer = bufnr }
+	)
     end,
-    { noremap = true, silent = true, desc = "Editor: source file" }
-)
-map.set('n', '<Leader>x', 
-    function()
-	vim.cmd '.lua'
-        vim.notify("Line has been executed!", "info", { id = "execute_line" })
-    end,
-    { noremap = true, silent = true, desc = "Editor: executre current line" }
-)
-vim.keymap.set('v', '<Leader>x', 
-    function()
-        vim.cmd("'<,'>lua")
-	vim.notify("Lines have been executed!", "info", { id = "execute_lines" })
-    end,
-    { noremap = true, silent = true, desc = "Editor: execute selected lines" }
-)
+    desc = "Set file/line execute keymaps if lua file"
+})
 
 -- Tabline
 map.set('n', '<A-t>',

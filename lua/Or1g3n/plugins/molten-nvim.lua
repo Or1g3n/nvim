@@ -3,7 +3,6 @@ return {
     version = "^1.0.0", -- use version <2.0.0 to avoid breaking changes
     build = ":UpdateRemotePlugins",
     init = function()
-	local map = vim.keymap
 
 	-- Output settings
 	vim.g.molten_output_win_max_height = 12
@@ -14,24 +13,25 @@ return {
 	vim.g.molten_virt_lines_off_by_1 = true
 
 	-- Keymaps
-	map.set("n", "<A-r><A-i>", ":MoltenInit<CR>", { silent = true, desc = "Molten: Initialize plugin" })
-	map.set("n", "<A-r><A-t>", ":MoltenDeinit<CR>", { silent = true, desc = "Molten: De-initialize plugin" })
-	map.set("n", "<A-r><A-d>", ":MoltenDelete<CR>", { silent = true, desc = "Molten: Delete cell" })
+	vim.keymap.set("n", "<A-r><A-i>", ":MoltenInit<CR>", { silent = true, desc = "Molten: Initialize plugin" })
+	vim.keymap.set("n", "<A-r><A-t>", ":MoltenDeinit<CR>", { silent = true, desc = "Molten: De-initialize plugin" })
+	vim.keymap.set("n", "<A-r><A-d>", ":MoltenDelete<CR>", { silent = true, desc = "Molten: Delete cell" })
 
-	map.set("n", "<A-r><A-e>", ":MoltenEvaluateOperator<CR>", { silent = true, desc = "Molten: Run operator selection" })
-	map.set("n", "<A-r><A-r>", ":MoltenEvaluateLine<CR>", { silent = true, desc = "Molten: Evaluate line" })
-	map.set("n", "<A-r><A-c>", ":MoltenReevaluateCell<CR>", { silent = true, desc = "Molten: Re-evaluate cell" })
-	map.set("n", "<A-r><A-a>", ":MoltenReevaluateAll<CR>", { silent = true, desc = "Molten: Re-evaluate all cells" })
-	map.set("v", "<A-r>", 	   ":<C-u>MoltenEvaluateVisual<CR>gv<Esc>", { silent = true, desc = "Molten: Evaluate visual selection" })
+	vim.keymap.set("n", "<A-r><A-e>", ":MoltenEvaluateOperator<CR>", { silent = true, desc = "Molten: Run operator selection" })
+	vim.keymap.set("n", "<A-r><A-r>", ":MoltenEvaluateLine<CR>", { silent = true, desc = "Molten: Evaluate line" })
+	vim.keymap.set("n", "<A-r><A-c>", ":MoltenReevaluateCell<CR>", { silent = true, desc = "Molten: Re-evaluate cell" })
+	vim.keymap.set("n", "<A-r><A-a>", ":MoltenReevaluateAll<CR>", { silent = true, desc = "Molten: Re-evaluate all cells" })
+	vim.keymap.set("v", "<A-r>", 	   ":<C-u>MoltenEvaluateVisual<CR>gv<Esc>", { silent = true, desc = "Molten: Evaluate visual selection" })
+	vim.keymap.set("v", "<C-CR>", 	   ":<C-u>MoltenEvaluateVisual<CR>gv<Esc>", { silent = true, desc = "Molten: Evaluate visual selection" })
 
-	map.set("n", "<A-r><A-h>", ":MoltenHideOutput<CR>", { silent = true, desc = "Molten: Hide output" })
-	map.set("n", "<A-r><A-o>", ":noautocmd MoltenEnterOutput<CR>", { silent = true, desc = "Molten: Show/enter output" })
+	vim.keymap.set("n", "<A-r><A-h>", ":MoltenHideOutput<CR>", { silent = true, desc = "Molten: Hide output" })
+	vim.keymap.set("n", "<A-r><A-o>", ":noautocmd MoltenEnterOutput<CR>", { silent = true, desc = "Molten: Show/enter output" })
 
-	map.set("n", "<A-r><A-n>", ":MoltenNext<CR>", { silent = true, desc = "Molten: Goto next cell" })
-	map.set("n", "<A-r><A-p>", ":MoltenPrev<CR>", { silent = true, desc = "Molten: Goto previous cell" })
+	vim.keymap.set("n", "<A-r><A-n>", ":MoltenNext<CR>", { silent = true, desc = "Molten: Goto next cell" })
+	vim.keymap.set("n", "<A-r><A-p>", ":MoltenPrev<CR>", { silent = true, desc = "Molten: Goto previous cell" })
 
 	-- Toggle on/off virtual text
-	map.set(
+	vim.keymap.set(
 	    "n", "<A-r><A-v>",
 	    function()
 		if require("molten.status").initialized() == "Molten" and vim.g.molten_virt_text_output then
@@ -43,9 +43,9 @@ return {
 	    { silent = true, desc = "Molten: Toggle virt_text_output" }
 	)
 
-	-- Define function to auto-find cells
-	local function run_cell(auto_run)
-	    auto_run = auto_run or false -- default to false
+	-- Define function to auto-find and run cells
+	local function run_cell(next_cell)
+	    next_cell = next_cell or false -- determines whether to move to next cell after running. default to false
 
 	    -- define cell tags based on filetype
 	    local ft_cell_tags = {
@@ -81,29 +81,18 @@ return {
 	    end
 
 	    -- If visual_only then select cell range else auto-run cell
-	    if auto_run then
+	    if next_cell then
 		vim.fn.MoltenEvaluateRange(start_pos,end_pos)
 	    else
-		vim.api.nvim_feedkeys(start_pos .. "G V " .. end_pos .. "G", 'n' , false)
+		vim.fn.MoltenEvaluateRange(start_pos,end_pos)
+		vim.api.nvim_win_set_cursor(0, {start_pos, 0})
 	    end
 	end
 
-	map.set( "n", "<A-r><A-b>", function() run_cell(true) end, { silent = true, desc = "Molten: Auto-identify and run cell" })
-	map.set( "n", "<A-r><A-g>", function() run_cell(false) end, { silent = true, desc = "Molten: Auto-identify and select cell" })
-	-- map.set( "n", "<S-CR>",
-	--     function()
-	-- 	-- Only run if otter is not active
-	-- 	local buf_number = vim.api.nvim_get_current_buf()
-	-- 	local clients = vim.lsp.get_clients({ name = 'otter-ls'.. '[' .. buf_number .. ']' }) -- the client is always named otter-ls[<buffnr>]
-	-- 	if #clients == 0 then
-	-- 	    vim.notify("Otter is NOT active" .. path, vim.log.levels.INFO)
-	-- 	    -- run_cell(true)
-	-- 	else
-	-- 	    vim.notify("Otter IS active" .. path, vim.log.levels.INFO)
-	-- 	end
-	--     end,
-	--     { silent = true, desc = "Molten: Auto-identify and run cell" }
-	-- )
+	vim.keymap.set( "n", "<S-CR>", function() run_cell(true) end, { silent = true, desc = "Molten: run cell and move to next" })
+	vim.keymap.set( "n", "<A-r><A-b>", function() run_cell(true) end, { silent = true, desc = "Molten: run cell and move to next" })
+	vim.keymap.set( "n", "<A-r><A-g>", function() run_cell(false) end, { silent = true, desc = "Molten: run cell" })
+	vim.keymap.set( "n", "<C-CR>", function() run_cell(false) end, { silent = true, desc = "Molten: run cell" })
 
 	-- Autcommands
 	-- change the configuration when editing a python file

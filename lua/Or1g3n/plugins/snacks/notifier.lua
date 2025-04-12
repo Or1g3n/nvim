@@ -2,7 +2,7 @@ return {
     "folke/snacks.nvim",
     opts = {
 	notifier = {
-	    enabled = false,
+	    enabled = true,
 	    timeout = 3000, -- default timeout in ms
 	    width = { min = 40, max = 0.4 },
 	    height = { min = 1, max = 0.6 },

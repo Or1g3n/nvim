@@ -272,6 +272,7 @@ return {
 	{ mode = 'n', "<leader>sl", function() Snacks.picker.loclist() end, desc = "snacks.picker: Search Location List" },
 	{ mode = 'n', "<leader>sM", function() Snacks.picker.man() end, desc = "snacks.picker: Search Man Pages" },
 	{ mode = 'n', "<leader>sm", function() Snacks.picker.marks() end, desc = "snacks.picker: Search Marks" },
+	{ mode = 'n', "<leader>sn", function() Snacks.picker.notifications() end, desc = "snacks.picker: Search Notifications" },
 	{ mode = 'n', "<leader>sR", function() Snacks.picker.resume() end, desc = "snacks.picker: Search Resume" },
 	{ mode = {'n','v'}, "<leader>sp", function() Snacks.picker.spelling() end, desc = "snacks.picker: Search Spelling" },
 	{ mode = 'n', "<leader>sq", function() Snacks.picker.qflist() end, desc = "snacks.picker: Search Quickfix List" },

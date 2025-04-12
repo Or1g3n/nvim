@@ -93,6 +93,38 @@ return {
 
 		opts.desc = "LSP: Restart"
 		map.set("n", "<leader>rs", ":LspRestart<CR>", opts)
+
+		opts.desc = "LSP: Toggle inlay hints"
+		map.set("n", "<leader>ih",
+		    function()
+			local clients = vim.lsp.get_clients({ bufnr = 0 })
+			for _, client in ipairs(clients) do
+			    if client.supports_method("textDocument/inlayHint") then
+				vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled())
+				return
+			    end
+			end
+			vim.notify("Inlay hints not supported by any attached LSP", vim.log.levels.WARN)
+		    end,
+		    opts
+		)
+
+	    end,
+	})
+
+	-- LSP Load Progress
+	vim.api.nvim_create_autocmd("LspProgress", {
+	    ---@param ev {data: {client_id: integer, params: lsp.ProgressParams}}
+	    callback = function(ev)
+		local spinner = { "⠋", "⠙", "⠹", "⠸", "⠼", "⠴", "⠦", "⠧", "⠇", "⠏" }
+		vim.notify(vim.lsp.status(), "info", {
+		    id = "lsp_progress",
+		    title = "LSP Progress",
+		    opts = function(notif)
+			notif.icon = ev.data.params.value.kind == "end" and " "
+			or spinner[math.floor(vim.uv.hrtime() / (1e6 * 80)) % #spinner + 1]
+		    end,
+		})
 	    end,
 	})
 
@@ -125,6 +157,8 @@ return {
 			checkThirdParty = false, -- Disable third-party library checks
 		    },
 		    completion = { callSnippet = "Replace" },
+		    hint =  { enable = true },
+		    type = { enable = true }
 		},
 	    },
 	})

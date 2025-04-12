@@ -24,7 +24,7 @@ return {
 		return vim.fn.getcmdpos() > 0
 	    end,
 	    style = "compact",
-	    top_down = true, -- place notifications from top to bottom
+	    top_down = false, -- place notifications from top to bottom
 	    date_format = "%R", -- time format for notifications
 	    -- format for footer when more lines are available
 	    -- `%d` is replaced with the number of lines.

@@ -1,7 +1,7 @@
 local map = vim.keymap -- for conciseness
 
 -- Escape trigger
-map.set('i', 'jj', '<Esc>', { noremap = true, silent = true, desc = "Editor: Exit insert mode" })
+map.set('i', 'jk', '<Esc>', { noremap = true, silent = true, desc = "Editor: Exit insert mode" })
 
 -- Select all
 map.set('n', '<Leader>aa', 'ggVG', { noremap = true, silent = true, desc = "Editor: Select all" })

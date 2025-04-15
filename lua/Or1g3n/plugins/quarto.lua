@@ -37,16 +37,26 @@ return {
         -- Create an augroup for Quarto keymaps
         local augroup = vim.api.nvim_create_augroup("QuartoKeymaps", { clear = true })
 
+	-- Function to set search term to markdown header to easily navigate cells with n, N
+	local function set_search_term()
+	    local ft_cell_tag = {
+		ipynb = '```python',
+	    }
+	    local file_extension = vim.fn.bufname():match('^.+%.([^.]+)')
+	    local cell_tag = ft_cell_tag[file_extension] or "No Match"
+	    vim.cmd(":let @/ = '" .. cell_tag .. "'")
+	end
+
         -- Function to set up buffer-local keymaps
         local function setup_quarto_keymaps(bufnr)
-            vim.keymap.set("n", "<leader>xc", runner.run_cell, { desc = "Quarto: run cell", silent = true, buffer = bufnr })
-            vim.keymap.set("n", "<C-CR>", runner.run_cell, { desc = "Quarto: run cell", silent = true, buffer = bufnr })
-            vim.keymap.set("n", "<leader>xb", function() runner.run_cell(); vim.cmd("normal ]b") end, { desc = "Quarto: run cell and goto next", silent = true, buffer = bufnr })
-            vim.keymap.set("n", "<S-CR>", function() runner.run_cell(); vim.cmd("normal ]b") end, { desc = "Quarto: run cell and goto next", silent = true, buffer = bufnr })
-            vim.keymap.set("n", "<leader>xu", runner.run_above, { desc = "Quarto: run cell and above", silent = true, buffer = bufnr })
-            vim.keymap.set("n", "<leader>xa", runner.run_all, { desc = "Quarto: run all cells", silent = true, buffer = bufnr })
-            vim.keymap.set("n", "<leader>xl", runner.run_line, { desc = "Quarto: run line", silent = true, buffer = bufnr })
-            vim.keymap.set("n", "<leader>XA", function() runner.run_all(true) end, { desc = "Quarto: run all cells of all languages", silent = true, buffer = bufnr })
+            vim.keymap.set("n", "<leader>xc", function() runner.run_cell(); set_search_term() end, { desc = "Quarto: run cell", silent = true, buffer = bufnr })
+            vim.keymap.set("n", "<C-CR>", function() runner.run_cell(); set_search_term() end, { desc = "Quarto: run cell", silent = true, buffer = bufnr })
+            vim.keymap.set("n", "<leader>xb", function() runner.run_cell(); set_search_term(); vim.cmd("normal ]b") end, { desc = "Quarto: run cell and goto next", silent = true, buffer = bufnr })
+            vim.keymap.set("n", "<S-CR>", function() runner.run_cell(); set_search_term(); vim.cmd("normal ]b") end, { desc = "Quarto: run cell and goto next", silent = true, buffer = bufnr })
+            vim.keymap.set("n", "<leader>xu", function() runner.run_above(); set_search_term() end, { desc = "Quarto: run cell and above", silent = true, buffer = bufnr })
+            vim.keymap.set("n", "<leader>xa", function() runner.run_all(); set_search_term() end, { desc = "Quarto: run all cells", silent = true, buffer = bufnr })
+            vim.keymap.set("n", "<leader>xl", function() runner.run_line(); set_search_term() end, { desc = "Quarto: run line", silent = true, buffer = bufnr })
+            vim.keymap.set("n", "<leader>XA", function() runner.run_all(true); set_search_term() end, { desc = "Quarto: run all cells of all languages", silent = true, buffer = bufnr })
         end
 
         -- Function to check if Otter LSP is active for a buffer

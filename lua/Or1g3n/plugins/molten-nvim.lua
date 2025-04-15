@@ -21,11 +21,22 @@ return {
 	vim.keymap.set("n", "<A-r><A-r>", ":MoltenEvaluateLine<CR>", { silent = true, desc = "Molten: Evaluate line" })
 	vim.keymap.set("n", "<A-r><A-c>", ":MoltenReevaluateCell<CR>", { silent = true, desc = "Molten: Re-evaluate cell" })
 	vim.keymap.set("n", "<A-r><A-a>", ":MoltenReevaluateAll<CR>", { silent = true, desc = "Molten: Re-evaluate all cells" })
-	vim.keymap.set("v", "<A-r>", 	   ":<C-u>MoltenEvaluateVisual<CR>gv<Esc>", { silent = true, desc = "Molten: Evaluate visual selection" })
-	vim.keymap.set("v", "<C-CR>", 	   ":<C-u>MoltenEvaluateVisual<CR>gv<Esc>", { silent = true, desc = "Molten: Evaluate visual selection" })
+	vim.keymap.set("v", "<A-r>", 	  ":<C-u>MoltenEvaluateVisual<CR>gv<Esc>", { silent = true, desc = "Molten: Evaluate visual selection" })
+	vim.keymap.set("v", "<C-CR>", 	  ":<C-u>MoltenEvaluateVisual<CR>gv<Esc>", { silent = true, desc = "Molten: Evaluate visual selection" })
 
 	vim.keymap.set("n", "<A-r><A-h>", ":MoltenHideOutput<CR>", { silent = true, desc = "Molten: Hide output" })
-	vim.keymap.set("n", "<A-r><A-o>", ":noautocmd MoltenEnterOutput<CR>", { silent = true, desc = "Molten: Show/enter output" })
+	vim.keymap.set("n", "<A-r><A-o>",
+	    function()
+		local file_extension = vim.fn.bufname():match('^.+%.([^.]+)')
+		if file_extension == 'ipynb' then
+		    vim.cmd("noautocmd MoltenEnterOutput")
+		    vim.cmd("noautocmd MoltenEnterOutput")
+		else
+		    vim.cmd("noautocmd MoltenEnterOutput")
+		end
+	    end,
+	    { silent = true, desc = "Molten: Show/enter output" }
+	)
 
 	vim.keymap.set("n", "<A-r><A-n>", ":MoltenNext<CR>", { silent = true, desc = "Molten: Goto next cell" })
 	vim.keymap.set("n", "<A-r><A-p>", ":MoltenPrev<CR>", { silent = true, desc = "Molten: Goto previous cell" })

@@ -141,6 +141,69 @@ return {
 		    vim.g.molten_virt_text_output = true
 		    vim.g.molten_auto_open_output = false
 		end
+
+		-- add keymap for adding/removing new code blocks
+		vim.keymap.set('n', '<A-n>',
+		    function()
+			local next_block_end = vim.fn.search("^```", "W")
+			-- insert new code block
+			vim.fn.append(next_block_end, {
+			    "",
+			    "```python",
+			    "",
+			    "```"
+			})
+			-- move cursor to inside the new code block
+			vim.api.nvim_win_set_cursor(0, {next_block_end + 3, 0})
+		    end,
+		    { buffer = true, desc = "Insert new Python code block after current" }
+		)
+		vim.keymap.set('n', '<A-b>',
+		    function()
+			local cur_line = vim.api.nvim_get_current_line()
+			local prev_block_start = nil
+			-- Save the cursor position
+			if cur_line:match("^```python") then
+			    prev_block_start = vim.fn.line(".")
+			else
+			    prev_block_start = vim.fn.search("^```python", "b")
+			end
+			-- insert new code block
+			vim.fn.append(prev_block_start -1, {
+			    "```python",
+			    "",
+			    "```",
+			    ""
+			})
+			-- move cursor to inside the new code block
+			vim.api.nvim_win_set_cursor(0, {prev_block_start + 1, 0})
+		    end,
+		    { buffer = true, desc = "Insert new Python code block before current" }
+		)
+		vim.keymap.set('n', '<A-d>',
+		    function()
+			-- Delete around block (assumes you've defined `dab` as a code block text object)
+			vim.cmd.normal("dab")
+			-- Remove trailing blank line if present
+			local cur_line = vim.fn.line(".")
+			local next_line = vim.fn.getline(cur_line)
+			if next_line:match("^%s*$") then
+			    vim.api.nvim_buf_set_lines(0, cur_line, cur_line + 1, false, {})
+			end
+			-- Remove preceding blank line if present
+			local prev_line_num = cur_line - 1
+			if prev_line_num > 0 then
+			    local prev_line = vim.fn.getline(prev_line_num)
+			    if prev_line:match("^%s*$") then
+				vim.api.nvim_buf_set_lines(0, prev_line_num - 1, prev_line_num, false, {})
+				cur_line = cur_line - 1
+			    end
+			end
+			-- Jump to previous block (if defined, e.g. [b with vim-markdown)
+			vim.cmd.normal("[b")
+		    end,
+		    { buffer = true, desc = "Delete code block and jump to previous" }
+		)
 	    end,
 	})
     end,

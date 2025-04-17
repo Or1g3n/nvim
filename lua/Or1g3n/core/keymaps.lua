@@ -12,6 +12,8 @@ map.set('n', '<Leader>ak', 'Vgg', { noremap = true, silent = true, desc = "Edito
 map.set('n', '<A-o>', '<C-]>', { noremap = true, silent = true, desc = "Editor: Jump to definition" })
 map.set('n', 'H', '{', { noremap = true, silent = true, desc = "Editor: Jump to next paragraph" })
 map.set('n', 'L', '}', { noremap = true, silent = true, desc = "Editor: Jump to previous paragraph" })
+map.set('v', 'H', '{', { noremap = true, silent = true, desc = "Editor: Jump to next paragraph" })
+map.set('v', 'L', '}', { noremap = true, silent = true, desc = "Editor: Jump to previous paragraph" })
 
 -- File operations 
 map.set('n', '<Leader>w', ':w<CR>', { noremap = true, silent = true, desc = "Editor: Save file" })

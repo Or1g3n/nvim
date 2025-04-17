@@ -191,27 +191,10 @@ return {
 		)
 
 		-- delete block and move to prior
-		vim.keymap.set('n', '<A-d>',
+		vim.keymap.set('n', '<A-d><A-d>',
 		    function()
 			-- Delete around block (assumes you've defined dab as a code block text object)
-			vim.cmd.normal("dab")
-			-- Remove trailing blank line if present
-			local cur_line_num = vim.fn.line(".")
-			local cur_line = vim.fn.getline(cur_line_num)
-			if cur_line:match("^%s*$") then
-			    vim.api.nvim_buf_set_lines(0, cur_line_num, cur_line_num + 1, false, {})
-			end
-			-- Remove preceding blank line if present
-			local prev_line_num = cur_line_num - 1
-			if prev_line_num > 0 then
-			    local prev_line = vim.fn.getline(prev_line_num)
-			    if prev_line:match("^%s*$") then
-				vim.api.nvim_buf_set_lines(0, prev_line_num - 1, prev_line_num, false, {})
-				cur_line_num = cur_line_num - 1
-			    end
-			end
-			-- Jump to previous block (if defined, e.g. [b with vim-markdown)
-			vim.cmd.normal("[b")
+			vim.cmd.normal("vabjd[b")
 		    end,
 		    { buffer = true, desc = "Delete code block and jump to previous" }
 		)

@@ -139,7 +139,7 @@ return {
 		    return
 		end
 		if require("molten.status").initialized() == "Molten" then
-		    vim.fn.MoltenUpdateOption("virt_lines_off_by_1", false)
+		    vim.fn.MoltenUpdateOption("virt_lines_off_by_1", true)
 		    vim.fn.MoltenUpdateOption("virt_text_output", true)
 		    vim.fn.MoltenUpdateOption("molten_auto_open_output", false)
 		else
@@ -193,8 +193,16 @@ return {
 		-- delete block and move to prior
 		vim.keymap.set('n', '<A-d><A-d>',
 		    function()
-			-- Delete around block (assumes you've defined dab as a code block text object)
-			vim.cmd.normal("vabjd[b")
+			local multiplier = vim.v.count1  -- Get the multiplier (defaults to 1 if no multiplier)
+			for i = 1, multiplier do
+			    local last_line_num = vim.fn.line('$')
+			    local next_block_end_num = vim.fn.search('^```', 'W')
+			    if next_block_end_num < last_line_num then
+				vim.cmd.normal("vabjd[b") -- Remove code block and below line
+			    else
+				vim.cmd.normal("vabokd[b") -- Remove code block and above line
+			    end
+			end
 		    end,
 		    { buffer = true, desc = "Delete code block and jump to previous" }
 		)

@@ -167,8 +167,7 @@ return {
 	    pattern = { "*.qmd", "*.md", "*.ipynb" },
 	    callback = function(e)
 		-- Determine cell_tags depending on how .ipynb was formatted
-                local bufnr = e.buf
-		local is_markdown = is_otter_active(bufnr)
+		local is_markdown = vim.bo.filetype == 'markdown'
 		local tags = nil
                 if is_markdown then
                     tags = cell_tags.markdown.python
@@ -198,24 +197,27 @@ return {
 		vim.keymap.set('n', '<A-n>',
 		    function()
 			local lines = {}
-			local next_block_end
-			if is_markdown then
-			    -- Markdown blocks have a real end tag
-			    next_block_end = vim.fn.search("^" .. tags.cell_end, "cW")
-			    if next_block_end == 0 then
-				next_block_end = vim.fn.line("$")
-			    end
-			else
-			    -- Non-markdown: look for next cell_start instead
-			    local next_start = vim.fn.search("^" .. tags.cell_start, "W")
-			    if next_start == 0 then
-				next_block_end = vim.fn.line("$") -- No more cells, append to EOF
+			local next_block_end = 0
+			local is_empty = vim.fn.line('$') == 1 and vim.fn.getline(1) == ''
+			if not is_empty then
+			    if is_markdown then
+				-- Markdown blocks have a real end tag
+				next_block_end = vim.fn.search("^" .. tags.cell_end .. '$', "cW")
+				if next_block_end == 0 then
+				    next_block_end = vim.fn.line("$")
+				end
 			    else
-				next_block_end = next_start - 1 -- Insert before next cell
+				-- Non-markdown: look for next cell_start instead
+				local next_start = vim.fn.search("^" .. tags.cell_start, "W")
+				if next_start == 0 then
+				    next_block_end = vim.fn.line("$") -- No more cells, append to EOF
+				else
+				    next_block_end = next_start - 1 -- Insert before next cell
+				end
 			    end
 			end
-			-- -- Add extra empty line if markdown format or end of file
-			if is_markdown or (next_block_end == vim.fn.line("$") and vim.fn.getline("$") ~= '') then
+			-- Add extra empty line if markdown format or end of file
+			if is_empty == false and (is_markdown or (next_block_end == vim.fn.line("$") and vim.fn.getline("$") ~= '')) then
 			    table.insert(lines, "")
 			end
 			vim.list_extend(lines, {
@@ -223,7 +225,11 @@ return {
 			    "",
 			    tags.cell_end,
 			})
-			vim.fn.append(next_block_end, lines)
+			if is_empty then
+			    vim.api.nvim_buf_set_lines(0, 0, 1, true, lines)
+			else
+			    vim.fn.append(next_block_end, lines)
+			end
 			-- Move cursor inside the new block
 			vim.api.nvim_win_set_cursor(0, { next_block_end + #lines - 1, 0 })
 		    end,
@@ -265,11 +271,16 @@ return {
 			for i = 1, multiplier do
 			    local last_line_num = vim.fn.line('$')
 			    if is_markdown then
-				local next_block_end_num = vim.fn.search('^' .. tags.cell_end, 'W')
-				if next_block_end_num < last_line_num then
+				local block_start_num = vim.fn.search('^' .. tags.cell_start .. '$', 'cb')
+				local next_block_end_num = vim.fn.search('^' .. tags.cell_end .. '$', 'cW')
+				if next_block_end_num == 0 and block_start_num == 0 then
+				    return
+				elseif block_start_num == 1 and next_block_end_num == last_line_num then
+				    vim.cmd.normal("dab")
+				elseif next_block_end_num < last_line_num then
 				    vim.cmd.normal("vabjd[b") -- Remove code block and below line
 				else
-				    vim.cmd.normal("vabokd[b") -- Remove code block and above line
+				    vim.cmd.normal("vabokddd[b") -- Remove code block and above line
 				end
 			    else
 				local cell_block = define_cell_block()

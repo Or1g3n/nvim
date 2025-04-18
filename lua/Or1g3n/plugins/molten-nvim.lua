@@ -16,17 +16,12 @@ return {
 	vim.keymap.set("n", "<A-r><A-t>", ":MoltenDeinit<CR>", { silent = true, desc = "Molten: De-initialize plugin" })
 	vim.keymap.set("n", "<A-r><A-d>", ":MoltenDelete<CR>", { silent = true, desc = "Molten: Delete cell" })
 
-	vim.keymap.set("n", "<A-r><A-e>", ":MoltenEvaluateOperator<CR>",
-	    { silent = true, desc = "Molten: Run operator selection" })
+	vim.keymap.set("n", "<A-r><A-e>", ":MoltenEvaluateOperator<CR>", { silent = true, desc = "Molten: Run operator selection" })
 	vim.keymap.set("n", "<A-r><A-r>", ":MoltenEvaluateLine<CR>", { silent = true, desc = "Molten: Evaluate line" })
-	vim.keymap.set("n", "<A-r><A-c>", ":MoltenReevaluateCell<CR>",
-	    { silent = true, desc = "Molten: Re-evaluate cell" })
-	vim.keymap.set("n", "<A-r><A-a>", ":MoltenReevaluateAll<CR>",
-	    { silent = true, desc = "Molten: Re-evaluate all cells" })
-	vim.keymap.set("v", "<A-r>", ":<C-u>MoltenEvaluateVisual<CR>gv<Esc>",
-	    { silent = true, desc = "Molten: Evaluate visual selection" })
-	vim.keymap.set("v", "<C-CR>", ":<C-u>MoltenEvaluateVisual<CR>gv<Esc>",
-	    { silent = true, desc = "Molten: Evaluate visual selection" })
+	vim.keymap.set("n", "<A-r><A-c>", ":MoltenReevaluateCell<CR>", { silent = true, desc = "Molten: Re-evaluate cell" })
+	vim.keymap.set("n", "<A-r><A-a>", ":MoltenReevaluateAll<CR>", { silent = true, desc = "Molten: Re-evaluate all cells" })
+	vim.keymap.set("v", "<A-r>", ":<C-u>MoltenEvaluateVisual<CR>gv<Esc>", { silent = true, desc = "Molten: Evaluate visual selection" })
+	vim.keymap.set("v", "<C-CR>", ":<C-u>MoltenEvaluateVisual<CR>gv<Esc>", { silent = true, desc = "Molten: Evaluate visual selection" })
 
 	vim.keymap.set("n", "<A-r><A-h>", ":MoltenHideOutput<CR>", { silent = true, desc = "Molten: Hide output" })
 	vim.keymap.set("n", "<A-r><A-o>",
@@ -104,10 +99,8 @@ return {
 	    end
 	end
 
-	vim.keymap.set("n", "<S-CR>", function() run_cell(true) end,
-	    { silent = true, desc = "Molten: run cell and move to next" })
-	vim.keymap.set("n", "<A-r><A-b>", function() run_cell(true) end,
-	    { silent = true, desc = "Molten: run cell and move to next" })
+	vim.keymap.set("n", "<S-CR>", function() run_cell(true) end, { silent = true, desc = "Molten: run cell and move to next" })
+	vim.keymap.set("n", "<A-r><A-b>", function() run_cell(true) end, { silent = true, desc = "Molten: run cell and move to next" })
 	vim.keymap.set("n", "<A-r><A-g>", function() run_cell(false) end, { silent = true, desc = "Molten: run cell" })
 	vim.keymap.set("n", "<C-CR>", function() run_cell(false) end, { silent = true, desc = "Molten: run cell" })
 

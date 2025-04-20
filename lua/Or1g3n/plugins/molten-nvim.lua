@@ -194,10 +194,36 @@ return {
 		end
 
 		-- Add keymaps for smart up / down motions
+		-- Cache last start and end positions of code block
+		local code_block_boundaries = {
+		    start_pos = vim.fn.search("^" .. tags.cell_start .. '$', "ncb"),
+		    end_pos = vim.fn.search("^" .. tags.cell_end .. '$', "ncW")
+		}
+
 		local function is_skip_line(line)
 		    return line == ''
 			or line == tags.cell_start
 			or (tags.cell_end ~= '' and line == tags.cell_end)
+		end
+
+		local function get_code_block_boundaries()
+		    code_block_boundaries.start_pos = vim.fn.search("^" .. tags.cell_start .. '$', "ncb")
+		    code_block_boundaries.end_pos = vim.fn.search("^" .. tags.cell_end .. '$', "ncW")
+		end
+
+		local function in_code_block(line)
+		    if code_block_boundaries.start_pos == 0 and code_block_boundaries.end_pos == 0 then
+			vim.notify('current pos: ' .. line .. ', ' .. 'start pos: ' .. code_block_boundaries.start_pos .. ', end pos: ' .. code_block_boundaries.end_pos)
+			get_code_block_boundaries()
+		    end
+
+		    if line > code_block_boundaries.start_pos and line < code_block_boundaries.end_pos then
+			return true
+		    else
+			get_code_block_boundaries()
+			vim.notify('current pos: ' .. line .. ', ' .. 'start pos: ' .. code_block_boundaries.start_pos .. ', end pos: ' .. code_block_boundaries.end_pos)
+			return false
+		    end
 		end
 
 		local function smart_down()
@@ -209,13 +235,19 @@ return {
 		    local cur = vim.fn.line(".")
 		    local max = vim.fn.line("$")
 
+		    if in_code_block(cur + 1) then
+			return vim.cmd("normal! " .. "j")
+		    end
+
 		    while cur < max do
 			cur = cur + 1
 			if not is_skip_line(vim.fn.getline(cur)) then
 			    break
 			end
 		    end
+
 		    vim.api.nvim_win_set_cursor(0, { cur, 0 })
+		    get_code_block_boundaries()
 		end
 
 		local function smart_up()
@@ -226,6 +258,10 @@ return {
 
 		    local cur = vim.fn.line(".")
 
+		    if in_code_block(cur - 1) then
+			return vim.cmd("normal! " .. "k")
+		    end
+
 		    while cur > 1 do
 			cur = cur - 1
 			if not is_skip_line(vim.fn.getline(cur)) then
@@ -233,6 +269,7 @@ return {
 			end
 		    end
 		    vim.api.nvim_win_set_cursor(0, { cur, 0 })
+		    get_code_block_boundaries()
 		end
 
 		vim.keymap.set('n', 'j', smart_down, { buffer = true, desc = "Smart down (skip cell tags)" })

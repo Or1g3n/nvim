@@ -8,11 +8,12 @@ return {
 	local map = vim.keymap
 
 	require('render-markdown').setup({
+	    render_modes = true,
 	    code = {
 		-- Turn on / off code block & inline code rendering.
 		enabled = true,
 		-- Additional modes to render code blocks.
-		render_modes = false,
+		render_modes = true,
 		-- Turn on / off any sign column related rendering.
 		sign = false,
 		-- Determines how code blocks & inline code are rendered.

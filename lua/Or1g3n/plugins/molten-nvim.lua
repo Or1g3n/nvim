@@ -10,6 +10,7 @@ return {
 	-- Virtual text settings
 	vim.g.molten_virt_text_output = true
 	vim.g.molten_virt_lines_off_by_1 = true
+	vim.g.molten_virt_text_max_lines = 25
 
 	-- Keymaps
 	vim.keymap.set("n", "<A-r><A-i>", ":MoltenInit<CR>", { silent = true, desc = "Molten: Initialize plugin" })
@@ -133,14 +134,14 @@ return {
 	vim.keymap.set("n", "<A-r><A-g>", function() run_cell(false) end, { silent = true, desc = "Molten: run cell" })
 	vim.keymap.set("n", "<C-CR>", function() run_cell(false) end, { silent = true, desc = "Molten: run cell" })
 
-        -- Function to check if Otter LSP is active for a buffer
-        local function is_otter_active(bufnr)
-            local clients = vim.lsp.get_clients({
-                bufnr = bufnr,
-                name = 'otter-ls[' .. bufnr .. ']'
-            })
-            return #clients > 0  -- Returns true if the Otter LSP client is attached
-        end
+	-- Function to check if Otter LSP is active for a buffer
+	local function is_otter_active(bufnr)
+	    local clients = vim.lsp.get_clients({
+		bufnr = bufnr,
+		name = 'otter-ls[' .. bufnr .. ']'
+	    })
+	    return #clients > 0  -- Returns true if the Otter LSP client is attached
+	end
 
 	-- Autcommands
 	-- Change the configuration when editing a python file
@@ -169,11 +170,11 @@ return {
 		-- Determine cell_tags depending on how .ipynb was formatted
 		local is_markdown = vim.bo.filetype == 'markdown'
 		local tags = nil
-                if is_markdown then
-                    tags = cell_tags.markdown.python
+		if is_markdown then
+		    tags = cell_tags.markdown.python
 		else
 		    tags = cell_tags.non_markdown.python
-                end
+		end
 
 		if string.match(e.file, ".otter.") then
 		    return
@@ -191,6 +192,51 @@ return {
 		    vim.g.molten_virt_text_output = true
 		    vim.g.molten_auto_open_output = false
 		end
+
+		-- Add keymaps for smart up / down motions
+		local function is_skip_line(line)
+		    return line == ''
+			or line == tags.cell_start
+			or (tags.cell_end ~= '' and line == tags.cell_end)
+		end
+
+		local function smart_down()
+		    local count = vim.v.count
+		    if count > 0 then
+			return vim.cmd("normal! " .. count .. "j")
+		    end
+
+		    local cur = vim.fn.line(".")
+		    local max = vim.fn.line("$")
+
+		    while cur < max do
+			cur = cur + 1
+			if not is_skip_line(vim.fn.getline(cur)) then
+			    break
+			end
+		    end
+		    vim.api.nvim_win_set_cursor(0, { cur, 0 })
+		end
+
+		local function smart_up()
+		    local count = vim.v.count
+		    if count > 0 then
+			return vim.cmd("normal! " .. count .. "k")
+		    end
+
+		    local cur = vim.fn.line(".")
+
+		    while cur > 1 do
+			cur = cur - 1
+			if not is_skip_line(vim.fn.getline(cur)) then
+			    break
+			end
+		    end
+		    vim.api.nvim_win_set_cursor(0, { cur, 0 })
+		end
+
+		vim.keymap.set('n', 'j', smart_down, { buffer = true, desc = "Smart down (skip cell tags)" })
+		vim.keymap.set('n', 'k', smart_up,   { buffer = true, desc = "Smart up (skip cell tags)" })
 
 		-- Add keymap for adding/removing new code blocks
 		-- Add new block after current

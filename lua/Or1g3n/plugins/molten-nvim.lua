@@ -194,16 +194,29 @@ return {
 		end
 
 		-- Add keymaps for smart up / down motions
+		-- TODOS:
+		-- if cells are empty, current logic will skip to the next non-empty cell rather than navigate each cell as expected - COMPLETE
+		-- if on top most or bottom most cell, it will still move to cell tag rather than non move at all
+		-- non_markdown end tags need to be handled better as empty lines within a code block cause problems
+
 		-- Cache last start and end positions of code block
 		local code_block_boundaries = {
 		    start_pos = vim.fn.search("^" .. tags.cell_start .. '$', "ncb"),
 		    end_pos = vim.fn.search("^" .. tags.cell_end .. '$', "ncW")
 		}
 
-		local function is_skip_line(line)
-		    return line == ''
-			or line == tags.cell_start
-			or (tags.cell_end ~= '' and line == tags.cell_end)
+		local function is_skip_line(line_num)
+		    local line_text = vim.fn.getline(line_num)
+		    local prev_line_text = vim.fn.getline(line_num - 1)
+		    local next_line_text = vim.fn.getline(line_num + 1)
+		    return
+			(
+			    line_text == ''
+			    and prev_line_text:match('^' .. tags.cell_end .. '$') ~= nil
+			    and next_line_text:match('^' .. tags.cell_start .. '$') ~= nil
+			)
+			or line_text == tags.cell_start
+			or (tags.cell_end ~= '' and line_text == tags.cell_end)
 		end
 
 		local function get_code_block_boundaries()
@@ -211,17 +224,17 @@ return {
 		    code_block_boundaries.end_pos = vim.fn.search("^" .. tags.cell_end .. '$', "ncW")
 		end
 
-		local function in_code_block(line)
+		local function in_code_block(line_num)
 		    if code_block_boundaries.start_pos == 0 and code_block_boundaries.end_pos == 0 then
-			vim.notify('current pos: ' .. line .. ', ' .. 'start pos: ' .. code_block_boundaries.start_pos .. ', end pos: ' .. code_block_boundaries.end_pos)
+			-- vim.notify('current pos: ' .. line_num .. ', ' .. 'start pos: ' .. code_block_boundaries.start_pos .. ', end pos: ' .. code_block_boundaries.end_pos)
 			get_code_block_boundaries()
 		    end
 
-		    if line > code_block_boundaries.start_pos and line < code_block_boundaries.end_pos then
+		    if line_num > code_block_boundaries.start_pos and line_num < code_block_boundaries.end_pos then
 			return true
 		    else
 			get_code_block_boundaries()
-			vim.notify('current pos: ' .. line .. ', ' .. 'start pos: ' .. code_block_boundaries.start_pos .. ', end pos: ' .. code_block_boundaries.end_pos)
+			-- vim.notify('current pos: ' .. line_num .. ', ' .. 'start pos: ' .. code_block_boundaries.start_pos .. ', end pos: ' .. code_block_boundaries.end_pos)
 			return false
 		    end
 		end
@@ -241,7 +254,7 @@ return {
 
 		    while cur < max do
 			cur = cur + 1
-			if not is_skip_line(vim.fn.getline(cur)) then
+			if not is_skip_line(cur) then
 			    break
 			end
 		    end
@@ -264,7 +277,7 @@ return {
 
 		    while cur > 1 do
 			cur = cur - 1
-			if not is_skip_line(vim.fn.getline(cur)) then
+			if not is_skip_line(cur) then
 			    break
 			end
 		    end

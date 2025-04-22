@@ -195,8 +195,7 @@ return {
 
 		-- Add keymaps for smart up / down motions
 		-- TODOS:
-		-- if cells are empty, current logic will skip to the next non-empty cell rather than navigate each cell as expected - COMPLETE
-		-- if on top most or bottom most cell, it will still move to cell tag rather than non move at all
+		-- if on top most or bottom most cell, it will still move to cell tag rather than non move at all -- COMPLETE
 		-- non_markdown end tags need to be handled better as empty lines within a code block cause problems
 
 		-- Cache last start and end positions of code block
@@ -226,7 +225,7 @@ return {
 
 		local function in_code_block(line_num)
 		    if code_block_boundaries.start_pos == 0 and code_block_boundaries.end_pos == 0 then
-			-- vim.notify('current pos: ' .. line_num .. ', ' .. 'start pos: ' .. code_block_boundaries.start_pos .. ', end pos: ' .. code_block_boundaries.end_pos)
+			vim.notify('current pos: ' .. line_num .. ', ' .. 'start pos: ' .. code_block_boundaries.start_pos .. ', end pos: ' .. code_block_boundaries.end_pos)
 			get_code_block_boundaries()
 		    end
 
@@ -234,7 +233,7 @@ return {
 			return true
 		    else
 			get_code_block_boundaries()
-			-- vim.notify('current pos: ' .. line_num .. ', ' .. 'start pos: ' .. code_block_boundaries.start_pos .. ', end pos: ' .. code_block_boundaries.end_pos)
+			vim.notify('current pos: ' .. line_num .. ', ' .. 'start pos: ' .. code_block_boundaries.start_pos .. ', end pos: ' .. code_block_boundaries.end_pos)
 			return false
 		    end
 		end
@@ -245,21 +244,27 @@ return {
 			return vim.cmd("normal! " .. count .. "j")
 		    end
 
-		    local cur = vim.fn.line(".")
-		    local max = vim.fn.line("$")
+		    local cur_num = vim.fn.line(".")
+		    local next_num = cur_num + 1
+		    local next_text = vim.fn.getline(next_num)
+		    local max_num = vim.fn.line("$")
 
-		    if in_code_block(cur + 1) then
+		    if (next_num == max_num) and (next_text == tags.cell_start or next_text == tags.cell_end) then
+			return
+		    end
+
+		    if in_code_block(next_num) then
 			return vim.cmd("normal! " .. "j")
 		    end
 
-		    while cur < max do
-			cur = cur + 1
-			if not is_skip_line(cur) then
+		    while cur_num < max_num do
+			cur_num = cur_num + 1
+			if not is_skip_line(cur_num) then
 			    break
 			end
 		    end
 
-		    vim.api.nvim_win_set_cursor(0, { cur, 0 })
+		    vim.api.nvim_win_set_cursor(0, { cur_num, 0 })
 		    get_code_block_boundaries()
 		end
 
@@ -269,19 +274,25 @@ return {
 			return vim.cmd("normal! " .. count .. "k")
 		    end
 
-		    local cur = vim.fn.line(".")
+		    local cur_num = vim.fn.line(".")
+		    local prev_num = cur_num - 1
+		    local prev_text = vim.fn.getline(cur_num - 1)
 
-		    if in_code_block(cur - 1) then
+		    if (prev_num == 1) and (prev_text == tags.cell_start or prev_text == tags.cell_end) then
+			return
+		    end
+
+		    if in_code_block(prev_num) then
 			return vim.cmd("normal! " .. "k")
 		    end
 
-		    while cur > 1 do
-			cur = cur - 1
-			if not is_skip_line(cur) then
+		    while cur_num > 1 do
+			cur_num = cur_num - 1
+			if not is_skip_line(cur_num) then
 			    break
 			end
 		    end
-		    vim.api.nvim_win_set_cursor(0, { cur, 0 })
+		    vim.api.nvim_win_set_cursor(0, { cur_num, 0 })
 		    get_code_block_boundaries()
 		end
 

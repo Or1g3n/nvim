@@ -1,0 +1,5 @@
+require('Or1g3n.core.custom.autocommands')
+require('Or1g3n.core.custom.markdown')
+require('Or1g3n.core.custom.todos')
+require('Or1g3n.core.custom.notebooks')
+require('Or1g3n.core.custom.terminal')

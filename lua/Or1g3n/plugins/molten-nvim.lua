@@ -6,7 +6,7 @@ return {
 	-- Output settings
 	vim.g.molten_output_win_max_height = 12
 	vim.g.molten_auto_open_output = false
-	vim.g.molten_wrap_output = true
+	vim.g.molten_wrap_output = false
 	-- Virtual text settings
 	vim.g.molten_virt_text_output = true
 	vim.g.molten_virt_lines_off_by_1 = true
@@ -225,7 +225,7 @@ return {
 
 		local function in_code_block(line_num)
 		    if code_block_boundaries.start_pos == 0 and code_block_boundaries.end_pos == 0 then
-			vim.notify('current pos: ' .. line_num .. ', ' .. 'start pos: ' .. code_block_boundaries.start_pos .. ', end pos: ' .. code_block_boundaries.end_pos)
+			-- vim.notify('current pos: ' .. line_num .. ', ' .. 'start pos: ' .. code_block_boundaries.start_pos .. ', end pos: ' .. code_block_boundaries.end_pos) -- DEBUG
 			get_code_block_boundaries()
 		    end
 
@@ -233,7 +233,7 @@ return {
 			return true
 		    else
 			get_code_block_boundaries()
-			vim.notify('current pos: ' .. line_num .. ', ' .. 'start pos: ' .. code_block_boundaries.start_pos .. ', end pos: ' .. code_block_boundaries.end_pos)
+			-- vim.notify('current pos: ' .. line_num .. ', ' .. 'start pos: ' .. code_block_boundaries.start_pos .. ', end pos: ' .. code_block_boundaries.end_pos) -- DEBUG
 			return false
 		    end
 		end

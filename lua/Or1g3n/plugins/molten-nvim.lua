@@ -89,8 +89,8 @@ return {
 	    local cur_line = vim.api.nvim_get_current_line()
 	    -- Initialize cell block
 	    local cell_block = {
-		start_pos = nil,
-		end_pos = nil
+		start_pos = 0,
+		end_pos = 0
 	    }
 	    -- Get start position for cell block
 	    if cur_line:match("^" .. cell_tag) then
@@ -134,15 +134,6 @@ return {
 	vim.keymap.set("n", "<A-r><A-g>", function() run_cell(false) end, { silent = true, desc = "Molten: run cell" })
 	vim.keymap.set("n", "<C-CR>", function() run_cell(false) end, { silent = true, desc = "Molten: run cell" })
 
-	-- Function to check if Otter LSP is active for a buffer
-	local function is_otter_active(bufnr)
-	    local clients = vim.lsp.get_clients({
-		bufnr = bufnr,
-		name = 'otter-ls[' .. bufnr .. ']'
-	    })
-	    return #clients > 0  -- Returns true if the Otter LSP client is attached
-	end
-
 	-- Autcommands
 	-- Change the configuration when editing a python file
 	vim.api.nvim_create_autocmd("BufEnter", {
@@ -167,6 +158,11 @@ return {
 	vim.api.nvim_create_autocmd("BufEnter", {
 	    pattern = { "*.qmd", "*.md", "*.ipynb" },
 	    callback = function(e)
+		-- If otter file exit
+		if string.match(e.file, ".otter.") then
+		    return
+		end
+
 		-- Determine cell_tags depending on how .ipynb was formatted
 		local is_markdown = vim.bo.filetype == 'markdown'
 		local tags = nil
@@ -176,9 +172,6 @@ return {
 		    tags = cell_tags.non_markdown.python
 		end
 
-		if string.match(e.file, ".otter.") then
-		    return
-		end
 		if require("molten.status").initialized() == "Molten" then
 		    if is_markdown then
 			vim.fn.MoltenUpdateOption("virt_lines_off_by_1", true)
@@ -194,98 +187,66 @@ return {
 		end
 
 		-- Add keymaps for smart up / down motions
-		-- TODOS:
-		-- if on top most or bottom most cell, it will still move to cell tag rather than non move at all -- COMPLETE
-		-- non_markdown end tags need to be handled better as empty lines within a code block cause problems
-
-		-- Cache last start and end positions of code block
-		local code_block_boundaries = {
-		    start_pos = vim.fn.search("^" .. tags.cell_start .. '$', "ncb"),
-		    end_pos = vim.fn.search("^" .. tags.cell_end .. '$', "ncW")
-		}
-
 		local function is_skip_line(line_num)
 		    local line_text = vim.fn.getline(line_num)
 		    local prev_line_text = vim.fn.getline(line_num - 1)
 		    local next_line_text = vim.fn.getline(line_num + 1)
 		    return
-			(
-			    line_text == ''
-			    and prev_line_text:match('^' .. tags.cell_end .. '$') ~= nil
-			    and next_line_text:match('^' .. tags.cell_start .. '$') ~= nil
-			)
+			(line_text == ''
+			and prev_line_text:match('^' .. tags.cell_end .. '$') ~= nil
+			and next_line_text:match('^' .. tags.cell_start .. '$') ~= nil)
 			or line_text == tags.cell_start
 			or (tags.cell_end ~= '' and line_text == tags.cell_end)
 		end
 
-		local function get_code_block_boundaries()
-		    code_block_boundaries.start_pos = vim.fn.search("^" .. tags.cell_start .. '$', "ncb")
-		    code_block_boundaries.end_pos = vim.fn.search("^" .. tags.cell_end .. '$', "ncW")
-		end
-
-		local function in_code_block(line_num)
-		    if code_block_boundaries.start_pos == 0 and code_block_boundaries.end_pos == 0 then
-			-- vim.notify('current pos: ' .. line_num .. ', ' .. 'start pos: ' .. code_block_boundaries.start_pos .. ', end pos: ' .. code_block_boundaries.end_pos) -- DEBUG
-			get_code_block_boundaries()
-		    end
-
-		    if line_num > code_block_boundaries.start_pos and line_num < code_block_boundaries.end_pos then
-			return true
-		    else
-			get_code_block_boundaries()
-			-- vim.notify('current pos: ' .. line_num .. ', ' .. 'start pos: ' .. code_block_boundaries.start_pos .. ', end pos: ' .. code_block_boundaries.end_pos) -- DEBUG
-			return false
-		    end
-		end
-
 		local function smart_down()
+		    -- If count is provided then behave normally
 		    local count = vim.v.count
 		    if count > 0 then
 			return vim.cmd("normal! " .. count .. "j")
 		    end
-
+		    -- Declare current, next, and max lines
 		    local cur_num = vim.fn.line(".")
 		    local next_num = cur_num + 1
 		    local next_text = vim.fn.getline(next_num)
 		    local max_num = vim.fn.line("$")
-
-		    if (next_num == max_num) and (next_text == tags.cell_start or next_text == tags.cell_end) then
+		    -- Do nothing if at end of file
+		    if (next_num == max_num) and next_text == tags.cell_end then
 			return
 		    end
-
-		    if in_code_block(next_num) then
+		    -- If in code block behave normally
+		    if vim.fn.searchpair('^' .. tags.cell_start .. '$','','^' .. tags.cell_end .. '$', 'ncbW') > 0 and next_text ~= tags.cell_end then
 			return vim.cmd("normal! " .. "j")
 		    end
-
+		    -- Skip cell tags and set cursor
 		    while cur_num < max_num do
 			cur_num = cur_num + 1
 			if not is_skip_line(cur_num) then
 			    break
 			end
 		    end
-
 		    vim.api.nvim_win_set_cursor(0, { cur_num, 0 })
-		    get_code_block_boundaries()
 		end
 
 		local function smart_up()
+		    -- If count is provided then behave normally
 		    local count = vim.v.count
 		    if count > 0 then
 			return vim.cmd("normal! " .. count .. "k")
 		    end
-
+		    -- Declare current and previous lines
 		    local cur_num = vim.fn.line(".")
 		    local prev_num = cur_num - 1
-		    local prev_text = vim.fn.getline(cur_num - 1)
-
-		    if (prev_num == 1) and (prev_text == tags.cell_start or prev_text == tags.cell_end) then
+		    local prev_text = vim.fn.getline(prev_num)
+		    -- Do nothing if at end of file
+		    if (prev_num == 1) and prev_text == tags.cell_start then
 			return
 		    end
-
-		    if in_code_block(prev_num) then
+		    -- If in code block behave normally
+		    if vim.fn.searchpair('^' .. tags.cell_start .. '$','','^' .. tags.cell_end .. '$', 'ncbW') > 0 and prev_text ~= tags.cell_start then
 			return vim.cmd("normal! " .. "k")
 		    end
-
+		    -- Skip cell tags and set cursor
 		    while cur_num > 1 do
 			cur_num = cur_num - 1
 			if not is_skip_line(cur_num) then
@@ -293,13 +254,12 @@ return {
 			end
 		    end
 		    vim.api.nvim_win_set_cursor(0, { cur_num, 0 })
-		    get_code_block_boundaries()
 		end
 
 		vim.keymap.set('n', 'j', smart_down, { buffer = true, desc = "Smart down (skip cell tags)" })
 		vim.keymap.set('n', 'k', smart_up,   { buffer = true, desc = "Smart up (skip cell tags)" })
 
-		-- Add keymap for adding/removing new code blocks
+		-- Add keymaps for adding/removing new code blocks
 		-- Add new block after current
 		vim.keymap.set('n', '<A-n>',
 		    function()

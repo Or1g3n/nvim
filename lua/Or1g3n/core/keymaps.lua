@@ -3,6 +3,9 @@ local map = vim.keymap -- for conciseness
 -- Escape trigger
 map.set('i', 'jk', '<Esc>', { noremap = true, silent = true, desc = "Editor: Exit insert mode" })
 
+-- Ctrl-backspace behavior to delete word
+map.set('i', '<C-H>', '<C-W>', { noremap = true, desc = "Cmd: Delete entire word" })
+
 -- Select all
 map.set('n', '<Leader>aa', 'ggVG', { noremap = true, silent = true, desc = "Editor: Select all" })
 map.set('n', '<Leader>aj', 'VG', { noremap = true, silent = true, desc = "Editor: Select all down" })
@@ -197,3 +200,80 @@ map.set('n', '<Leader>.', ":new | put =execute('messages') | wincmd J | res -15 
 
 -- Terminal
 -- keymaps for terminal moved to ./commands/terminal.lua
+
+-- Command line
+map.set('c', '<Esc>',
+    function()
+	if vim.fn.pumvisible() ~= 0 then
+	    return vim.keycode('<C-e>')
+	else
+	    return vim.keycode('<C-c>')
+	end
+    end,
+    { expr = true, noremap = true, desc = "Cmd: Exit completion or command mode" }
+)
+map.set('c', '<Tab>',
+    function()
+	if vim.fn.pumvisible() ~= 0 then
+	    return vim.keycode('<C-y>')
+	else
+	    return vim.keycode('<C-z>')
+	end
+    end,
+    { expr = true, noremap = true, desc = "Cmd: Start completion or accept selection" }
+)
+map.set('c', '<C-n>',
+    function()
+	if vim.fn.pumvisible() ~= 0 then
+	    return vim.keycode('<C-n>')
+	else
+	    return vim.keycode('<C-z>')
+	end
+    end,
+    { expr = true, noremap = true, desc = "Cmd: Start completion or cycle selection" }
+)
+map.set('c', '<Down>',
+    function()
+	if vim.fn.pumvisible() ~= 0 then
+	    return vim.keycode('<C-n>')
+	else
+	    return '<Down>'
+	end
+    end,
+    { expr = true, noremap = true, desc = "Cmd: Cycle next completion or command history" }
+)
+map.set('c', '<Up>',
+    function()
+	if vim.fn.pumvisible() ~= 0 then
+	    return vim.keycode('<C-p>')
+	else
+	    return '<Up>'
+	end
+    end,
+    { expr = true, noremap = true, desc = "Cmd: Cycle previous completion or command history" }
+)
+map.set('c', '<Left>',
+    function()
+	if vim.fn.pumvisible() ~= 0 then
+	    return '<Up>'
+	else
+	    return '<Left>'
+	end
+    end,
+    { expr = true, noremap = true, desc = "Cmd: Expand file completion or move left" }
+)
+map.set('c', '<Right>',
+    function()
+	if vim.fn.pumvisible() ~= 0 then
+	    return '<Down>'
+	else
+	    return '<Right>'
+	end
+    end,
+    { expr = true, noremap = true, desc = "Cmd: Expand file completion or move right" }
+)
+map.set('c', '<C-j>', '<C-n>', { noremap = true, desc = "Cmd: Cycle next completion" })
+map.set('c', '<C-k>', '<C-p>', { noremap = true, desc = "Cmd: Cycle previous completion" })
+map.set('c', '<C-h>', '<Up>', { noremap = true, desc = "Cmd: Cycle previous completion" })
+map.set('c', '<C-l>', '<Down>', { noremap = true, desc = "Cmd: Cycle previous completion" })
+map.set('c', '<C-H>', '<C-W>', { noremap = true, desc = "Cmd: Delete entire word" })

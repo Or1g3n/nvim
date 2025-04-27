@@ -20,6 +20,8 @@ local options = {
     -- File
     title = false,
     swapfile = false,
+    -- Cmd completion
+    wildmode = 'longest:full'
 }
 
 -- Check if NuShell is executable and update shell options

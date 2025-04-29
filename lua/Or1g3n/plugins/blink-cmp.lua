@@ -16,13 +16,15 @@ return{
 	    ['<C-n>'] = { 'show', 'show_documentation', 'hide_documentation' },
 	    ['<C-e>'] = { 'hide' },
 	    ['<C-y>'] = { 'select_and_accept' },
-	    ['<Tab>'] = { 'select_and_accept', 'snippet_forward', 'fallback' },
+	    ['<Tab>'] = { 'show', 'select_and_accept', 'snippet_forward', 'fallback' },
 	    ['<S-Tab>'] = { 'snippet_backward', 'fallback' },
 
 	    ['<Up>'] = { 'select_prev', 'fallback' },
 	    ['<Down>'] = { 'select_next', 'fallback' },
 	    ['<C-k>'] = { 'select_prev', 'fallback' },
 	    ['<C-j>'] = { 'select_next', 'fallback' },
+	    ['<C-l>'] = { 'fallback' },
+	    ['<C-h>'] = { 'fallback' },
 
 	    ['<C-b>'] = { 'scroll_documentation_up', 'fallback' },
 	    ['<C-f>'] = { 'scroll_documentation_down', 'fallback' },
@@ -50,6 +52,16 @@ return{
 	},
 	-- experimental signature help support
 	signature = { enabled = true },
-	cmdline = { enabled = false },
+	cmdline = {
+	    enabled = true,
+	    keymap = {
+		preset = 'inherit'
+	    },
+	    completion = {
+		menu = {
+		    auto_show = true
+		}
+	    },
+	},
     },
 }

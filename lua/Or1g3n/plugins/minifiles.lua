@@ -131,6 +131,8 @@ return{
 		map.set('n', 'g@', set_cwd,   { buffer = buf_id, desc = 'Set cwd' })
 		-- Map key for yank file path
 		map.set('n', 'gy', yank_path, { buffer = buf_id, desc = 'Yank path' })
+		-- Escape to close
+		map.set('n','<Esc>',function() minifiles.close() end, { buffer = buf_id, desc = 'Minifiles: Close' })
 	    end,
 	})
 

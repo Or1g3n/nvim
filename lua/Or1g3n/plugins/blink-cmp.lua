@@ -16,7 +16,7 @@ return{
 	    ['<C-n>'] = { 'show', 'show_documentation', 'hide_documentation' },
 	    ['<C-e>'] = { 'hide' },
 	    ['<C-y>'] = { 'select_and_accept' },
-	    ['<Tab>'] = { 'show', 'select_and_accept', 'snippet_forward', 'fallback' },
+	    ['<Tab>'] = { 'select_and_accept', 'snippet_forward', 'fallback' },
 	    ['<S-Tab>'] = { 'snippet_backward', 'fallback' },
 
 	    ['<Up>'] = { 'select_prev', 'fallback' },
@@ -49,6 +49,14 @@ return{
 	-- elsewhere in your config, without redefining it, due to `opts_extend`
 	sources = {
 	    default = { 'lsp', 'path', 'snippets', 'buffer' },
+	    providers = {
+		cmdline = {
+		    -- ignores cmdline completions when executing shell commands
+		    enabled = function()
+			return vim.fn.getcmdtype() ~= ':' or not vim.fn.getcmdline():find("!")
+		    end
+		}
+	    }
 	},
 	-- experimental signature help support
 	signature = { enabled = true },

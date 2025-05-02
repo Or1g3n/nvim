@@ -277,3 +277,6 @@ map.set('c', '<C-k>', '<C-p>', { noremap = true, desc = "Cmd: Cycle previous com
 map.set('c', '<C-h>', '<Up>', { noremap = true, desc = "Cmd: Cycle previous completion" })
 map.set('c', '<C-l>', '<Down>', { noremap = true, desc = "Cmd: Cycle previous completion" })
 map.set('c', '<C-H>', '<C-W>', { noremap = true, desc = "Cmd: Delete entire word" })
+
+-- Git
+map.set('n', '<A-g><A-c>', function() vim.cmd(":let @/ = '^<\\|^=\\|^>'") end, { noremap = true, desc = "Git: set search to conflict markers" })

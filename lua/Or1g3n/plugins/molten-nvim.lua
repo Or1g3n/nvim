@@ -1,5 +1,5 @@
 return {
-    "benlubas/molten-nvim",
+    "Or1g3n/molten-nvim",
     version = "^1.0.0", -- Use version <2.0.0 to avoid breaking changes
     build = ":UpdateRemotePlugins",
     init = function()
@@ -43,17 +43,8 @@ return {
 	vim.keymap.set("n", "<A-r><A-p>", ":MoltenPrev<CR>", { silent = true, desc = "Molten: Goto previous cell" })
 
 	-- Toggle on/off virtual text
-	vim.keymap.set(
-	    "n", "<A-r><A-v>",
-	    function()
-		if require("molten.status").initialized() == "Molten" and vim.g.molten_virt_text_output then
-		    vim.fn.MoltenUpdateOption("virt_text_output", false)
-		else
-		    vim.fn.MoltenUpdateOption("virt_text_output", true)
-		end
-	    end,
-	    { silent = true, desc = "Molten: Toggle virt_text_output" }
-	)
+	vim.keymap.set( "n", "<A-r><A-v>", ":MoltenToggleVirtual<CR>", { silent = true, desc = "Molten: Toggle cell virt_text_output" })
+	-- vim.keymap.set( "n", "<A-r><A-v>", ":MoltenToggleVirtual<CR>", { silent = true, desc = "Molten: Toggle all cells virt_text_output" })
 
 	-- Define cell_tags based on format and filetype
 	local cell_tags = {

@@ -25,6 +25,9 @@ return {
 	vim.keymap.set("v", "<A-r>", ":<C-u>MoltenEvaluateVisual<CR>gv<Esc>", { silent = true, desc = "Molten: Evaluate visual selection" })
 	vim.keymap.set("v", "<C-CR>", ":<C-u>MoltenEvaluateVisual<CR>gv<Esc>", { silent = true, desc = "Molten: Evaluate visual selection" })
 
+	vim.keymap.set("n", "<A-r><A-y>", ":MoltenYankOutput<CR>", { silent = true, desc = "Molten: Yank output" })
+	vim.keymap.set("n", "<Leader><A-r><A-y>", ":MoltenYankOutput!<CR>", { silent = true, desc = "Molten: Yank output (system clipboard)" })
+
 	vim.keymap.set("n", "<A-r><A-h>", ":MoltenHideOutput<CR>", { silent = true, desc = "Molten: Hide output" })
 	vim.keymap.set("n", "<A-r><A-o>",
 	    function()

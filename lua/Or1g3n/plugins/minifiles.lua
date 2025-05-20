@@ -133,6 +133,9 @@ return{
 		map.set('n', 'gy', yank_path, { buffer = buf_id, desc = 'Yank path' })
 		-- Escape to close
 		map.set('n','<Esc>',function() minifiles.close() end, { buffer = buf_id, desc = 'Minifiles: Close' })
+		-- Ctrl h/l for normal left right navigation
+		map.set('n','<C-h>', 'h', { buffer = buf_id, desc = 'Minifiles: Left naviation' })
+		map.set('n','<C-l>', 'l', { buffer = buf_id, desc = 'Minifiles: Right naviation' })
 	    end,
 	})
 

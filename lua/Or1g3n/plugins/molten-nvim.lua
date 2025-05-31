@@ -47,7 +47,7 @@ return {
 
 	-- Toggle on/off virtual text
 	vim.keymap.set( "n", "<A-r><A-v>", ":MoltenToggleVirtual<CR>", { silent = true, desc = "Molten: Toggle cell virt_text_output" })
-	-- vim.keymap.set( "n", "<A-r><A-v>", ":MoltenToggleVirtual<CR>", { silent = true, desc = "Molten: Toggle all cells virt_text_output" })
+	vim.keymap.set( "n", "<Leader><A-r><A-v>", ":MoltenToggleVirtual!<CR>", { silent = true, desc = "Molten: Toggle all cells virt_text_output" })
 
 	-- Define cell_tags based on format and filetype
 	local cell_tags = {

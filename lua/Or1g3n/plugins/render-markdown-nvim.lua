@@ -9,6 +9,7 @@ return {
 
 	require('render-markdown').setup({
 	    render_modes = true,
+	    file_types = { 'markdown', 'codecompanion' },
 	    code = {
 		-- Turn on / off code block & inline code rendering.
 		enabled = true,

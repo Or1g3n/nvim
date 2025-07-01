@@ -9,6 +9,38 @@ return {
 	local alpha = require("alpha")
 	local dashboard = require("alpha.themes.dashboard")
 
+	-- Update this to whatever greeting messsage file
+	local greeting_path = vim.fn.stdpath('config') .. '/local/greeting.txt'
+	local function load_greeting(file_path)
+	    local file = io.open(file_path, "r")
+	    if file then
+		local greeting = file:read("*l")
+		file:close()
+		return greeting
+	    else
+		return "Welcome to Neovim!"
+	    end
+	end
+
+	-- Update this to whatever random messsage file you like
+	local rand_message_path = vim.fn.stdpath('config') .. '/local/bible_verses.txt'
+	local function load_random_message(file_path)
+	    local file = io.open(file_path, "r")
+	    if not file then
+		return ""
+	    end
+	    local messages = {}
+	    for line in file:lines() do
+		table.insert(messages, line)
+	    end
+	    file:close()
+	    if #messages == 0 then
+		return ""
+	    end
+	    local random_index = vim.fn.rand() % #messages + 1
+	    return messages[random_index]
+	end
+
 	dashboard.section.header.val = {
 	    [[                                                                       ]],
 	    [[                                                                       ]],
@@ -40,11 +72,32 @@ return {
 	    dashboard.button("q", "󰩈  Quit Neovim", ":qa<CR>"),
 	}
 
-	dashboard.section.footer.opts.position = "center"
-	dashboard.section.footer.val = {
-	    "                            ",  -- Extra padding lines to move footer down
-	    "      Welcome to Neovim, Christopher!",
-	}
+	local function get_max_footer_width(lines)
+	    local max_width = 0
+	    for _, line in ipairs(lines) do
+		local strwidth = vim.fn.strdisplaywidth(line)
+		if strwidth > max_width then
+		    max_width = strwidth
+		end
+	    end
+	    return max_width
+	end
+
+	local function center_line(line, width)
+	    local strwidth = vim.fn.strdisplaywidth(line)
+	    if strwidth >= width then return line end
+	    local pad = math.floor((width - strwidth) / 2)
+	    return string.rep(" ", pad) .. line
+	end
+
+	local function center_footer_lines(lines)
+	    local width = get_max_footer_width(lines)
+	    local centered = {}
+	    for _, line in ipairs(lines) do
+		table.insert(centered, center_line(line, width))
+	    end
+	    return centered
+	end
 
 	-- Set keymaps
 	local map = vim.keymap
@@ -59,17 +112,25 @@ return {
 	    once = true,
 	    pattern = "LazyVimStarted",
 	    callback = function()
+		local footer_lines = {
+		    "",
+		    load_greeting(greeting_path),
+		    load_random_message(rand_message_path),
+		    "",
+		}
 		local stats = require("lazy").stats()
 		local ms = (math.floor(stats.startuptime * 100 + 0.5) / 100)
 
 		-- Footer
-		table.insert(dashboard.section.footer.val, "⚡ Neovim loaded "
-		.. stats.loaded
-		.. "/"
-		.. stats.count
-		.. " plugins in "
-		.. ms
-		.. "ms")
+		table.insert(footer_lines, "⚡ Neovim loaded "
+		    .. stats.loaded
+		    .. "/"
+		    .. stats.count
+		    .. " plugins in "
+		    .. ms
+		    .. "ms")
+		dashboard.section.footer.val = center_footer_lines(footer_lines)
+
 		pcall(vim.cmd.AlphaRedraw)
 		dashboard.section.footer.opts.hl = "AlphaFooter"
 	    end,

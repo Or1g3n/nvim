@@ -144,17 +144,6 @@ return{
 	map.set('n', '<Leader>E', function () minifiles.open() end, { noremap = true, silent = true, desc = "Mini Files: Open file explorer (cwd)" })
 
 	-- Set pre-built bookmarks
-	local function read_bookmarks(file_path)
-	    local file = io.open(file_path, "r")
-	    if not file then
-		return {}
-	    end
-	    local content = file:read("*all")
-	    file:close()
-	    local bookmarks = vim.fn.json_decode(content)
-	    return bookmarks
-	end
-
 	local function set_mark(id, path, desc)
 	    if vim.fn.isdirectory(vim.fn.expand(path)) ~= 0 then
 		MiniFiles.set_bookmark(id, path, { desc = desc })
@@ -173,8 +162,7 @@ return{
 		set_mark('h', '~', 'Home directory')
 		set_mark('~', '~', 'Home directory')
 		-- Set client specific marks
-		local bookmarks_file_path = vim.fn.stdpath('config') .. "/local/bookmarks.json"
-		local bookmarks = read_bookmarks(bookmarks_file_path)
+		local bookmarks = require('local.minifiles.bookmarks')
 		for _, bookmark in ipairs(bookmarks) do
 		    set_mark(bookmark.id, bookmark.path, bookmark.desc)
 		end

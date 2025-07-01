@@ -9,36 +9,22 @@ return {
 	local alpha = require("alpha")
 	local dashboard = require("alpha.themes.dashboard")
 
-	-- Update this to whatever greeting messsage file
-	local greeting_path = vim.fn.stdpath('config') .. '/local/greeting.txt'
-	local function load_greeting(file_path)
-	    local file = io.open(file_path, "r")
-	    if file then
-		local greeting = file:read("*l")
-		file:close()
-		return greeting
-	    else
-		return "Welcome to Neovim!"
-	    end
+	local function safe_require(module, fallback)
+	    local ok, result = pcall(require, module)
+	    return ok and result or fallback
 	end
 
+	-- Update this to whatever greeting messsage file
+	local greeting = safe_require("local.alpha.greeting", "Welcome to Neovim!")
+
 	-- Update this to whatever random messsage file you like
-	local rand_message_path = vim.fn.stdpath('config') .. '/local/bible_verses.txt'
-	local function load_random_message(file_path)
-	    local file = io.open(file_path, "r")
-	    if not file then
-		return ""
-	    end
-	    local messages = {}
-	    for line in file:lines() do
-		table.insert(messages, line)
-	    end
-	    file:close()
+	local messages = safe_require("local.alpha.messages", {{ message = "Make it a great day." }})
+	local function load_random_message()
 	    if #messages == 0 then
 		return ""
 	    end
 	    local random_index = vim.fn.rand() % #messages + 1
-	    return messages[random_index]
+	    return messages[random_index].message
 	end
 
 	dashboard.section.header.val = {
@@ -114,8 +100,8 @@ return {
 	    callback = function()
 		local footer_lines = {
 		    "",
-		    load_greeting(greeting_path),
-		    load_random_message(rand_message_path),
+		    greeting,
+		    load_random_message(),
 		    "",
 		}
 		local stats = require("lazy").stats()

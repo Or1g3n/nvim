@@ -1,14 +1,9 @@
-local function on_company_vpn()
-    local handle = io.popen('ping -n 1 api.laci.l3harris.com')
-    if not handle then
-	return false
-    end
-    local result = handle:read("*a")
-    handle:close()
-    return result and result:find("TTL=") ~= nil
+local function safe_require(module, fallback)
+    local ok, result = pcall(require, module)
+    return ok and result or fallback
 end
 
-local default_adapter = on_company_vpn() and "laci_pixtral" or "copilot"
+local laci_pixtral = safe_require("local.codecompanion.laci_pixtral", {})
 
 return {
     "olimorris/codecompanion.nvim",
@@ -21,26 +16,25 @@ return {
 	    laci_pixtral = function()
 		return require("codecompanion.adapters").extend("openai_compatible", {
 		    env = {
-			url             = "https://api.laci.l3harris.com",
-			api_key         = os.getenv("LACI_API_KEY"),
-			chat_url        = "/v1/chat/completions",
-			models_endpoint = "/v1/models",
+			url             = laci_pixtral.config.env.url,
+			api_key         = laci_pixtral.config.env.api_key,
+			chat_url        = laci_pixtral.config.env.chat_url,
+			models_endpoint = laci_pixtral.config.env.models_endpoint,
 		    },
 		    schema = {
 			model = {
-			    default = "mistralai/Pixtral-12B-2409",
+			    default = laci_pixtral.config.schema.model.default,
 			},
 		    },
 		})
 	    end,
-	    -- copilot adapter assumed to be configured elsewhere
 	},
 	strategies = {
 	    chat = {
-		adapter = default_adapter,
+		adapter = next(laci_pixtral) ~= nil and "laci_pixtral" or "copilot",
 	    },
 	    inline = {
-		adapter = default_adapter,
+		adapter = next(laci_pixtral) ~= nil and "laci_pixtral" or "copilot",
 	    },
 	},
 	opts = {

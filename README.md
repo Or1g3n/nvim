@@ -15,7 +15,7 @@ This is my custom Neovim configuration, designed with love and optimized for pro
 
 - [Python]( https://www.python.org/downloads/ )
     ```bash
-    - pip install pynvim ipykernel
+    pip install pynvim ipykernel
     ```
 - zig  
     - **Windows (Scoop):**  

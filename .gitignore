@@ -1,2 +1,3 @@
 # Ignore nvim local
-local/
+lua/Or1g3n/plugins/local/
+lua/vsvim/plugins/local/

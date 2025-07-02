@@ -144,6 +144,11 @@ return{
 	map.set('n', '<Leader>E', function () minifiles.open() end, { noremap = true, silent = true, desc = "Mini Files: Open file explorer (cwd)" })
 
 	-- Set pre-built bookmarks
+	local function safe_require(module, fallback)
+	    local ok, result = pcall(require, module)
+	    return ok and result or fallback
+	end
+
 	local function set_mark(id, path, desc)
 	    if vim.fn.isdirectory(vim.fn.expand(path)) ~= 0 then
 		MiniFiles.set_bookmark(id, path, { desc = desc })
@@ -162,7 +167,7 @@ return{
 		set_mark('h', '~', 'Home directory')
 		set_mark('~', '~', 'Home directory')
 		-- Set client specific marks
-		local bookmarks = require('local.minifiles.bookmarks')
+		local bookmarks = safe_require('Or1g3n.plugins.local.minifiles.bookmarks', {})
 		for _, bookmark in ipairs(bookmarks) do
 		    set_mark(bookmark.id, bookmark.path, bookmark.desc)
 		end

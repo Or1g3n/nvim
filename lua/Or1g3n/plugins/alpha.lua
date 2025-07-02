@@ -15,10 +15,10 @@ return {
 	end
 
 	-- Update this to whatever greeting messsage file
-	local greeting = safe_require("local.alpha.greeting", "Welcome to Neovim!")
+	local greeting = safe_require("Or1g3n.plugins.local.alpha.greeting", "Welcome to Neovim!")
 
 	-- Update this to whatever random messsage file you like
-	local messages = safe_require("local.alpha.messages", {{ message = "Make it a great day." }})
+	local messages = safe_require("Or1g3n.plugins.local.alpha.messages", {{ message = "Make it a great day." }})
 	local function load_random_message()
 	    if #messages == 0 then
 		return ""

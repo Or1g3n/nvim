@@ -3,7 +3,7 @@ local function safe_require(module, fallback)
     return ok and result or fallback
 end
 
-local laci_pixtral = safe_require("local.codecompanion.laci_pixtral", {})
+local laci_pixtral = safe_require("Or1g3n.plugins.local.codecompanion.laci_pixtral", {})
 
 return {
     "olimorris/codecompanion.nvim",

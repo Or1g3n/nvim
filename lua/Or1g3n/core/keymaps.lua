@@ -280,3 +280,12 @@ map.set('c', '<C-H>', '<C-W>', { noremap = true, desc = "Cmd: Delete entire word
 
 -- Git
 map.set('n', '<A-g><A-c>', function() vim.cmd(":let @/ = '^<\\|^=\\|^>'") end, { noremap = true, desc = "Git: set search to conflict markers" })
+
+-- Pyproject selector
+map.set(
+  "n",
+  "<leader>pp",
+  require("Or1g3n.core.custom.pyproject_selector").python_project_picker,
+  { desc = "Pick a Python project and activate its venv" }
+)
+

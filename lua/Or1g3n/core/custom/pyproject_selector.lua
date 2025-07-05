@@ -44,9 +44,12 @@ function M.python_project_picker()
     if projects == nil then
 	vim.notify(
 [[
-Projects file does not exist. Please create at nvim/lua/Or1g3n/plugins/local/pyproject_selector/pyprojects.lua
+*pyprojects.lua file not found.*
+
+Create at nvim/lua/Or1g3n/plugins/local/pyproject_selector/pyprojects.lua
 
 Example:
+```lua
 -- pyprojects.lua
 return {
     { 
@@ -55,8 +58,11 @@ return {
 	venv = 'C:/Users/MyUser/MyProject/python/.venv'
     },
 }
+```
 ]],
-	    vim.log.levels.WARN)
+	    vim.log.levels.WARN,
+	{ title = "Python Projects", timeout = 5000 }
+	)
 	return
     end
 
@@ -89,7 +95,7 @@ return {
 	    -- 4) reload LSPs so they pick up new interpreter
 	    reload_lsps(python_exec)
 
-	    vim.notify("Activated venv: " .. p.name, vim.log.levels.INFO)
+	    vim.notify("Activated venv: " .. p.name, vim.log.levels.INFO, { title = "Python Projects" })
 	end,
     })
 end

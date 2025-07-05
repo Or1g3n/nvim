@@ -3,8 +3,8 @@ return {
     opts = {
 	notifier = {
 	    enabled = true,
-	    timeout = 3000, -- default timeout in ms
-	    width = { min = 40, max = 0.4 },
+	    timeout = 3000, -- timeout in ms
+	    width = { min = 30, max = 0.4 },
 	    height = { min = 1, max = 0.6 },
 	    -- editor margin to keep free. tabline and statusline are taken into account automatically
 	    margin = { top = 0, right = 1, bottom = 0 },

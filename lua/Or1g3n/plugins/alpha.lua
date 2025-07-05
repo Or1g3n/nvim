@@ -8,17 +8,13 @@ return {
     config = function()
 	local alpha = require("alpha")
 	local dashboard = require("alpha.themes.dashboard")
-
-	local function safe_require(module, fallback)
-	    local ok, result = pcall(require, module)
-	    return ok and result or fallback
-	end
+	local customutils = require("Or1g3n.core.custom.utils")
 
 	-- Update this to whatever greeting messsage file
-	local greeting = safe_require("Or1g3n.plugins.local.alpha.greeting", "Welcome to Neovim!")
+	local greeting = customutils.safe_require("Or1g3n.plugins.local.alpha.greeting", "Welcome to Neovim!")
 
 	-- Update this to whatever random messsage file you like
-	local messages = safe_require("Or1g3n.plugins.local.alpha.messages", {{ message = "Make it a great day." }})
+	local messages = customutils.safe_require("Or1g3n.plugins.local.alpha.messages", {{ message = "Make it a great day." }})
 	local function load_random_message()
 	    if #messages == 0 then
 		return ""

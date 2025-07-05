@@ -1,9 +1,5 @@
-local function safe_require(module, fallback)
-    local ok, result = pcall(require, module)
-    return ok and result or fallback
-end
-
-local laci_pixtral = safe_require("Or1g3n.plugins.local.codecompanion.laci_pixtral", {})
+local customutils = require("Or1g3n.core.custom.utils")
+local laci_pixtral = customutils.safe_require("Or1g3n.plugins.local.codecompanion.laci_pixtral", {})
 
 return {
     "olimorris/codecompanion.nvim",

@@ -28,30 +28,33 @@ This is my custom Neovim configuration, designed with love and optimized for pro
 - **Linux (apt):**  
   ```bash
   sudo add-apt-repository ppa:neovim-ppa/unstable -y
+  ```
+  ```bash
   sudo apt update
+  ```
+  ```bash
   sudo apt install make gcc ripgrep unzip git xclip neovim
   ```
-
+  
 ## Setting Up Your Config
 
 You have two options:
 
 1. **Clone the repo to any location, then copy it to your config path:**
-    
-    > [!Warning]
-    > Run these commands from inside the cloned directory!
 
-    - **Windows (cmd):**
-        ```bash
-        xcopy /E /H /Y . %localappdata%\nvim\
-        rd /s /q %localappdata%\nvim\.git
-        ```
+   **💡 Note:** Run these commands from inside the cloned directory!
 
-    - **macOS/Linux:**
-        ```bash
-        cp -r . "${XDG_CONFIG_HOME:-$HOME/.config}"/nvim
-        rm -rf "${XDG_CONFIG_HOME:-$HOME/.config}"/nvim/.git
-        ```
+   - **Windows (cmd):**
+     ```bash
+     xcopy /E /H /Y . %localappdata%\nvim\
+     rd /s /q %localappdata%\nvim\.git
+     ```
+
+   - **macOS/Linux:**
+     ```bash
+     cp -r . "${XDG_CONFIG_HOME:-$HOME/.config}"/nvim
+     rm -rf "${XDG_CONFIG_HOME:-$HOME/.config}"/nvim/.git
+     ```
 
 2. **Clone the repo directly to your config path:**
  

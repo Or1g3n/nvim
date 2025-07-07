@@ -72,19 +72,35 @@ You have two options:
 
 ## Getting started
 
+- **Neovim Tutor**
+
+    If you are new to neovim, I highly recommend learning/practicing vim fundementals using Tutor mode. To activate, run the following in command mode:
+
+   **💡 Note:** To enter command mode, press `:` from normal mode.
+
+    ```vim
+    :Tutor
+    ```
+
 - **Important Key Maps**
 
     **💡 Note:** To fuzzy find all available keymaps, press `<Leader>sk`.
 
-    **💡 Note:** The below is NOT exhaustive but a highlight of common actions.
-
     **💡 Note:** For non-plugin specific keymaps, see `nvim/lua/Or1g3n/core/keymaps.lua`. For plugin specific keymaps see the corresponding plugin.lua file found in `nvim/lua/Or1g3n/plugins`.
+
+    **💡 Note:** The below is NOT exhaustive but a highlight of common actions.
 
     - Keymaps and Help search
         | Keymap | Description | 
         | -------------- | -------------- |
         | `<Leader>sk` | Open keymaps fuzzy finder |
         | `<Leader>sh` | Open help doc search |
+
+    - Terminal
+        | Keymap | Description | 
+        | -------------- | -------------- |
+        | `<Leader>t` | Toggle floating terminal |
+        | `<Esc><Esc>` | Enter normal mode |
 
     - File explore/search
         | Keymap | Description | 
@@ -99,6 +115,11 @@ You have two options:
         | `<Leader>w` | Save buffer |
         | `<Leader>bd` | Close buffer |
         | `<Leader>q` | Force quit buffer |
+        | `<A-h>` | Resize window left |
+        | `<A-l>` | Resize window right |
+        | `<A-j>` | Resize window down |
+        | `<A-k>` | Resize window up |
+        | `<A-=>` | Resize equally |
 
     - Buffer navigation
         | Keymap | Description | 
@@ -107,10 +128,10 @@ You have two options:
         | `<C-l>` | Move focus right |
         | `<C-j>` | Move focus down |
         | `<C-k>` | Move focus up |
-        | `<C-h>` | Move window left |
-        | `<C-l>` | Move window right |
-        | `<C-k>` | Move window up |
-        | `<C-j>` | Move window down |
+        | `<Leader>h` | Move window left |
+        | `<Leader>l` | Move window right |
+        | `<Leader>k` | Move window up |
+        | `<Leader>j` | Move window down |
 
 - **Optimized jupyter notebook experience**
     - **jupytext**
@@ -120,7 +141,7 @@ You have two options:
             notebook_metadata_filter="-all"
             cell_metadata_filter="-all"
             ```
-    - **To initializing a new notebook, run the following nvim command**
+    - **To initializing a new notebook, run the following in command mode:**
 
        **💡 Note:** To enter command mode, press `:` from normal mode.
 

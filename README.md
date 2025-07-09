@@ -149,6 +149,33 @@ You have two options:
         :NewNoteBook note_book_name
         ```
 
+    - **`Ctrl+Enter` and `Shift+Enter` keymaps will work as expected within a notebook**
+        - If your terminal does not support those inputs, then `<Leader>xc` and `<Leader>xb` will perform the same behavior respectively
+        - Workaround for Windows Terminal
+            - Add the following to your Windows Terminal settings.json config file:
+            ```json
+            "actions": 
+            [
+                {
+                    "command": 
+                    {
+                        "action": "sendInput",
+                        "input": "\u001b[13;5u"
+                    },
+                    "id": "User.sendInput.F8A79DCB"
+                },
+                {
+                    "command": 
+                    {
+                        "action": "sendInput",
+                        "input": "\u001b[13;2u"
+                    },
+                    "id": "User.sendInput.8882FD6D"
+                }
+            ],
+            ```
+        - For all notebook cell related keymaps, open the keymap fuzzy finder, `<Leader>sk`, and search "Quarto"
+
 - **Client specific customizations**
 
     This configuration allows adding client specific customizations via files added to the local folder (.gitignore in the root config directory excludes this folder). The idea here is that certain configurations such as bookmarks, llm api keys/adapters, or project directories are specific to certain machine and should not be included in git history.

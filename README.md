@@ -35,6 +35,14 @@ This is my custom Neovim configuration, designed with love and optimized for pro
   ```bash
   sudo apt install make gcc ripgrep unzip git xclip neovim
   ```
+- [Nerd Font](https://www.nerdfonts.com)
+
+   **💡 Note:** Make sure you choose a `Mono` font
+
+    - To get the best visual experience, install a Nerd Font of your choice and set as your terminal font
+    - Personal recommendations:
+        - JetBrainsMono Nerd Font
+        - Fira Code Nerd Font
 
 ## Setting Up Your Config
 

@@ -264,7 +264,6 @@ You have two options:
         - Note, the below is an example and should be updated with your specific requirements. To complete the configuration, update the codecompanion config file found at `nvim/lua/Or1g3n/plugins/codecompanion.lua`.
             ```lua
             -- nvim/lua/Or1g3n/plugins/local/codecompanion/custom_adapter.lua
-            -- 
             local M = {}
 
             M.config = {

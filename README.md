@@ -19,21 +19,27 @@ This is my custom Neovim configuration, designed with love and optimized for pro
   ```
 - **Windows ([Scoop](https://scoop.sh)):**  
   ```bash
-  scoop install neovim git zig nodejs ripgrep fd wget unzip gzip mingw make
+  scoop install neovim git zig nodejs ripgrep fd wget unzip gzip mingw make nu
   ```
 - **macOS (Homebrew):**  
   ```bash
-  brew install neovim git zig nodejs ripgrep fd wget unzip gzip make
+  brew install neovim git zig nodejs ripgrep fd wget unzip gzip make nushell
   ```
 - **Linux (apt):**  
   ```bash
   sudo add-apt-repository ppa:neovim-ppa/unstable -y
   ```
   ```bash
+  curl -fsSL https://apt.fury.io/nushell/gpg.key | sudo gpg --dearmor -o /etc/apt/trusted.gpg.d/fury-nushell.gpg
+  ```
+  ```bash
+  echo "deb https://apt.fury.io/nushell/ /" | sudo tee /etc/apt/sources.list.d/fury.list
+  ```
+  ```bash
   sudo apt update
   ```
   ```bash
-  sudo apt install make gcc ripgrep unzip git xclip neovim
+  sudo apt install make gcc ripgrep unzip git xclip neovim nushell
   ```
 - [Nerd Font](https://www.nerdfonts.com)
 
@@ -241,15 +247,15 @@ You have two options:
             ```lua
             -- nvim/lua/Or1g3n/plugins/local/pyproject_selector/pyprojects.lua
             return {
-              {
-                name = "project_1",
-                dir  = "C:/Users/MyUser/repos/project_1",
-                venv = "C:/Users/MyUser/repos/project_1/.venv",
-              },
+                {
+                    name = "project_1",
+                    dir  = "C:/Users/MyUser/repos/project_1",
+                    venv = "C:/Users/MyUser/repos/project_1/.venv",
+                },
                 name = "project_2",
                 dir  = "C:/Users/MyUser/repos/project_2",
                 venv = "C:/Users/MyUser/repos/project_2/.venv",
-              },
+            },
             }
             ```
 

@@ -13,6 +13,15 @@ This is my custom Neovim configuration, designed with love and optimized for pro
 
 ## Requirements
 
+- [Nerd Font](https://www.nerdfonts.com)
+
+   **💡 Note:** Make sure you choose a `Mono` font
+
+    - To get the best visual experience, install a Nerd Font of your choice and set as your terminal font
+    - Personal recommendations:
+        - JetBrainsMono Nerd Font
+        - Fira Code Nerd Font
+
 - **[Python]( https://www.python.org/downloads/ )**
   ```bash
   pip install pynvim ipykernel jupytext
@@ -41,14 +50,6 @@ This is my custom Neovim configuration, designed with love and optimized for pro
   ```bash
   sudo apt install make gcc ripgrep unzip git xclip neovim nushell
   ```
-- [Nerd Font](https://www.nerdfonts.com)
-
-   **💡 Note:** Make sure you choose a `Mono` font
-
-    - To get the best visual experience, install a Nerd Font of your choice and set as your terminal font
-    - Personal recommendations:
-        - JetBrainsMono Nerd Font
-        - Fira Code Nerd Font
 
 ## Setting Up Your Config
 
@@ -58,7 +59,7 @@ You have two options:
 
    **💡 Note:** Run these commands from inside the cloned directory!
 
-   - **Windows (cmd):**
+   - **Windows (Command Prompt):**
      ```bash
      xcopy /E /H /Y . %localappdata%\nvim\
      rd /s /q %localappdata%\nvim\.git
@@ -72,7 +73,7 @@ You have two options:
 
 2. **Clone the repo directly to your config path:**
 
-    - **Windows (cmd):**
+    - **Windows (Command Prompt):**
         ```bash
         git clone https://github.com/Or1g3n/nvim.git "%localappdata%\nvim"
         rd /s /q "%localappdata%\nvim\.git"
@@ -104,7 +105,7 @@ You have two options:
 
     **💡 Note:** The below is NOT exhaustive but a highlight of common actions.
 
-    - Keymaps and Help search
+    - Search Keymaps and Help
         | Keymap | Description | 
         | -------------- | -------------- |
         | `<Leader>sk` | Open keymaps fuzzy finder |
@@ -123,7 +124,7 @@ You have two options:
         | `<Leader><Leader>` | Open file fuzzy finder |
         | `<Leader>fc` | Open config file fuzzy finder |
 
-    - Buffer management
+    - Buffer/Window management
         | Keymap | Description | 
         | -------------- | -------------- |
         | `<Leader>w` | Save buffer |
@@ -133,9 +134,9 @@ You have two options:
         | `<A-l>` | Resize window right |
         | `<A-j>` | Resize window down |
         | `<A-k>` | Resize window up |
-        | `<A-=>` | Resize equally |
+        | `<A-=>` | Resize windows equally |
 
-    - Buffer navigation
+    - Window navigation
         | Keymap | Description | 
         | -------------- | -------------- |
         | `<C-h>` | Move focus left |
@@ -210,8 +211,8 @@ You have two options:
     | | | | | | custom_adapter.lua
     | | | | | minifiles/
     | | | | | | bookmarks.lua
-    | | | | | pyproject_selector/
-    | | | | | | pyprojects.lua
+    | | | | | project_picker/
+    | | | | | | projects.lua
     ```
 
     - alpha (Neovim dashboard plugin)
@@ -240,22 +241,21 @@ You have two options:
             }
             ```
 
-    - pyproject_selector (Python Project Selector)
-        - To customize pyproject_selector picker. Add the following `pyprojects.lua` to the local/pyproject_selector directory (create if it doesn't exist).
+    - project_picker (Change working directory to project of choice)
+        - To customize project_picker options. Add the following `projects.lua` to the local/project_picker directory (create if it doesn't exist).
         - To activate the picker, press `<Leader>pp`.
-        - Selecting a project will automatically set the working directory to `dir` and activate the python virtual environment specified by `venv`.
+        - Selecting a project will automatically set the working directory to `dir`.
             ```lua
-            -- nvim/lua/Or1g3n/plugins/local/pyproject_selector/pyprojects.lua
+            -- nvim/lua/Or1g3n/plugins/local/project_picker/projects.lua
+            -- example
             return {
                 {
                     name = "project_1",
                     dir  = "C:/Users/MyUser/repos/project_1",
-                    venv = "C:/Users/MyUser/repos/project_1/.venv",
                 },
-                name = "project_2",
-                dir  = "C:/Users/MyUser/repos/project_2",
-                venv = "C:/Users/MyUser/repos/project_2/.venv",
-            },
+                    name = "project_2",
+                    dir  = "C:/Users/MyUser/repos/project_2",
+                },
             }
             ```
 

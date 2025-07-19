@@ -1,12 +1,11 @@
 return {
     "nvim-treesitter/nvim-treesitter",
     event = { "BufReadPre", "BufNewFile" },
-    build = ":TSUpdate",
     dependencies = {
 	"windwp/nvim-ts-autotag",
-	{"nushell/tree-sitter-nu", build = ":TSUpdate nu"},
 	"nvim-treesitter/nvim-treesitter-textobjects",
     },
+    build = ":TSUpdate",
     config = function()
 	-- import nvim-treesitter plugin
 	local treesitter = require("nvim-treesitter.configs")
@@ -41,6 +40,7 @@ return {
 		"lua",
 		"markdown",
 		"markdown_inline",
+		"nu",
 		"python",
 		"query",
 		"sql",

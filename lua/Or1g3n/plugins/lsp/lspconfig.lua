@@ -70,7 +70,7 @@ return {
 
 		-- vim built-in based lsp keymaps
 		opts.desc = "LSP: Show documentation for what is under cursor"
-		map.set("n", "K", vim.lsp.buf.hover, opts)
+		map.set("n", "K", function() vim.lsp.buf.hover({ border = 'single' }) end, opts)
 
 		opts.desc = "LSP: Go to declaration"
 		map.set("n", "gD", vim.lsp.buf.declaration, opts)

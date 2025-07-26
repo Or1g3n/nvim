@@ -191,6 +191,14 @@ You have two options:
             ```
         - For all notebook cell related keymaps, open the keymap fuzzy finder, `<Leader>sk`, and search "Quarto"
 
+    - **To export Jupyter Notebook as .py run the following in command mode:**
+
+       **💡 Note:** File will be exported to the location of your current working directory
+
+        ```vim
+        :JupytextExportAsPy
+        ```
+
 - **Client specific customizations**
 
     This configuration allows adding client specific customizations via files added to the local folder (.gitignore in the root config directory excludes this folder). The idea here is that certain configurations such as bookmarks, llm api keys/adapters, or project directories are specific to certain machine and should not be included in git history.

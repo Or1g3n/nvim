@@ -163,6 +163,9 @@ map.set("n", "k", -- Improve nagivating wrapped line behavior
     { expr = true }
 )
 
+-- Visual Select
+map.set('n', 'vv', 'V', { noremap = true, silent = true, desc = "Editor: ergonomic way to start visual line mode" })
+
 -- Copy / Paste
 map.set('n', '<Leader>y', '"+y', { noremap = true, silent = true, desc = "Editor: Copy motion into clipboard" })
 map.set('n', '<Leader>Y', '"+Y', { noremap = true, silent = true, desc = "Editor: Copy line into clipboard" })

@@ -27,10 +27,10 @@ return {
 	},
 	strategies = {
 	    chat = {
-		adapter = next(laci_pixtral) ~= nil and "laci_pixtral" or "copilot",
+		adapter = next(laci_pixtral) ~= nil and laci_pixtral.enabled and "laci_pixtral" or "copilot",
 	    },
 	    inline = {
-		adapter = next(laci_pixtral) ~= nil and "laci_pixtral" or "copilot",
+		adapter = next(laci_pixtral) ~= nil and laci_pixtral.enabled and "laci_pixtral" or "copilot",
 	    },
 	},
 	opts = {

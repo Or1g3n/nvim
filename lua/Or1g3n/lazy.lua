@@ -20,8 +20,9 @@ require("lazy").setup({
     spec = {
 	-- import your plugins
 	{ import = "Or1g3n.plugins" },
-	{ import = "Or1g3n.plugins.lsp" },
+	{ import = "Or1g3n.plugins.ai" },
 	{ import = "Or1g3n.plugins.debug" },
+	{ import = "Or1g3n.plugins.lsp" },
 	{ import = "Or1g3n.plugins.snacks" },
     },
     checker = {

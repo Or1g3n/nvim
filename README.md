@@ -148,7 +148,16 @@ You have two options:
         | `<Leader>k` | Move window up |
         | `<Leader>j` | Move window down |
 
+    - AI Code Assistance
+
+        | Keymap | Description | 
+        | -------------- | -------------- |
+        | `<Leader>cp` | Toggle GitHub Copilot inline suggestions |
+
+        **💡 Note:** Requires running `:CopilotSetup` in command mode to initialize GitHub Copilot
+
 - **Optimized jupyter notebook experience**
+
     - **jupytext**
         - Add jupytext.toml to your home directory with below settings
             ```toml
@@ -157,8 +166,6 @@ You have two options:
             cell_metadata_filter="-all"
             ```
     - **To initializing a new notebook, run the following in command mode:**
-
-       **💡 Note:** To enter command mode, press `:` from normal mode.
 
         ```vim
         :NewNoteBook note_book_name
@@ -198,6 +205,24 @@ You have two options:
         ```vim
         :JupytextExportAsPy
         ```
+
+- **AI plugins**
+
+    - GitHub Copilot
+        - To get started, run the following in command mode:
+        ```vim
+        :CopilotSetup
+        ```
+        - To toggle Copilot inline suggestions, press `<Leader>cp`
+            - Disabled by default but this can be changed by setting vim.g.copilot_enable = true
+            ```lua
+            -- nvim/lua/Or1g3n/plugins/ai/copilot.lua
+            vim.g.copilot_enabled = false -- Set to true to enable Copilot inline suggestions by default
+            ```
+    - CodeCompanion
+        - This plugin provides a customizable LLM agent for code generation and assistance.
+        - **Defaults to GitHub Copilot**, but can be configured to use other LLMs.
+        - Add custom LLM adapters in the local directory as described [below](#codecompanion-llm-agent).
 
 - **Client specific customizations**
 
@@ -261,6 +286,7 @@ You have two options:
                     name = "project_1",
                     dir  = "C:/Users/MyUser/repos/project_1",
                 },
+                {
                     name = "project_2",
                     dir  = "C:/Users/MyUser/repos/project_2",
                 },

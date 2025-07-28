@@ -4,7 +4,7 @@ return {
     'github/copilot.vim',
     enabled = true,
     config = function()
-	vim.g.copilot_enabled = true
+	vim.g.copilot_enabled = false
 	vim.keymap.set('n', '<leader>cp', function()
 	    vim.g.copilot_enabled = not vim.g.copilot_enabled
 	    if vim.g.copilot_enabled then

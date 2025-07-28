@@ -148,7 +148,12 @@ return{
 	    if vim.fn.isdirectory(vim.fn.expand(path)) ~= 0 then
 		MiniFiles.set_bookmark(id, path, { desc = desc })
 	    else
-		vim.notify("MiniFiles: Bookmark path is not valid " .. path, vim.log.levels.INFO)
+		vim.notify(
+		    "MiniFiles: Bookmark path is not valid **" .. path .. "**\n\n" ..
+		    "Please update **" .. string.gsub(vim.fn.stdpath('config') .. "/lua/Or1g3n/local/minifiles/bookmarks.lua", '\\', '/') .. "**",
+		    vim.log.levels.INFO,
+		    { timeout = 5000 }
+		)
 	    end
 	end
 

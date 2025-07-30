@@ -96,7 +96,7 @@ return {
 			["<c-u>"] = { "list_scroll_up", mode = { "i", "n" } },
 			["<ScrollWheelDown>"] = { "list_scroll_wheel_down", mode = { "i", "n" } },
 			["<ScrollWheelUp>"] = { "list_scroll_wheel_up", mode = { "i", "n" } },
-			["<c-v>"] = { "edit_vsplit", mode = { "i", "n" } },
+			["<leader>v"] = { "edit_vsplit", mode = { "n" } },
 			["<c-s>"] = { "edit_split", mode = { "i", "n" } },
 			["<c-q>"] = { "qflist", mode = { "i", "n" } },
 			["<a-i>"] = { "toggle_ignored", mode = { "i", "n" } },

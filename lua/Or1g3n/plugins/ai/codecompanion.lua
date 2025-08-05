@@ -7,6 +7,7 @@ return {
 	"nvim-lua/plenary.nvim",
 	"nvim-treesitter/nvim-treesitter",
     },
+    lazy = false,
     opts = {
 	adapters = {
 	    laci_pixtral = function()

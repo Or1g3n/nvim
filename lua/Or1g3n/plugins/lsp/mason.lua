@@ -14,7 +14,6 @@ return {
 
 	-- import mason-lspconfig
 	local mason_lspconfig = require("mason-lspconfig")
-
 	local mason_tool_installer = require("mason-tool-installer")
 
 	-- enable mason and configure icons
@@ -25,6 +24,7 @@ return {
 		    package_pending = "➜",
 		    package_uninstalled = "✗",
 		},
+		border = "rounded",
 	    },
 	})
 

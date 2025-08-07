@@ -26,7 +26,8 @@ return {
 	-- Set global defaults
 	vim.diagnostic.config({
 	    virtual_text = true,
-	    virtual_lines = false
+	    virtual_lines = false,
+	    float = { border = "rounded" },
 	})
 	-- Toggle diagnostics
 	map.set("n", "<leader>vt",
@@ -70,7 +71,7 @@ return {
 
 		-- vim built-in based lsp keymaps
 		opts.desc = "LSP: Show documentation for what is under cursor"
-		map.set("n", "K", function() vim.lsp.buf.hover({ border = 'single' }) end, opts)
+		map.set("n", "K", function() vim.lsp.buf.hover({ border = 'rounded' }) end, opts)
 
 		opts.desc = "LSP: Go to declaration"
 		map.set("n", "gD", vim.lsp.buf.declaration, opts)

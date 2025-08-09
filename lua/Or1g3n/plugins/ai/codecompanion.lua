@@ -39,6 +39,6 @@ return {
 	},
     },
     keys = {
-	{ mode = 'n', "<leader>ai", "<cmd>CodeCompanionChat<CR>", desc = "CodeCompanion: Open Chat" },
+	{ mode = 'n', "<leader>ai", "<cmd>CodeCompanionChat Toggle<CR>", desc = "CodeCompanion: Open Chat" },
     }
 }

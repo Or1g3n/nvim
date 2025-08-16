@@ -141,8 +141,24 @@ return{
 	})
 
 	-- Global keymaps
-	map.set('n', '<Leader>e', function () minifiles.open(vim.api.nvim_buf_get_name(0), true) end, { noremap = true, silent = true, desc = "Mini Files: Open file explorer (file directory)" })
-	map.set('n', '<Leader>E', function () minifiles.open() end, { noremap = true, silent = true, desc = "Mini Files: Open file explorer (cwd)" })
+	map.set('n', '<Leader>e',
+	    function()
+		local path = vim.api.nvim_buf_get_name(0)
+		-- Check if the path exists and is a directory or file
+		if path ~= '' and vim.uv.fs_stat(path) then
+		    minifiles.open(path, true)
+		else
+		    minifiles.open(nil, true) -- fallback to cwd
+		end
+	    end,
+	    { noremap = true, silent = true, desc = "Mini Files: Open file explorer (file directory or cwd fallback)" }
+	)
+	map.set('n', '<Leader>E',
+	    function()
+		minifiles.open()
+	    end,
+	    { noremap = true, silent = true, desc = "Mini Files: Open file explorer (cwd)" }
+	)
 
 	local function set_mark(id, path, desc)
 	    if vim.fn.isdirectory(vim.fn.expand(path)) ~= 0 then

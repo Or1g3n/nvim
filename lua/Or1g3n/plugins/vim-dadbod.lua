@@ -24,20 +24,15 @@ return {
     config = function()
 	local function execute_sql_statement_under_cursor()
 	    local ts_utils = require('nvim-treesitter.ts_utils')
-	    local bufnr = vim.api.nvim_get_current_buf()
 	    local node = ts_utils.get_node_at_cursor()
 	    while node and node:type() ~= 'statement' do
 		node = node:parent()
 	    end
 	    if node then
 		local start_row, start_col, end_row, end_col = node:range()
-		local lines = vim.api.nvim_buf_get_lines(bufnr, start_row, end_row + 1, false)
-		if #lines > 0 then
-		    lines[#lines] = string.sub(lines[#lines], 1, end_col)
-		    lines[1] = string.sub(lines[1], start_col + 1)
-		    local sql = table.concat(lines, '\n')
-		    vim.cmd('DB ' .. sql)
-		end
+		start_row = start_row + 1
+		end_row = end_row + 1
+		vim.cmd(start_row .. ',' .. end_row .. 'DB')
 	    else
 		print('No SQL statement found under cursor.')
 	    end

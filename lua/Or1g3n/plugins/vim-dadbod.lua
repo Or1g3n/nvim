@@ -16,6 +16,7 @@ return {
 	vim.g.db_ui_use_nvim_notify = 1
 	vim.g.db_ui_show_database_icon = 1
 	vim.g.db_ui_disable_progress_bar = 1
+	vim.g.db_ui_save_location = vim.fn.stdpath('config') .. '/lua/Or1g3n/plugins/local/vim_dadbod_ui'
 
 	-- Global keymaps
 	vim.keymap.set('n', '<A-s><A-u>', ':DBUIToggle<CR>', { silent = true, desc = 'vim-dadbob: Toggle DBUI' })

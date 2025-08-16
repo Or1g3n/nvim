@@ -49,13 +49,17 @@ return{
 	-- elsewhere in your config, without redefining it, due to `opts_extend`
 	sources = {
 	    default = { 'lsp', 'path', 'snippets', 'buffer' },
+	    per_filetype = {
+		sql = { 'snippets', 'dadbod', 'buffer' },
+	    },
 	    providers = {
 		cmdline = {
 		    -- ignores cmdline completions when executing shell commands
 		    enabled = function()
 			return vim.fn.getcmdtype() ~= ':' or not vim.fn.getcmdline():find("!")
 		    end
-		}
+		},
+		dadbod = { name = "Dadbod", module = "vim_dadbod_completion.blink" },
 	    }
 	},
 	-- experimental signature help support

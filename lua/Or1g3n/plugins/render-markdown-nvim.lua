@@ -10,6 +10,7 @@ return {
 	require('render-markdown').setup({
 	    render_modes = true,
 	    file_types = { 'markdown', 'codecompanion' },
+	    restart_highlighter = true, -- restart tree sitter on attach to avoid invalid state
 	    code = {
 		-- Turn on / off code block & inline code rendering.
 		enabled = true,

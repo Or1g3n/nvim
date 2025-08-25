@@ -225,8 +225,11 @@ return {
                     vim.api.nvim_win_set_cursor(0, { cur_num, 0 })
                 end
 
-                vim.keymap.set('n', 'j', smart_down, { buffer = true, desc = "Smart down (skip cell tags)" })
-                vim.keymap.set('n', 'k', smart_up,   { buffer = true, desc = "Smart up (skip cell tags)" })
+		-- If jupyter notebook add smart up/down keymaps
+		if vim.fn.expand('%:e') == 'ipynb' then
+		    vim.keymap.set('n', 'j', smart_down, { buffer = true, desc = "Smart down (skip cell tags)" })
+		    vim.keymap.set('n', 'k', smart_up,   { buffer = true, desc = "Smart up (skip cell tags)" })
+		end
 
                 -- Add keymaps for adding/removing new code blocks
                 -- Add new block after current

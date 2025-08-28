@@ -34,6 +34,10 @@ return{
 		auto_show = function()
 		    return vim.bo.buftype ~= "prompt" and vim.b.completion ~= false and vim.bo.filetype ~= "TelescopePrompt"
 		end,
+		border = 'rounded'
+	    },
+	    documentation = {
+		window = { border = 'rounded' }
 	    },
 	},
 	appearance = {
@@ -63,7 +67,10 @@ return{
 	    }
 	},
 	-- experimental signature help support
-	signature = { enabled = true },
+	signature = {
+	    enabled = true,
+	    window = { border = 'rounded' }
+	},
 	cmdline = {
 	    enabled = true,
 	    keymap = {

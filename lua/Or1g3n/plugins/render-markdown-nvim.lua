@@ -83,6 +83,34 @@ return {
 		-- Highlight for inline code.
 		highlight_inline = 'RenderMarkdownCodeInline',
 	    },
+	    heading = {
+		backgrounds = {
+		    -- 'RenderMarkdownH1Bg',
+		    -- 'RenderMarkdownH2Bg',
+		    -- 'RenderMarkdownH3Bg',
+		    -- 'RenderMarkdownH4Bg',
+		    -- 'RenderMarkdownH5Bg',
+		    -- 'RenderMarkdownH6Bg',
+		},
+	    },
+	    overrides = {
+		filetype = {
+		    codecompanion = {
+			html = {
+			    tag = {
+				buf = { icon = " ", highlight = "CodeCompanionChatIcon" },
+				file = { icon = " ", highlight = "CodeCompanionChatIcon" },
+				group = { icon = " ", highlight = "CodeCompanionChatIcon" },
+				help = { icon = "󰘥 ", highlight = "CodeCompanionChatIcon" },
+				image = { icon = " ", highlight = "CodeCompanionChatIcon" },
+				symbols = { icon = " ", highlight = "CodeCompanionChatIcon" },
+				tool = { icon = "󰯠 ", highlight = "CodeCompanionChatIcon" },
+				url = { icon = "󰌹 ", highlight = "CodeCompanionChatIcon" },
+			    },
+			},
+		    },
+		},
+	    },
 	})
 
 	-- Set keymaps

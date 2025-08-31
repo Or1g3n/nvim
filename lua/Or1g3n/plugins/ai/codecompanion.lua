@@ -10,21 +10,23 @@ return {
     lazy = false,
     opts = {
 	adapters = {
-	    laci_pixtral = function()
-		return require("codecompanion.adapters").extend("openai_compatible", {
-		    env = {
-			url             = laci_pixtral.config.env.url,
-			api_key         = laci_pixtral.config.env.api_key,
-			chat_url        = laci_pixtral.config.env.chat_url,
-			models_endpoint = laci_pixtral.config.env.models_endpoint,
-		    },
-		    schema = {
-			model = {
-			    default = laci_pixtral.config.schema.model.default,
+	    http = {
+		laci_pixtral = function()
+		    return require("codecompanion.adapters").extend("openai_compatible", {
+			env = {
+			    url             = laci_pixtral.config.env.url,
+			    api_key         = laci_pixtral.config.env.api_key,
+			    chat_url        = laci_pixtral.config.env.chat_url,
+			    models_endpoint = laci_pixtral.config.env.models_endpoint,
 			},
-		    },
-		})
-	    end,
+			schema = {
+			    model = {
+				default = laci_pixtral.config.schema.model.default,
+			    },
+			},
+		    })
+		end,
+	    }
 	},
 	strategies = {
 	    chat = {

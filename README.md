@@ -28,11 +28,11 @@ This is my custom Neovim configuration, designed with love and optimized for pro
   ```
 - **Windows ([Scoop](https://scoop.sh)):**  
   ```bash
-  scoop install neovim git zig nodejs ripgrep fd wget unzip gzip mingw make nu
+  scoop install neovim git zig nodejs ripgrep fd curl unzip gzip mingw make nu
   ```
 - **macOS (Homebrew):**  
   ```bash
-  brew install neovim git zig nodejs ripgrep fd wget unzip gzip make nushell
+  brew install neovim git zig nodejs ripgrep fd curl unzip gzip make nushell
   ```
 - **Linux (apt):**  
   ```bash

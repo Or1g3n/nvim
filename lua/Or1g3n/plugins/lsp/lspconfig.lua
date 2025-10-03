@@ -1,8 +1,7 @@
 return {
     "neovim/nvim-lspconfig",
-    event = { "BufReadPre", "BufNewFile" },
+    lazy = false,
     dependencies = {
-	'saghen/blink.cmp',
 	{
 	    "folke/lazydev.nvim",
 	    ft = "lua", -- only load on lua files
@@ -17,8 +16,6 @@ return {
 	'folke/snacks.nvim',
     },
     config = function()
-	local capabilities = require('blink.cmp').get_lsp_capabilities()
-	local lspconfig = require("lspconfig")
 	local snacks = require('snacks')
 	local map = vim.keymap -- for conciseness
 
@@ -130,79 +127,35 @@ return {
 	})
 
 	-- LSP CONFIGS
-	-- must explicitly call lspconfig.{server}.setup({}) for LSP to attach to Neovim buffer
-	-- passing empty table to .setup({}) will use default configuration for lsp
 
-	-- Configure lsp-json for json
-	lspconfig.jsonls.setup({
-	    cmd = { "vscode-json-language-server", "--stdio" },
-	    filetypes = { "json", "jsonc" },
-	    init_options = {
-		provideFormatter = true
-	    },
-	    single_file_support = true
+	-- Add .git as root_marker globally
+	vim.lsp.config("*", {
+	    root_markers = { ".git" },
 	})
 
-	-- Configure the Lua language server
-	lspconfig.lua_ls.setup({
-	    capabilities = capabilities,
-	    settings = {
-		Lua = {
-		    runtime = {
-			version = 'LuaJIT', -- Use LuaJIT for Neovim
-			path = vim.split(package.path, ';'),
-		    },
-		    diagnostics = { globals = { "vim" } }, -- Recognize 'vim' as a global
-		    workspace = {
-			library = vim.api.nvim_get_runtime_file('', true),
-			checkThirdParty = false, -- Disable third-party library checks
-		    },
-		    completion = { callSnippet = "Replace" },
-		    hint =  { enable = true },
-		    type = { enable = true }
-		},
-	    },
-	})
+	-- As of neovim v11+, lsp configs have been moved to nvim/lsp
+	-- mason-lspconfig.nvim will auto-enable lsps installed via mason
+	-- The below config is an example of how to manually enable/configure an lsp
+	-- See :h lspconfig-quickstart for more details
 
 	-- Configure Pyright for Python
-	lspconfig.pyright.setup({
-	    cmd = { vim.fn.stdpath("data") .. "/mason/bin/pyright-langserver", "--stdio" },
-	    capabilities = capabilities,
-	    single_file_support = true,
-	    root_dir = function(fname)
-		-- Use the directory containing the .git folder or fallback to the file's directory
-		local startpath = vim.fs.dirname(fname)
-		local git_root = vim.fs.dirname(vim.fs.find('.git', { path = startpath, upward = true })[1])
-		return git_root or startpath
-	    end,
-	    settings = {
-		pyright = {
-		    disableOrganizeImports = true, -- Using Ruff's import organizer
-		},
-		python = {
-		    analysis = {
-			-- Ignore all files for analysis to exclusively use Ruff for linting
-			diagnosticMode = "openFilesOnly",
-			autoImportCompletions = false,
-		    },
-		},
-	    },
-	})
-
-	-- Configure Marksman for Markdown
-	lspconfig.marksman.setup({
-	    filetypes = { "markdown", "md" },
-	    capabilities = capabilities,
-	    root_dir = function(fname)
-		-- Use the directory containing the .git folder or fallback to the file's directory
-		local startpath = vim.fs.dirname(fname)
-		local git_root = vim.fs.dirname(vim.fs.find('.git', { path = startpath, upward = true })[1])
-		return git_root or startpath
-	    end,
-	})
-
-	-- Configure ZLS for Zig
-	require('lspconfig').zls.setup{}
+	-- vim.lsp.config('pyright', {
+	--     cmd = { vim.fn.stdpath("data") .. "/mason/bin/pyright-langserver", "--stdio" },
+	--     single_file_support = true,
+	--     settings = {
+	-- 	pyright = {
+	-- 	    disableOrganizeImports = true, -- Using Ruff's import organizer
+	-- 	},
+	-- 	python = {
+	-- 	    analysis = {
+	-- 		-- Ignore all files for analysis to exclusively use Ruff for linting
+	-- 		diagnosticMode = "openFilesOnly",
+	-- 		autoImportCompletions = false,
+	-- 	    },
+	-- 	},
+	--     },
+	-- })
+	-- vim.lsp.enable('pyright')
 
     end,
 }

@@ -25,6 +25,16 @@ require("lazy").setup({
 	{ import = "Or1g3n.plugins.lsp" },
 	{ import = "Or1g3n.plugins.snacks" },
     },
+    rocks = {
+	enabled = true,
+	root = vim.fn.stdpath("data") .. "/lazy-rocks",
+	server = "https://nvim-neorocks.github.io/rocks-binaries/",
+	-- use hererocks to install luarocks?
+	-- set to `nil` to use hererocks when luarocks is not found
+	-- set to `true` to always use hererocks
+	-- set to `false` to always use luarocks
+	hererocks = nil,
+    },
     checker = {
 	-- automatically check for plugin updates
 	enabled = false,
@@ -39,6 +49,6 @@ require("lazy").setup({
 	notify = false, -- get a notification when changes are found
     },
     ui = {
-        border = "rounded",
+	border = "rounded",
     }
 })

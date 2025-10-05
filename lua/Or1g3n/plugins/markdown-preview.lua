@@ -1,10 +1,10 @@
 local function get_build_cmd()
     if vim.o.shell == "nu" then
-	return "cd app; npm install"
+	return "cd app; npm install; git restore ."
     elseif vim.loop.os_uname().version:match("Windows") then
-	return "cd app & npm install"
+	return "cd app & npm install & git restore ."
     else
-	return "cd app && npm install"
+	return "cd app && npm install && git restore ."
     end
 end
 

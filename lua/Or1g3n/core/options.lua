@@ -41,9 +41,6 @@ end
 -- Set all options
 for option, value in pairs(options) do vim.opt[option] = value end
 
--- Match theme set by terminal
-vim.cmd("highlight Normal ctermbg=NONE guibg=NONE")
-
 -- Global configurations
 vim.g.netrw_liststyle = 3 -- Set netrw (:Explorer) list style to tree
 

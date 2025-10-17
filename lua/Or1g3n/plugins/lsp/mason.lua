@@ -33,6 +33,9 @@ return {
 		"pyright",
 		"jsonls",
 	    },
+	    automatic_enable = {
+		exclude = { "basedpyright" }
+	    }
 	})
 
 	mason_tool_installer.setup({

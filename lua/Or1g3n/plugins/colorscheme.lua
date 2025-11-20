@@ -4,7 +4,7 @@ local load_all = true -- Set to true to load all colorschemes eagerly
 vim.o.background = 'dark' -- Set to 'dark', 'light'; plugins will adapt if they support it
 
 -- Set global transparent background option
-vim.g.transparent_background = false -- Set to true for transparent background
+vim.g.transparent_background = true -- Set to true for transparent background
 
 -- Define colorscheme to plugin mapping; this is neeced to handle different variants
 -- and to identify which plugin to configure when a colorscheme is applied
@@ -121,7 +121,7 @@ local colorscheme_setups = {
 	    },
 	    transparent_background = is_transparent, -- disables setting the background color.
 	    float = {
-		transparent = false, -- enable transparent floating windows
+		transparent = true, -- enable transparent floating windows
 		solid = false, -- use solid styling for floating windows, see |winborder|
 	    },
 	    show_end_of_buffer = false, -- shows the '~' characters after the end of buffers

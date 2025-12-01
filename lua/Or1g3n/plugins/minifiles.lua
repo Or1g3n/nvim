@@ -137,6 +137,23 @@ return{
 		-- Ctrl h/l for normal left right navigation
 		map.set('n','<C-h>', 'h', { buffer = buf_id, desc = 'Minifiles: Left naviation' })
 		map.set('n','<C-l>', 'l', { buffer = buf_id, desc = 'Minifiles: Right naviation' })
+
+		-- Custom Edit Mode Toggle for mini.files
+		local edit_mode_active = false
+		local function toggle_edit_mode()
+		    edit_mode_active = not edit_mode_active
+		    if edit_mode_active then
+			vim.keymap.del('n', 'h', { buffer = buf_id })
+			vim.keymap.del('n', 'l', { buffer = buf_id })
+			vim.notify('MiniFiles: Edit mode enabled', vim.log.levels.INFO)
+		    else
+			vim.keymap.set('n', 'h', function() minifiles.go_out() end, { buffer = buf_id, desc = 'Minifiles: Left navigation' })
+			vim.keymap.set('n', 'l', function() minifiles.go_in() end, { buffer = buf_id, desc = 'Minifiles: Right navigation' })
+			vim.notify('MiniFiles: Edit mode disabled', vim.log.levels.INFO)
+		    end
+		end
+		-- Toggle edit mode with <Leader>ee
+		vim.keymap.set('n', '<Leader>ee', toggle_edit_mode, { buffer = buf_id, desc = 'Toggle MiniFiles Edit Mode' })
 	    end,
 	})
 

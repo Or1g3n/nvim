@@ -133,10 +133,10 @@ return{
 		-- Map key for yank file path
 		map.set('n', 'gy', yank_path, { buffer = buf_id, desc = 'Yank path' })
 		-- Escape to close
-		map.set('n','<Esc>',function() minifiles.close() end, { buffer = buf_id, desc = 'Minifiles: Close' })
+		map.set('n','<Esc>',function() minifiles.close() end, { buffer = buf_id, desc = 'MiniFiles: Close' })
 		-- Ctrl h/l for normal left right navigation
-		map.set('n','<C-h>', 'h', { buffer = buf_id, desc = 'Minifiles: Left naviation' })
-		map.set('n','<C-l>', 'l', { buffer = buf_id, desc = 'Minifiles: Right naviation' })
+		map.set('n','<C-h>', 'h', { buffer = buf_id, desc = 'MiniFiles: Left naviation' })
+		map.set('n','<C-l>', 'l', { buffer = buf_id, desc = 'MiniFiles: Right naviation' })
 
 		-- Custom Edit Mode Toggle for mini.files
 		local edit_mode_active = false
@@ -147,13 +147,13 @@ return{
 			vim.keymap.del('n', 'l', { buffer = buf_id })
 			vim.notify('MiniFiles: Edit mode enabled', vim.log.levels.INFO)
 		    else
-			vim.keymap.set('n', 'h', function() minifiles.go_out() end, { buffer = buf_id, desc = 'Minifiles: Left navigation' })
-			vim.keymap.set('n', 'l', function() minifiles.go_in() end, { buffer = buf_id, desc = 'Minifiles: Right navigation' })
+			vim.keymap.set('n', 'h', function() minifiles.go_out() end, { buffer = buf_id, desc = 'MiniFiles: Left navigation' })
+			vim.keymap.set('n', 'l', function() minifiles.go_in() end, { buffer = buf_id, desc = 'MiniFiles: Right navigation' })
 			vim.notify('MiniFiles: Edit mode disabled', vim.log.levels.INFO)
 		    end
 		end
 		-- Toggle edit mode with <Leader>ee
-		vim.keymap.set('n', '<Leader>ee', toggle_edit_mode, { buffer = buf_id, desc = 'Toggle MiniFiles Edit Mode' })
+		vim.keymap.set('n', '<Leader>ee', toggle_edit_mode, { buffer = buf_id, desc = 'MiniFiles: Toggle Edit Mode' })
 	    end,
 	})
 
@@ -168,13 +168,13 @@ return{
 		    minifiles.open(nil, true) -- fallback to cwd
 		end
 	    end,
-	    { noremap = true, silent = true, desc = "Mini Files: Open file explorer (file directory or cwd fallback)" }
+	    { noremap = true, silent = true, desc = "MiniFiles: Open file explorer (file directory or cwd fallback)" }
 	)
 	map.set('n', '<Leader>E',
 	    function()
 		minifiles.open()
 	    end,
-	    { noremap = true, silent = true, desc = "Mini Files: Open file explorer (cwd)" }
+	    { noremap = true, silent = true, desc = "MiniFiles: Open file explorer (cwd)" }
 	)
 
 	local function set_mark(id, path, desc)

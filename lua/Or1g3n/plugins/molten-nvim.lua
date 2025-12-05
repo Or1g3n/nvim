@@ -178,52 +178,60 @@ return {
                         or (tags.cell_end ~= '' and line_text == tags.cell_end)
                 end
 
-                local function smart_down()
-                    local count = vim.v.count
-                    if count > 0 then
-                        return vim.cmd("normal! " .. count .. "j")
-                    end
-                    local cur_num = vim.fn.line(".")
-                    local next_num = cur_num + 1
-                    local next_text = vim.fn.getline(next_num)
-                    local max_num = vim.fn.line("$")
-                    if (next_num == max_num) and next_text == tags.cell_end then
-                        return
-                    end
-                    if vim.fn.searchpair('^' .. tags.cell_start .. '$','','^' .. tags.cell_end .. '$', 'ncbW') > 0 and next_text ~= tags.cell_end then
-                        return vim.cmd("normal! " .. "j")
-                    end
-                    while cur_num < max_num do
-                        cur_num = cur_num + 1
-                        if not is_skip_line(cur_num) then
-                            break
-                        end
-                    end
-                    vim.api.nvim_win_set_cursor(0, { cur_num, 0 })
-                end
+		local function smart_down()
+		    local count = vim.v.count
+		    if count > 0 then
+			return vim.cmd("normal! " .. count .. "j")
+		    end
+		    local cur_num = vim.fn.line(".")
+		    local next_num = cur_num + 1
+		    local next_text = vim.fn.getline(next_num)
+		    local max_num = vim.fn.line("$")
+		    -- If next line is folded, use normal movement
+		    if vim.fn.foldclosed(next_num) ~= -1 then
+			return vim.cmd("normal! j")
+		    end
+		    if (next_num == max_num) and next_text == tags.cell_end then
+			return
+		    end
+		    if vim.fn.searchpair('^' .. tags.cell_start .. '$','','^' .. tags.cell_end .. '$', 'ncbW') > 0 and next_text ~= tags.cell_end then
+			return vim.cmd("normal! " .. "j")
+		    end
+		    while cur_num < max_num do
+			cur_num = cur_num + 1
+			if not is_skip_line(cur_num) then
+			    break
+			end
+		    end
+		    vim.api.nvim_win_set_cursor(0, { cur_num, 0 })
+		end
 
-                local function smart_up()
-                    local count = vim.v.count
-                    if count > 0 then
-                        return vim.cmd("normal! " .. count .. "k")
-                    end
-                    local cur_num = vim.fn.line(".")
-                    local prev_num = cur_num - 1
-                    local prev_text = vim.fn.getline(prev_num)
-                    if (prev_num == 1) and prev_text == tags.cell_start then
-                        return
-                    end
-                    if vim.fn.searchpair('^' .. tags.cell_start .. '$','','^' .. tags.cell_end .. '$', 'ncbW') > 0 and prev_text ~= tags.cell_start then
-                        return vim.cmd("normal! " .. "k")
-                    end
-                    while cur_num > 1 do
-                        cur_num = cur_num - 1
-                        if not is_skip_line(cur_num) then
-                            break
-                        end
-                    end
-                    vim.api.nvim_win_set_cursor(0, { cur_num, 0 })
-                end
+		local function smart_up()
+		    local count = vim.v.count
+		    if count > 0 then
+			return vim.cmd("normal! " .. count .. "k")
+		    end
+		    local cur_num = vim.fn.line(".")
+		    local prev_num = cur_num - 1
+		    local prev_text = vim.fn.getline(prev_num)
+		    -- If previous line is folded, use normal movement
+		    if vim.fn.foldclosed(prev_num) ~= -1 then
+			return vim.cmd("normal! k")
+		    end
+		    if (prev_num == 1) and prev_text == tags.cell_start then
+			return
+		    end
+		    if vim.fn.searchpair('^' .. tags.cell_start .. '$','','^' .. tags.cell_end .. '$', 'ncbW') > 0 and prev_text ~= tags.cell_start then
+			return vim.cmd("normal! " .. "k")
+		    end
+		    while cur_num > 1 do
+			cur_num = cur_num - 1
+			if not is_skip_line(cur_num) then
+			    break
+			end
+		    end
+		    vim.api.nvim_win_set_cursor(0, { cur_num, 0 })
+		end
 
 		-- If jupyter notebook add smart up/down keymaps
 		if vim.fn.expand('%:e') == 'ipynb' then

@@ -45,7 +45,7 @@ for option, value in pairs(options) do vim.opt[option] = value end
 vim.g.netrw_liststyle = 3 -- Set netrw (:Explorer) list style to tree
 
 -- Markdown folding
-vim.g.markdown_folding = 1 -- Auto adds fold markers for markdown
+-- vim.g.markdown_folding = 1 -- Auto adds fold markers for markdown (Legacy). Turn off to use treesitter.
 vim.wo.foldlevel = 9999  -- This prevents the folds from collapsing
 
 -- Jupytext format

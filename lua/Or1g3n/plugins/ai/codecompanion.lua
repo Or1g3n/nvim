@@ -9,6 +9,7 @@ return {
     },
     lazy = false,
     opts = {
+	ignore_warnings = true,
 	adapters = {
 	    http = {
 		laci_pixtral = function()

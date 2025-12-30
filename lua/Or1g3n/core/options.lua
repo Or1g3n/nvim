@@ -12,6 +12,8 @@ local options = {
     scrolloff = 10,
     cursorline = true,
     linebreak = true,
+    breakindent = true,
+    breakindentopt = 'list:-1',
     -- Search
     hlsearch = false,
     incsearch = true,

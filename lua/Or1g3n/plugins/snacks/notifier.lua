@@ -4,8 +4,9 @@ return {
 	notifier = {
 	    enabled = true,
 	    timeout = 3000, -- timeout in ms
-	    width = { min = 30, max = 0.4 },
+	    width = { min = 30, max = 0.6 },
 	    height = { min = 1, max = 0.6 },
+	    -- wo = { wrap = true },
 	    -- editor margin to keep free. tabline and statusline are taken into account automatically
 	    margin = { top = 0, right = 1, bottom = 0 },
 	    padding = true, -- add 1 cell of left/right padding to the notification window

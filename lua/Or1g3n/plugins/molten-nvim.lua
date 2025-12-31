@@ -139,6 +139,16 @@ return {
         vim.api.nvim_create_autocmd("BufEnter", {
             pattern = { "*.qmd", "*.md", "*.ipynb" },
             callback = function(e)
+		-- Graceful error if Python provider is missing
+		if vim.fn.has('python3') == 0 or vim.g.python3_host_prog == nil then
+		    vim.notify(
+			"Molten.nvim: Python 3 provider not found. Don't forget to activate your virtual environment.",
+			vim.log.levels.ERROR,
+			{ timeout = 5000 }
+		    )
+		    return
+		end
+
                 if string.match(e.file, ".otter.") then
                     return
                 end

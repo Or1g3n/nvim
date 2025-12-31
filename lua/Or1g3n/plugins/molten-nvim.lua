@@ -116,10 +116,26 @@ return {
             end,
         })
 
+	-- Graceful error if Python provider is missing
+	local function python_is_active()
+	    if vim.fn.has('python3') == 0 then
+		vim.notify(
+		    "Molten.nvim: Python 3 provider not found. Don't forget to activate your virtual environment.",
+		    vim.log.levels.ERROR,
+		    { timeout = 5000 }
+		)
+		return false
+	    else
+		return true
+	    end
+	end
+
         -- Change the configuration when editing a python file
         vim.api.nvim_create_autocmd("BufEnter", {
             pattern = "*.py",
             callback = function(e)
+		if python_is_active() == false then return end
+
                 if string.match(e.file, ".otter.") then
                     return
                 end
@@ -139,15 +155,7 @@ return {
         vim.api.nvim_create_autocmd("BufEnter", {
             pattern = { "*.qmd", "*.md", "*.ipynb" },
             callback = function(e)
-		-- Graceful error if Python provider is missing
-		if vim.fn.has('python3') == 0 then
-		    vim.notify(
-			"Molten.nvim: Python 3 provider not found. Don't forget to activate your virtual environment.",
-			vim.log.levels.ERROR,
-			{ timeout = 5000 }
-		    )
-		    return
-		end
+		if python_is_active() == false then return end
 
                 if string.match(e.file, ".otter.") then
                     return

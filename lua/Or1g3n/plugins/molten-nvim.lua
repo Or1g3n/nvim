@@ -140,7 +140,7 @@ return {
             pattern = { "*.qmd", "*.md", "*.ipynb" },
             callback = function(e)
 		-- Graceful error if Python provider is missing
-		if vim.fn.has('python3') == 0 or vim.g.python3_host_prog == nil then
+		if vim.fn.has('python3') == 0 then
 		    vim.notify(
 			"Molten.nvim: Python 3 provider not found. Don't forget to activate your virtual environment.",
 			vim.log.levels.ERROR,

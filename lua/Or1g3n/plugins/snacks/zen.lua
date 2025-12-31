@@ -9,7 +9,7 @@ return    {
 		minimal = false,
                 width = function()
                     -- Set width to 80% of the current screen width, minimum 80, maximum 160
-                    local w = math.floor(vim.o.columns * 0.8)
+                    local w = math.floor(vim.o.columns * 0.6)
                     if w < 80 then w = 80 end
                     if w > 220 then w = 220 end
                     return w

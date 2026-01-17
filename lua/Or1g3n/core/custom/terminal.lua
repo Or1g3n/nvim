@@ -18,8 +18,20 @@ local state = {
 
 local function create_floating_window(opts)
     opts = opts or {}
-    local width = opts.width or math.floor(vim.o.columns * 0.8)
-    local height = opts.height or math.floor(vim.o.lines * 0.8)
+
+    -- Check required opts
+    if opts.title == nil then
+	vim.notify(
+	    'Missing required option: `title`',
+	    vim.log.levels.ERROR,
+	    { title = 'Create Floating Window', timeout = 5000 }
+	)
+	return
+    end
+
+    local scaling_factor = opts.scaling_factor or .8
+    local width = opts.width or math.floor(vim.o.columns * scaling_factor)
+    local height = opts.height or math.floor(vim.o.lines * scaling_factor)
 
     -- Calculate the position to center the window
     local col = math.floor((vim.o.columns - width) / 2)
@@ -33,18 +45,20 @@ local function create_floating_window(opts)
 	buf = vim.api.nvim_create_buf(false, true) -- No file
     end
 
-    -- Define window configuration
-    local win_config = {
+    -- Define base window configuration and merge in user options
+    local base_win_config = {
 	relative = 'editor',
 	width = width,
 	height = height,
 	col = col,
 	row = row,
-	style = 'minimal', -- No borders or extra UI elements
+	style = 'minimal',
 	border = 'rounded',
-	title = ' Terminal ',
+	title = ' ' .. opts.title .. ' ',
 	title_pos = 'center'
     }
+
+    local win_config = vim.tbl_deep_extend("force", base_win_config, opts.win_config or {})
 
     -- Create the floating window
     local win = vim.api.nvim_open_win(buf, true, win_config)
@@ -54,7 +68,11 @@ end
 
 local toggle_terminal = function()
     if not vim.api.nvim_win_is_valid(state.floating.win) then
-	state.floating = create_floating_window({ buf = state.floating.buf })
+	result = create_floating_window({ title = 'Terminal', buf = state.floating.buf })
+	if not result then
+	    return -- Exit if create_floating_window failed
+	end
+	state.floating = result
 	if vim.bo[state.floating.buf].buftype ~= 'terminal' then
 	    vim.cmd.terminal()
 	    vim.cmd.startinsert() -- Start in insert mode

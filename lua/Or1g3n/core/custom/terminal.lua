@@ -16,63 +16,13 @@ local state = {
     }
 }
 
-local function create_floating_window(opts)
-    opts = opts or {}
+local utils = require('Or1g3n.core.custom.utils')
 
-    -- Check required opts
-    if opts.title == nil then
-	vim.notify(
-	    'Missing required option: `title`',
-	    vim.log.levels.ERROR,
-	    { title = 'Create Floating Window', timeout = 5000 }
-	)
-	return
-    end
-
-    local scaling_factor = opts.scaling_factor or .8
-    local width = opts.width or math.floor(vim.o.columns * scaling_factor)
-    local height = opts.height or math.floor(vim.o.lines * scaling_factor)
-
-    -- Calculate the position to center the window
-    local col = math.floor((vim.o.columns - width) / 2)
-    local row = math.floor((vim.o.lines - height) / 2)
-
-    -- Create a buffer
-    local buf = nil
-    if vim.api.nvim_buf_is_valid(opts.buf) then
-	buf = opts.buf
-    else
-	buf = vim.api.nvim_create_buf(false, true) -- No file
-    end
-
-    -- Define base window configuration and merge in user options
-    local base_win_config = {
-	relative = 'editor',
-	width = width,
-	height = height,
-	col = col,
-	row = row,
-	style = 'minimal',
-	border = 'rounded',
-	title = ' ' .. opts.title .. ' ',
-	title_pos = 'center'
-    }
-
-    local win_config = vim.tbl_deep_extend("force", base_win_config, opts.win_config or {})
-
-    -- Create the floating window
-    local win = vim.api.nvim_open_win(buf, true, win_config)
-
-    return { buf = buf, win = win }
-end
+local terminal_win_config = { title = ' Terminal ', title_pos = 'center' }
 
 local toggle_terminal = function()
     if not vim.api.nvim_win_is_valid(state.floating.win) then
-	result = create_floating_window({ title = 'Terminal', buf = state.floating.buf })
-	if not result then
-	    return -- Exit if create_floating_window failed
-	end
-	state.floating = result
+	state.floating = utils.create_floating_window({ win_config = terminal_win_config, buf = state.floating.buf })
 	if vim.bo[state.floating.buf].buftype ~= 'terminal' then
 	    vim.cmd.terminal()
 	    vim.cmd.startinsert() -- Start in insert mode

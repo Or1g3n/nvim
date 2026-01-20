@@ -3,5 +3,7 @@ return {
     version = false,
     enabled = true,
     dependencies = "nvim-tree/nvim-web-devicons",
-    opts = {}
+    opts = {
+	enhanced_diff_hl = true
+    }
 }

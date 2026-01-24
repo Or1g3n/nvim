@@ -1,6 +1,7 @@
 return {
     "Or1g3n/molten-nvim",
     version = "^1.0.0", -- Use version <2.0.0 to avoid breaking changes
+    branch = 'eval-func-with-callback',
     build = ":UpdateRemotePlugins",
     init = function()
         -- Output settings

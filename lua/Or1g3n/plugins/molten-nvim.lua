@@ -8,14 +8,6 @@ local state = {
     }
 }
 
-local var_win_config = {
-    title = ' Variables ',
-    title_pos = 'center',
-    relative = 'cursor',
-    row = 1,
-    col = 0,
-}
-
 local show_kernel_vars = function(result)
     local buf = vim.api.nvim_create_buf(false, true)
     vim.api.nvim_buf_set_lines(buf, 0, -1, false, vim.split(result.output, "\n"))
@@ -27,6 +19,19 @@ local show_kernel_vars = function(result)
     end
 
     -- Otherwise, create the float
+    local cur_row = vim.fn.winline()
+    local cur_height = vim.api.nvim_win_get_height(0)
+    local anchor_val = (cur_row < (cur_height / 2)) and 'NW' or 'SW'
+
+    local var_win_config = {
+	anchor = anchor_val,
+	title = ' Variables ',
+	title_pos = 'center',
+	relative = 'cursor',
+	row = (anchor_val == 'NW') and 1 or 0,
+	col = 0,
+    }
+
     state.floating = utils.create_floating_window({ scaling_factor = .4, win_config = var_win_config, buf = buf })
 
     -- Set 'q' to close the float

@@ -1,7 +1,10 @@
 return{
     'saghen/blink.cmp',
     enabled = true,
-    dependencies = 'rafamadriz/friendly-snippets',
+    dependencies = {
+	'folke/lazydev.nvim',
+	'rafamadriz/friendly-snippets',
+    },
     -- use a release tag to download pre-built binaries
     version = 'v0.*',
     ---@module 'blink.cmp'
@@ -52,11 +55,17 @@ return{
 	-- default list of enabled providers defined so that you can extend it
 	-- elsewhere in your config, without redefining it, due to `opts_extend`
 	sources = {
-	    default = { 'lsp', 'path', 'snippets', 'buffer' },
+	    default = { "lazydev", "lsp", "path", "snippets", "buffer" },
 	    per_filetype = {
 		sql = { 'snippets', 'dadbod', 'buffer' },
 	    },
 	    providers = {
+		lazydev = {
+		    name = "LazyDev",
+		    module = "lazydev.integrations.blink",
+		    -- make lazydev completions top priority (see `:h blink.cmp`)
+		    score_offset = 100,
+		},
 		cmdline = {
 		    -- ignores cmdline completions when executing shell commands
 		    enabled = function()

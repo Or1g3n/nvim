@@ -10,7 +10,8 @@ local state = {
 
 local show_kernel_vars = function(result)
     local buf = vim.api.nvim_create_buf(false, true)
-    vim.api.nvim_buf_set_lines(buf, 0, -1, false, vim.split(result.output, "\n"))
+    local buf_lines = vim.split(result.output, '\n')
+    vim.api.nvim_buf_set_lines(buf, 0, -1, false, buf_lines)
 
     -- If float is open, jump to it
     if vim.api.nvim_win_is_valid(state.floating.win) then
@@ -32,7 +33,11 @@ local show_kernel_vars = function(result)
 	col = 0,
     }
 
-    state.floating = utils.create_floating_window({ scaling_factor = .4, win_config = var_win_config, buf = buf })
+    state.floating = utils.create_floating_window({
+	scaling_factor = .4,
+	win_config = var_win_config,
+	buf = buf
+    })
 
     -- Set 'q' to close the float
     vim.api.nvim_buf_set_keymap(buf, 'n', 'q', '', {
@@ -165,7 +170,41 @@ return {
 		vim.keymap.set("n", "<A-r><A-g>", function() run_cell(false) end, { silent = true, buffer = true, desc = "Molten: run cell" })
 		vim.keymap.set("n", "<C-CR>", function() run_cell(false) end, { silent = true, buffer = true, desc = "Molten: run cell" })
 		vim.keymap.set('n', '<A-r><A-k>', function()
-		    local code = "{k: v for k, v in globals().items() if not k.startswith('_') and k not in ['In', 'Out', 'get_ipython', 'exit', 'quit', 'open', 'sys'] and not k.startswith('__') and k not in dir(__builtins__)}"
+		    local code = [[
+def _molten_show_vars():
+    import pandas as pd
+    import types
+    import pprint
+
+    def format_dict(d):
+        pretty = pprint.pformat(d, indent=2, width=80)
+        # Add braces on separate lines
+        if pretty.startswith('{') and pretty.endswith('}'):
+            pretty = '{\n' + pretty[1:-1].strip() + '\n}'
+        return pretty
+
+    lines = []
+    for k, v in list(globals().items()):
+        if k.startswith('_') or k in ['In', 'Out', 'get_ipython', 'exit', 'quit', 'open', 'sys'] or k in dir(__builtins__):
+            continue
+        if isinstance(v, types.ModuleType):
+            continue
+        tname = type(v).__name__
+        if isinstance(v, pd.DataFrame):
+            lines.append(f"{k}: DataFrame {v.shape} =\n{v.head().to_string(index=False)}")
+        elif isinstance(v, dict):
+            pretty = format_dict(v)
+            lines.append(f"{k}: dict = {pretty}")
+        elif isinstance(v, list):
+            preview = pprint.pformat(v, indent=2, width=80)
+            lines.append(f"{k}: list = {preview}")
+        else:
+            lines.append(f"{k}: {tname} = {repr(v)}")
+    print('\n\n'.join(lines))
+
+_molten_show_vars()
+del _molten_show_vars
+]]
 		    vim.fn.MoltenEvaluateArgument(code, { on_done = "require('Or1g3n/plugins/molten-nvim').show_kernel_vars" })
 		end, { desc = 'Molten: Show kernel variables' })
 	    end,

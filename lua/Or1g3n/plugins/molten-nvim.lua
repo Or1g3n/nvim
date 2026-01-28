@@ -176,16 +176,24 @@ def _molten_show_vars():
     import types
     import pprint
 
-    def format_dict(d):
-        pretty = pprint.pformat(d, indent=2, width=80)
-        # Add braces on separate lines
-        if pretty.startswith('{') and pretty.endswith('}'):
-            pretty = '{\n' + pretty[1:-1].strip() + '\n}'
-        return pretty
+    def format_dict(d: dict):
+        if not d: # dict is empty
+            return '{}'
+        indent = 2
+        pretty = pprint.pformat(d, indent=indent, width=80)
+        lines = pretty[1:-1].strip().split('\n')
+        lines[0] = (' ' * indent) + lines[0] # add indent to first item
+        formatted = '{\n' + '\n'.join(lines) + '\n}'
+        return formatted
 
     lines = []
     for k, v in list(globals().items()):
-        if k.startswith('_') or k in ['In', 'Out', 'get_ipython', 'exit', 'quit', 'open', 'sys'] or k in dir(__builtins__):
+        if (
+            k.startswith('_')
+            or k in ['In', 'Out', 'get_ipython', 'exit', 'quit', 'open', 'sys']
+            or k in dir(__builtins__)
+            or isinstance(v, (types.FunctionType, types.BuiltinFunctionType, types.MethodType))
+        ):
             continue
         if isinstance(v, types.ModuleType):
             continue
@@ -200,7 +208,7 @@ def _molten_show_vars():
             lines.append(f"{k}: list = {preview}")
         else:
             lines.append(f"{k}: {tname} = {repr(v)}")
-    print('\n\n'.join(lines))
+    print('\n\n'.join(lines), end='')
 
 _molten_show_vars()
 del _molten_show_vars

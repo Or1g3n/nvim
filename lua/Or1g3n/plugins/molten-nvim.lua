@@ -8,10 +8,13 @@ local state = {
     }
 }
 
-local show_kernel_vars = function(result)
+local function show_kernel_vars(result)
     local buf = vim.api.nvim_create_buf(false, true)
     local buf_lines = vim.split(result.output, '\n')
     vim.api.nvim_buf_set_lines(buf, 0, -1, false, buf_lines)
+
+    -- Set filetype to python
+    vim.bo[buf].filetype = 'python'
 
     -- If float is open, jump to it
     if vim.api.nvim_win_is_valid(state.floating.win) then
@@ -52,6 +55,145 @@ local show_kernel_vars = function(result)
 	desc = "Molten: Close kernel variables float"
     })
 end
+
+local function parse_python_vars(output)
+    local lines = vim.split(output, '\n')
+    local vars = {}
+    local i = 1
+    while i <= #lines do
+        -- Skip empty lines
+        while i <= #lines and lines[i] == "" do
+            i = i + 1
+        end
+        if i > #lines then break end
+
+        -- First non-empty line is always the variable declaration
+        local decl = lines[i]
+        local key, type_, value = decl:match("^(.-):%s*(.-)%s*=%s*(.*)$")
+        if key and type_ and value then
+            local full_key = key .. ": " .. type_
+            local block = {value}
+            i = i + 1
+            -- Collect all following lines until the next empty line
+            while i <= #lines and lines[i] ~= "" do
+                table.insert(block, lines[i])
+                i = i + 1
+            end
+            -- Remove leading empty lines in block
+            while #block > 0 and block[1]:match("^%s*$") do
+                table.remove(block, 1)
+            end
+            vars[full_key] = table.concat(block, "\n")
+        else
+            i = i + 1
+        end
+    end
+    return vars
+end
+
+local function fuzzy_find_kernel_vars(result)
+    local vars = parse_python_vars(result.output)
+    local items = {}
+    for k, v in pairs(vars) do
+	table.insert(items, {
+	    text = k,    -- for fuzzy matching
+	    label = k,   -- for display
+	    preview = { text = v, ft = 'python' },   -- for preview
+	})
+    end
+
+    Snacks.picker({
+	source = 'Variables',
+	items = items,
+	preview = 'preview',
+	confirm = function(picker)
+	    picker:close()
+	end,
+    })
+end
+
+-- local test_str = [[
+-- yay: str = 'hello'
+--
+-- wow: str = 'world'
+--
+-- my_dict: dict = {
+--   'wow': 'world', 'yay': 'hello'
+-- }
+--
+-- data: dict = {
+--   'col1': [1, 2, 3, 4, 5],
+--   'col2': [1, 2, 3, 4, 5],
+--   'col3': [1, 2, 3, 4, 5],
+--   'col4': [1, 2, 3, 4, 5],
+--   'col5': [1, 2, 3, 4, 5]
+-- }
+--
+-- df: DataFrame (5, 5) =
+--  col1  col2  col3  col4  col5
+--     1     1     1     1     1
+--     2     2     2     2     2
+--     3     3     3     3     3
+--     4     4     4     4     4
+--     5     5     5     5     5
+--
+-- listy: list = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+--
+-- listx: tuple = (2, 3, 4, 5, 6, 7, 8, 9, 10)
+--
+-- num: int = 1932789379841
+--
+-- floaty: float = 1.23
+-- ]]
+--
+-- local yay = {
+--     output = test_str
+-- }
+-- fuzzy_find_kernel_vars(yay)
+
+local python_get_kernel_vars_code = [[
+def _molten_show_vars():
+    import pandas as pd
+    import types
+    import pprint
+
+    def format_dict(d: dict):
+        if not d: # dict is empty
+            return '{}'
+        indent = 2
+        pretty = pprint.pformat(d, indent=indent, width=80)
+        lines = pretty[1:-1].strip().split('\n')
+        lines[0] = (' ' * indent) + lines[0] # add indent to first item
+        formatted = '{\n' + '\n'.join(lines) + '\n}'
+        return formatted
+
+    lines = []
+    for k, v in list(globals().items()):
+        if (
+            k.startswith('_')
+            or k in ['In', 'Out', 'get_ipython', 'exit', 'quit', 'open', 'sys']
+            or k in dir(__builtins__)
+            or isinstance(v, (types.FunctionType, types.BuiltinFunctionType, types.MethodType))
+        ):
+            continue
+        if isinstance(v, types.ModuleType):
+            continue
+        tname = type(v).__name__
+        if isinstance(v, pd.DataFrame):
+            lines.append(f"{k}: DataFrame {v.shape} =\n{v.head().to_string(index=False)}")
+        elif isinstance(v, dict):
+            pretty = format_dict(v)
+            lines.append(f"{k}: dict = {pretty}")
+        elif isinstance(v, list):
+            preview = pprint.pformat(v, indent=2, width=80)
+            lines.append(f"{k}: list = {preview}")
+        else:
+            lines.append(f"{k}: {tname} = {repr(v)}")
+    print('\n\n'.join(lines), end='')
+
+_molten_show_vars()
+del _molten_show_vars
+]]
 
 return {
     "Or1g3n/molten-nvim",
@@ -170,51 +312,17 @@ return {
 		vim.keymap.set("n", "<A-r><A-g>", function() run_cell(false) end, { silent = true, buffer = true, desc = "Molten: run cell" })
 		vim.keymap.set("n", "<C-CR>", function() run_cell(false) end, { silent = true, buffer = true, desc = "Molten: run cell" })
 		vim.keymap.set('n', '<A-r><A-k>', function()
-		    local code = [[
-def _molten_show_vars():
-    import pandas as pd
-    import types
-    import pprint
-
-    def format_dict(d: dict):
-        if not d: # dict is empty
-            return '{}'
-        indent = 2
-        pretty = pprint.pformat(d, indent=indent, width=80)
-        lines = pretty[1:-1].strip().split('\n')
-        lines[0] = (' ' * indent) + lines[0] # add indent to first item
-        formatted = '{\n' + '\n'.join(lines) + '\n}'
-        return formatted
-
-    lines = []
-    for k, v in list(globals().items()):
-        if (
-            k.startswith('_')
-            or k in ['In', 'Out', 'get_ipython', 'exit', 'quit', 'open', 'sys']
-            or k in dir(__builtins__)
-            or isinstance(v, (types.FunctionType, types.BuiltinFunctionType, types.MethodType))
-        ):
-            continue
-        if isinstance(v, types.ModuleType):
-            continue
-        tname = type(v).__name__
-        if isinstance(v, pd.DataFrame):
-            lines.append(f"{k}: DataFrame {v.shape} =\n{v.head().to_string(index=False)}")
-        elif isinstance(v, dict):
-            pretty = format_dict(v)
-            lines.append(f"{k}: dict = {pretty}")
-        elif isinstance(v, list):
-            preview = pprint.pformat(v, indent=2, width=80)
-            lines.append(f"{k}: list = {preview}")
-        else:
-            lines.append(f"{k}: {tname} = {repr(v)}")
-    print('\n\n'.join(lines), end='')
-
-_molten_show_vars()
-del _molten_show_vars
-]]
-		    vim.fn.MoltenEvaluateArgument(code, { on_done = "require('Or1g3n/plugins/molten-nvim').show_kernel_vars" })
+		    vim.fn.MoltenEvaluateArgument(
+			python_get_kernel_vars_code,
+			{ on_done = "require('Or1g3n/plugins/molten-nvim').show_kernel_vars" }
+		    )
 		end, { desc = 'Molten: Show kernel variables' })
+		vim.keymap.set('n', '<A-r><A-f>', function()
+		    vim.fn.MoltenEvaluateArgument(
+			python_get_kernel_vars_code,
+			{ on_done = "require('Or1g3n/plugins/molten-nvim').fuzzy_find_kernel_vars" }
+		    )
+		end, { desc = 'Molten: Fuzzy find kernel variables' })
 	    end,
 	})
 
@@ -458,5 +566,6 @@ del _molten_show_vars
 	    end,
 	})
     end,
-    show_kernel_vars = show_kernel_vars
+    show_kernel_vars = show_kernel_vars,
+    fuzzy_find_kernel_vars = fuzzy_find_kernel_vars
 }

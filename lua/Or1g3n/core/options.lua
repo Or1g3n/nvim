@@ -6,6 +6,9 @@ local options = {
     autoindent = true,
     smartindent = true,
     shiftwidth = 4,
+    tabstop = 4,        -- Display width of a tab character
+    softtabstop = 4,    -- Number of spaces a <Tab> counts for while editing
+    expandtab = false,   -- Use spaces instead of tabs, off
     -- Lines
     number = true,
     relativenumber = true,

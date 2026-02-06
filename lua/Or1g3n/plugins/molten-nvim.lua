@@ -198,7 +198,7 @@ del _molten_show_vars
 return {
     "Or1g3n/molten-nvim",
     version = "^1.0.0", -- Use version <2.0.0 to avoid breaking changes
-    branch = 'eval-func-with-callback',
+    branch = 'test',
     build = ":UpdateRemotePlugins",
     init = function()
 	-- Output settings

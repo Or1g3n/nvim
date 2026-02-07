@@ -183,7 +183,7 @@ return{
 	    else
 		vim.notify(
 		    "MiniFiles: Bookmark path is not valid **" .. path .. "**\n\n" ..
-		    "Please update **" .. string.gsub(vim.fn.stdpath('config') .. "/lua/Or1g3n/local/minifiles/bookmarks.lua", '\\', '/') .. "**",
+		    "Please update **" .. string.gsub(vim.fn.stdpath('config') .. "/lua/Or1g3n/plugins/local/minifiles/bookmarks.lua", '\\', '/') .. "**",
 		    vim.log.levels.INFO,
 		    { timeout = 5000 }
 		)

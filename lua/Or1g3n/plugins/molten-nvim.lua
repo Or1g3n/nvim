@@ -535,6 +535,41 @@ return {
 					{ buffer = true, desc = "Insert new Python code block before current" }
 				)
 
+				-- Split block
+				vim.keymap.set('n', '<A-s><A-s>',
+					function()
+						if not is_markdown then return end
+						local cursor_pos = vim.fn.line('.')
+						local cur_line = vim.fn.getline(cursor_pos)
+						-- Don't split if cursor is on a marker line
+						if cur_line == tags.cell_start or cur_line == tags.cell_end then
+							vim.notify("Cannot split: cursor is on a cell marker.", vim.log.levels.WARN, {timeout=3000})
+							return
+						end
+						-- Find nearest cell_start and cell_end above
+						local start_above = vim.fn.search('^' .. tags.cell_start .. '$', 'bnW')
+						local end_above = vim.fn.search('^' .. tags.cell_end .. '$', 'bnW')
+						-- Find nearest cell_end below
+						local end_below = vim.fn.search('^' .. tags.cell_end .. '$', 'nW')
+
+						-- Validate cursor is within code block
+						if start_above > end_above and end_below > start_above and cursor_pos > start_above and cursor_pos < end_below then
+							-- Don't split if block only contains 1 line
+							-- Don't split if cursor is on last line of block
+							if end_below - start_above == 2 then
+								vim.notify("Cannot split: code block must have at least 2 lines.", vim.log.levels.WARN, {timeout=3000})
+							elseif end_below - cursor_pos == 1 then
+								vim.notify("Cannot split: cursor is at the end of the code block.", vim.log.levels.WARN, {timeout=3000})
+							else
+								vim.api.nvim_buf_set_lines(0, cursor_pos, cursor_pos, false, {tags.cell_end, '', tags.cell_start})
+							end
+						else
+							vim.notify("Cannot split: cursor is not inside a code block.", vim.log.levels.WARN, {timeout=3000})
+						end
+					end,
+					{ buffer = true, desc = "Split code block at cursor position" }
+				)
+
 				-- Delete block and move to prior
 				vim.keymap.set('n', '<A-d><A-d>',
 					function()

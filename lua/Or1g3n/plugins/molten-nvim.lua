@@ -543,15 +543,22 @@ return {
 							local last_line_num = vim.fn.line('$')
 							if is_markdown then
 								local block_start_num = vim.fn.search('^' .. tags.cell_start .. '$', 'cb')
+								local is_first_block = vim.fn.search('^' .. tags.cell_start .. '$', 'bnW') == 0
 								local next_block_end_num = vim.fn.search('^' .. tags.cell_end .. '$', 'cW')
 								if next_block_end_num == 0 and block_start_num == 0 then
 									return
 								elseif block_start_num == 1 and next_block_end_num == last_line_num then
 									vim.cmd.normal("dab")
+									-- vim.notify('command ran: dab', vim.log.levels.INFO,{timeout=5000})
+								elseif is_first_block then
+									vim.cmd.normal("vabjdj")
+									-- vim.notify('command ran: vabjdj', vim.log.levels.INFO,{timeout=5000})
 								elseif next_block_end_num < last_line_num then
-									vim.cmd.normal("vabjd[b")
+									vim.cmd.normal("vabjd3k")
+									-- vim.notify('command ran: vabjd3k', vim.log.levels.INFO,{timeout=5000})
 								else
-									vim.cmd.normal("vabokddd[b")
+									vim.cmd.normal("vabokdddk")
+									-- vim.notify('command ran: vabokdddk', vim.log.levels.INFO,{timeout=5000})
 								end
 							else
 								local cell_block = define_cell_block()

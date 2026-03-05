@@ -28,29 +28,51 @@ map.set('n', '<Leader>bd', ':bd!<CR>', { noremap = true, silent = true, desc = "
 vim.api.nvim_create_autocmd("FileType", {
     pattern = { "lua"},
     callback = function(args)
-	local bufnr = args.buf
+		local bufnr = args.buf
 
-	vim.keymap.set('n', '<Leader>%',
-	    function()
-		vim.cmd 'source %'
-		vim.notify("File has been sourced!", "info", { id = "source_file" })
-	    end,
-	    { noremap = true, silent = true, desc = "Editor: source file", buffer = bufnr }
-	)
-	vim.keymap.set('n', '<Leader>x',
-	    function()
-		vim.cmd '.lua'
-		vim.notify("Line has been executed!", "info", { id = "execute_line" })
-	    end,
-	    { noremap = true, silent = true, desc = "Editor: execute current line", buffer = bufnr }
-	)
-	vim.keymap.set('v', '<Leader>x',
-	    function()
-		vim.cmd("'<,'>lua")
-		vim.notify("Lines have been executed!", "info", { id = "execute_lines" })
-	    end,
-	    { noremap = true, silent = true, desc = "Editor: execute selected lines", buffer = bufnr }
-	)
+		vim.keymap.set('n', '<Leader>%',
+			function()
+				vim.cmd 'source %'
+				vim.notify("File has been sourced!", "info", { id = "source_file" })
+			end,
+			{ noremap = true, silent = true, desc = "Editor: source file", buffer = bufnr }
+		)
+		vim.keymap.set('n', '<Leader>x',
+			function()
+				vim.cmd '.lua'
+				vim.notify("Line has been executed!", "info", { id = "execute_line" })
+			end,
+			{ noremap = true, silent = true, desc = "Editor: execute current line", buffer = bufnr }
+		)
+		vim.keymap.set('x', '<Leader>x',
+			function()
+				-- finalize visual selection
+				vim.api.nvim_feedkeys(
+					vim.api.nvim_replace_termcodes("<Esc>", true, false, true),
+					"x",
+					false
+				)
+				-- yank exact selection
+				vim.cmd('normal! "zygv')
+
+				local chunk = vim.fn.getreg("z")
+
+				local fn, err = load(chunk)
+				if not fn then
+					vim.notify(err, vim.log.levels.ERROR, { id = "execute_lines" })
+					return
+				end
+
+				local ok, runtime_err = pcall(fn)
+				if not ok then
+					vim.notify(runtime_err, vim.log.levels.ERROR, { id = "execute_lines" })
+					return
+				end
+
+				vim.notify("Lines have been executed!", vim.log.levels.INFO, { id = "execute_lines" })
+			end,
+			{ noremap = true, silent = true, desc = "Editor: execute selected lines", buffer = bufnr }
+		)
     end,
     desc = "Set file/line execute keymaps if lua file"
 })
@@ -58,10 +80,10 @@ vim.api.nvim_create_autocmd("FileType", {
 -- Tabline
 map.set('n', '<A-t>',
     function()
-	if vim.opt.showtabline._value ~= 2 then
-	    vim.opt.showtabline = 2
-	else vim.opt.showtabline = 1
-	end
+		if vim.opt.showtabline._value ~= 2 then
+			vim.opt.showtabline = 2
+		else vim.opt.showtabline = 1
+		end
     end,
     { noremap = true, silent = true, desc = "Editor: Toggle tabline (showtabline)" }
 )
@@ -87,50 +109,50 @@ map.set('n', '<A-=>', ':wincmd =<CR>', { noremap = true, silent = true, desc = "
 -- Resize height (up or down based on active window position)
 map.set('n', '<A-j>',
     function()
-	local max_windows  = #vim.api.nvim_list_wins()
-	local col = vim.fn.winnr() -- Get current window number in current row
-	if col == max_windows then
-	    vim.cmd 'resize -2' -- Decrease height if on the top
-	else
-	    vim.cmd 'resize +2' -- Increase height if on the bottom
-	end
+		local max_windows  = #vim.api.nvim_list_wins()
+		local col = vim.fn.winnr() -- Get current window number in current row
+		if col == max_windows then
+			vim.cmd 'resize -2' -- Decrease height if on the top
+		else
+			vim.cmd 'resize +2' -- Increase height if on the bottom
+		end
     end,
     { noremap = true, silent = true, desc = "Buffer: Adjust height based on position" }
 )
 map.set('n', '<A-k>',
     function()
-	local max_windows  = #vim.api.nvim_list_wins()
-	local col = vim.fn.winnr() -- Get current window number in current row
-	if col == max_windows then
-	    vim.cmd 'resize +2' -- Increase height if on the top
-	else
-	    vim.cmd 'resize -2' -- Decrease height if on the bottom
-	end
+		local max_windows  = #vim.api.nvim_list_wins()
+		local col = vim.fn.winnr() -- Get current window number in current row
+		if col == max_windows then
+			vim.cmd 'resize +2' -- Increase height if on the top
+		else
+			vim.cmd 'resize -2' -- Decrease height if on the bottom
+		end
     end,
     { noremap = true, silent = true, desc = "Buffer: Adjust height based on position" }
 )
 -- Resize width (left or right based on active window position)
 map.set('n', '<A-l>',
     function()
-	local max_windows  = #vim.api.nvim_list_wins()
-	local col = vim.fn.winnr() -- Get current window number in current row
-	if col == max_windows then
-	    vim.cmd 'vertical resize -2' -- Decrease width if on the right
-	else
-	    vim.cmd 'vertical resize +2' -- Increase width if on the left
-	end
+		local max_windows  = #vim.api.nvim_list_wins()
+		local col = vim.fn.winnr() -- Get current window number in current row
+		if col == max_windows then
+			vim.cmd 'vertical resize -2' -- Decrease width if on the right
+		else
+			vim.cmd 'vertical resize +2' -- Increase width if on the left
+		end
     end,
     { noremap = true, silent = true, desc = "Buffer: Adjust width based on position" }
 )
 map.set('n', '<A-h>',
     function()
-	local max_windows  = #vim.api.nvim_list_wins()
-	local col = vim.fn.winnr() -- Get current window number in current row
-	if col == max_windows then
-	    vim.cmd 'vertical resize +2' -- Increase width if on the right
-	else
-	    vim.cmd 'vertical resize -2' -- Decrease width if on the left
-	end
+		local max_windows  = #vim.api.nvim_list_wins()
+		local col = vim.fn.winnr() -- Get current window number in current row
+		if col == max_windows then
+			vim.cmd 'vertical resize +2' -- Increase width if on the right
+		else
+			vim.cmd 'vertical resize -2' -- Decrease width if on the left
+		end
     end,
     { noremap = true, silent = true, desc = "Buffer: Adjust width based on position" }
 )
@@ -150,15 +172,15 @@ map.set('n', '<C-u>', '2kzz', { noremap = true, silent = true, desc = "Editor: S
 map.set('n', '<C-d>', '2jzz', { noremap = true, silent = true, desc = "Editor: Scroll down centered" })
 map.set("n", "j", -- Improve nagivating wrapped line behavior
     function(...)
-	local count = vim.v.count
-	if count == 0 then return "gj" else return "j" end
+		local count = vim.v.count
+		if count == 0 then return "gj" else return "j" end
     end,
     { expr = true }
 )
 map.set("n", "k", -- Improve nagivating wrapped line behavior
     function(...)
-	local count = vim.v.count
-	if count == 0 then return "gk" else return "k" end
+		local count = vim.v.count
+		if count == 0 then return "gk" else return "k" end
     end,
     { expr = true }
 )
@@ -188,12 +210,12 @@ map.set('v', '<S-Tab>', '<gv', { noremap = true, silent = true, desc = "Editor: 
 -- Format file
 map.set('n', '<Leader>=',
     function ()
-	-- Save the current cursor position
-	local save_cursor = vim.api.nvim_win_get_cursor(0)
-	-- Re-indent the entire buffer
-	vim.api.nvim_command('normal! gg=G')
-	-- Restore the cursor position
-	vim.api.nvim_win_set_cursor(0, save_cursor)
+		-- Save the current cursor position
+		local save_cursor = vim.api.nvim_win_get_cursor(0)
+		-- Re-indent the entire buffer
+		vim.api.nvim_command('normal! gg=G')
+		-- Restore the cursor position
+		vim.api.nvim_win_set_cursor(0, save_cursor)
     end,
     { noremap = true, silent = true, desc = "Editor: Auto-indent entire file" }
 )
@@ -207,71 +229,71 @@ map.set('n', '<Leader>.', ":new | put =execute('messages') | wincmd J | res -15 
 -- Command line
 map.set('c', '<Esc>',
     function()
-	if vim.fn.pumvisible() ~= 0 then
-	    return vim.keycode('<C-e>')
-	else
-	    return vim.keycode('<C-c>')
-	end
+		if vim.fn.pumvisible() ~= 0 then
+			return vim.keycode('<C-e>')
+		else
+			return vim.keycode('<C-c>')
+		end
     end,
     { expr = true, noremap = true, desc = "Cmd: Exit completion or command mode" }
 )
 map.set('c', '<Tab>',
     function()
-	if vim.fn.pumvisible() ~= 0 then
-	    return vim.keycode('<C-y>')
-	else
-	    return vim.keycode('<C-z>')
-	end
+		if vim.fn.pumvisible() ~= 0 then
+			return vim.keycode('<C-y>')
+		else
+			return vim.keycode('<C-z>')
+		end
     end,
     { expr = true, noremap = true, desc = "Cmd: Start completion or accept selection" }
 )
 map.set('c', '<C-n>',
     function()
-	if vim.fn.pumvisible() ~= 0 then
-	    return vim.keycode('<C-n>')
-	else
-	    return vim.keycode('<C-z>')
-	end
+		if vim.fn.pumvisible() ~= 0 then
+			return vim.keycode('<C-n>')
+		else
+			return vim.keycode('<C-z>')
+		end
     end,
     { expr = true, noremap = true, desc = "Cmd: Start completion or cycle selection" }
 )
 map.set('c', '<Down>',
     function()
-	if vim.fn.pumvisible() ~= 0 then
-	    return vim.keycode('<C-n>')
-	else
-	    return '<Down>'
-	end
+		if vim.fn.pumvisible() ~= 0 then
+			return vim.keycode('<C-n>')
+		else
+			return '<Down>'
+		end
     end,
     { expr = true, noremap = true, desc = "Cmd: Cycle next completion or command history" }
 )
 map.set('c', '<Up>',
     function()
-	if vim.fn.pumvisible() ~= 0 then
-	    return vim.keycode('<C-p>')
-	else
-	    return '<Up>'
-	end
+		if vim.fn.pumvisible() ~= 0 then
+			return vim.keycode('<C-p>')
+		else
+			return '<Up>'
+		end
     end,
     { expr = true, noremap = true, desc = "Cmd: Cycle previous completion or command history" }
 )
 map.set('c', '<Left>',
     function()
-	if vim.fn.pumvisible() ~= 0 then
-	    return '<Up>'
-	else
-	    return '<Left>'
-	end
+		if vim.fn.pumvisible() ~= 0 then
+			return '<Up>'
+		else
+			return '<Left>'
+		end
     end,
     { expr = true, noremap = true, desc = "Cmd: Expand file completion or move left" }
 )
 map.set('c', '<Right>',
     function()
-	if vim.fn.pumvisible() ~= 0 then
-	    return '<Down>'
-	else
-	    return '<Right>'
-	end
+		if vim.fn.pumvisible() ~= 0 then
+			return '<Down>'
+		else
+			return '<Right>'
+		end
     end,
     { expr = true, noremap = true, desc = "Cmd: Expand file completion or move right" }
 )

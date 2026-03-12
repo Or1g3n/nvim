@@ -1,50 +1,50 @@
 return {
-    "williamboman/mason.nvim",
-    dependencies = {
-	{
-	    "williamboman/mason-lspconfig.nvim",
-	},
-	"WhoIsSethDaniel/mason-tool-installer.nvim",
-    },
-    config = function()
-	-- import mason
-	local mason = require("mason")
-
-	-- import mason-lspconfig
-	local mason_lspconfig = require("mason-lspconfig")
-	local mason_tool_installer = require("mason-tool-installer")
-
-	-- enable mason and configure icons
-	mason.setup({
-	    ui = {
-		icons = {
-		    package_installed = "✓",
-		    package_pending = "➜",
-		    package_uninstalled = "✗",
+	"williamboman/mason.nvim",
+	dependencies = {
+		{
+			"williamboman/mason-lspconfig.nvim",
 		},
-		border = "rounded",
-	    },
-	})
+		"WhoIsSethDaniel/mason-tool-installer.nvim",
+	},
+	config = function()
+		-- import mason
+		local mason = require("mason")
 
-	mason_lspconfig.setup({
-	    -- list of servers for mason to install
-	    ensure_installed = {
-		"lua_ls",
-		"pyright",
-		"jsonls",
-	    },
-	    automatic_enable = {
-		exclude = { "basedpyright" }
-	    }
-	})
+		-- import mason-lspconfig
+		local mason_lspconfig = require("mason-lspconfig")
+		local mason_tool_installer = require("mason-tool-installer")
 
-	mason_tool_installer.setup({
-	    ensure_installed = {
-		"prettier", -- prettier formatter
-		"stylua", -- lua formatter
-		"eslint_d",
-		"marksman" -- markdown
-	    },
-	})
-    end,
+		-- enable mason and configure icons
+		mason.setup({
+			ui = {
+				icons = {
+					package_installed = "✓",
+					package_pending = "➜",
+					package_uninstalled = "✗",
+				},
+				border = "rounded",
+			},
+		})
+
+		mason_lspconfig.setup({
+			-- list of servers for mason to install
+			ensure_installed = {
+				"lua_ls",
+				"pyright",
+				"jsonls",
+			},
+			automatic_enable = {
+				exclude = { "basedpyright" },
+			},
+		})
+
+		mason_tool_installer.setup({
+			ensure_installed = {
+				"prettier", -- prettier formatter
+				"stylua", -- lua formatter
+				"eslint_d",
+				"marksman", -- markdown
+			},
+		})
+	end,
 }

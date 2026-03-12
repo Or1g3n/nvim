@@ -1,6 +1,6 @@
 return {
 	"nvim-treesitter/nvim-treesitter",
-	branch = 'master',
+	branch = "master",
 	event = { "BufReadPre", "BufNewFile" },
 	dependencies = {
 		"windwp/nvim-ts-autotag",
@@ -11,7 +11,7 @@ return {
 		-- import nvim-treesitter plugin
 		local treesitter = require("nvim-treesitter.configs")
 
-		vim.treesitter.language.register('c_sharp', { 'csharp', 'c_sharp' })
+		vim.treesitter.language.register("c_sharp", { "csharp", "c_sharp" })
 
 		-- configure treesitter
 		treesitter.setup({ -- enable syntax highlighting
@@ -24,7 +24,7 @@ return {
 			},
 			-- enable indentation
 			indent = {
-				enable = true
+				enable = true,
 			},
 			-- enable autotagging (w/ nvim-ts-autotag plugin)
 			autotag = {
@@ -100,7 +100,7 @@ return {
 		})
 
 		-- Set fold options
-		vim.opt.foldmethod = 'expr'
-		vim.opt.foldexpr = 'nvim_treesitter#foldexpr()'
+		vim.opt.foldmethod = "expr"
+		vim.opt.foldexpr = "nvim_treesitter#foldexpr()"
 	end,
 }

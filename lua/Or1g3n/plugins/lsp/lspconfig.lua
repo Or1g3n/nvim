@@ -96,7 +96,7 @@ return {
 				map.set("n", "<leader>rn", vim.lsp.buf.rename, opts)
 
 				opts.desc = "LSP: Restart"
-				map.set("n", "<leader>rs", ":LspRestart<CR>", opts)
+				map.set("n", "<leader>rs", ":lsp restart<CR>", opts)
 
 				opts.desc = "LSP: Toggle inlay hints"
 				map.set("n", "<leader>ih", function()

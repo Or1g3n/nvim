@@ -19,7 +19,15 @@ return {
 		vim.g.db_ui_save_location = vim.fn.stdpath("config") .. "/lua/Or1g3n/plugins/local/vim_dadbod_ui"
 
 		-- Global keymaps
-		vim.keymap.set("n", "<A-s><A-u>", ":DBUIToggle<CR>", { silent = true, desc = "vim-dadbob: Toggle DBUI" })
+		vim.keymap.set("n", "<A-s><A-u>", function()
+			vim.cmd("DBUIToggle")
+			-- Find and delete alpha buffer if present
+			for _, buf in ipairs(vim.api.nvim_list_bufs()) do
+				if vim.api.nvim_buf_is_loaded(buf) and vim.bo[buf].filetype == "alpha" then
+					vim.api.nvim_buf_delete(buf, { unload = true })
+				end
+			end
+		end, { silent = true, desc = "vim-dadbob: Toggle DBUI" })
 	end,
 	config = function()
 		local function execute_sql_statement_under_cursor()

@@ -35,6 +35,7 @@ return {
 				"bash",
 				"c",
 				"css",
+				"diff",
 				"dockerfile",
 				"gitignore",
 				"graphql",

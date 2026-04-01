@@ -44,6 +44,7 @@ return {
 				"stylua", -- lua formatter
 				"eslint_d",
 				"marksman", -- markdown
+				"tree-sitter-cli"
 			},
 		})
 	end,

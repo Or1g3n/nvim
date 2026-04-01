@@ -1,37 +1,18 @@
 return {
-	"nvim-treesitter/nvim-treesitter",
-	branch = "master",
-	event = { "BufReadPre", "BufNewFile" },
-	dependencies = {
-		"windwp/nvim-ts-autotag",
-		"nvim-treesitter/nvim-treesitter-textobjects",
-	},
-	build = ":TSUpdate",
-	config = function()
-		-- import nvim-treesitter plugin
-		local treesitter = require("nvim-treesitter.configs")
+	{
+		"nvim-treesitter/nvim-treesitter",
+		branch = "main",
+		event = { "BufReadPre", "BufNewFile" },
+		build = ":TSUpdate",
+		dependencies = {
+			"windwp/nvim-ts-autotag",
+			"nvim-treesitter/nvim-treesitter-textobjects",
+			"MeanderingProgrammer/treesitter-modules.nvim",
+		},
+		config = function()
+			vim.treesitter.language.register("c_sharp", { "csharp", "c_sharp" })
 
-		vim.treesitter.language.register("c_sharp", { "csharp", "c_sharp" })
-
-		-- configure treesitter
-		treesitter.setup({ -- enable syntax highlighting
-			auto_install = false,
-			sync_install = false,
-			ignore_install = {},
-			modules = {},
-			highlight = {
-				enable = true,
-			},
-			-- enable indentation
-			indent = {
-				enable = true,
-			},
-			-- enable autotagging (w/ nvim-ts-autotag plugin)
-			autotag = {
-				enable = true,
-			},
-			-- ensure these language parsers are installed
-			ensure_installed = {
+			local languages = {
 				"bash",
 				"c",
 				"css",
@@ -40,68 +21,98 @@ return {
 				"gitignore",
 				"graphql",
 				"html",
+				"javascript",
+				"jsdoc",
 				"json",
 				"lua",
+				"luadoc",
+				"luap",
 				"markdown",
 				"markdown_inline",
 				"nu",
+				"printf",
 				"python",
 				"query",
+				"regex",
 				"sql",
+				"toml",
+				"tsx",
+				"typescript",
 				"vim",
 				"vimdoc",
+				"xml",
 				"yaml",
-			},
-			incremental_selection = {
-				enable = true,
-				keymaps = {
-					-- init_selection = "<C-space>",
-					-- node_incremental = "<C-space>",
-					-- scope_incremental = false,
-					-- node_decremental = "<bs>",
-				},
-			},
-			textobjects = {
-				move = {
+			}
+
+			-- Covers ensure_installed + highlight + indent + fold + incremental selection
+			local ts = require("treesitter-modules")
+			ts.setup({
+				ensure_installed = languages,
+				ignore_install = {},
+				sync_install = false,
+				auto_install = false,
+
+				highlight = {
 					enable = true,
-					set_jumps = false, -- you can change this if you want.
-					goto_next_start = {
-						--- ... other keymaps
-						["]b"] = { query = "@code_cell.inner", desc = "TS Custom: next code block" },
-						["<M-PageDown>"] = { query = "@code_cell.inner", desc = "TS Custom: next code block" },
+				},
+				indent = {
+					enable = true,
+				},
+				fold = {
+					enable = true,
+				},
+				incremental_selection = {
+					enable = true,
+					keymaps = {
+						init_selection = "gnn",
+						node_incremental = "grn",
+						scope_incremental = "grc",
+						node_decremental = "grm",
 					},
-					goto_previous_start = {
-						--- ... other keymaps
-						["[b"] = { query = "@code_cell.inner", desc = "TS Custom: previous code block" },
-						["<M-PageUp>"] = { query = "@code_cell.inner", desc = "TS Custom: previous code block" },
-					},
+				},
+			})
+
+			-- Fold settings
+			vim.opt.foldmethod = "expr"
+			vim.opt.foldexpr = "v:lua.vim.treesitter.foldexpr()"
+
+			-- autotag
+			require("nvim-ts-autotag").setup()
+
+			-- textobjects plugin now uses its own setup + keymaps
+			require("nvim-treesitter-textobjects").setup({
+				move = {
+					set_jumps = false,
 				},
 				select = {
-					enable = true,
-					lookahead = true, -- you can change this if you want
-					keymaps = {
-						--- ... other keymaps
-						["ib"] = { query = "@code_cell.inner", desc = "TS Custom: in code block" },
-						["ab"] = { query = "@code_cell.outer", desc = "TS Custom: around code block" },
-					},
+					lookahead = true,
 				},
-				-- swap = { -- Swap only works with code blocks that are under the same
-				--     -- markdown header
-				--     enable = true,
-				--     swap_next = {
-				-- 	--- ... other keymap
-				-- 	["<leader>sbl"] = "@code_cell.outer",
-				--     },
-				--     swap_previous = {
-				-- 	--- ... other keymap
-				-- 	["<leader>sbh"] = "@code_cell.outer",
-				--     },
-				-- },
-			},
-		})
+			})
 
-		-- Set fold options
-		vim.opt.foldmethod = "expr"
-		vim.opt.foldexpr = "nvim_treesitter#foldexpr()"
-	end,
+			-- Custom text obects
+			vim.keymap.set({ "n", "x", "o" }, "]b", function()
+				require("nvim-treesitter-textobjects.move").goto_next_start("@code_cell.inner", "textobjects")
+			end, { desc = "TS Custom: next code block" })
+
+			vim.keymap.set({ "n", "x", "o" }, "<M-PageDown>", function()
+				require("nvim-treesitter-textobjects.move").goto_next_start("@code_cell.inner", "textobjects")
+			end, { desc = "TS Custom: next code block" })
+
+			vim.keymap.set({ "n", "x", "o" }, "[b", function()
+				require("nvim-treesitter-textobjects.move").goto_previous_start("@code_cell.inner", "textobjects")
+			end, { desc = "TS Custom: previous code block" })
+
+			vim.keymap.set({ "n", "x", "o" }, "<M-PageUp>", function()
+				require("nvim-treesitter-textobjects.move").goto_previous_start("@code_cell.inner", "textobjects")
+			end, { desc = "TS Custom: previous code block" })
+
+			vim.keymap.set({ "x", "o" }, "ib", function()
+				require("nvim-treesitter-textobjects.select").select_textobject("@code_cell.inner", "textobjects")
+			end, { desc = "TS Custom: in code block" })
+
+			vim.keymap.set({ "x", "o" }, "ab", function()
+				require("nvim-treesitter-textobjects.select").select_textobject("@code_cell.outer", "textobjects")
+			end, { desc = "TS Custom: around code block" })
+		end,
+	},
 }

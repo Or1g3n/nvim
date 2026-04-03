@@ -56,5 +56,20 @@ return {
 			end,
 			desc = "CodeCompanion: Open Chat (close alpha if open)",
 		},
+		{
+			mode = "v",
+			"<leader>ai",
+			function()
+				vim.cmd("CodeCompanionChat")
+				vim.cmd("normal 3G")
+				-- Find and delete alpha buffer if present
+				for _, buf in ipairs(vim.api.nvim_list_bufs()) do
+					if vim.api.nvim_buf_is_loaded(buf) and vim.bo[buf].filetype == "alpha" then
+						vim.api.nvim_buf_delete(buf, { unload = true })
+					end
+				end
+			end,
+			desc = "CodeCompanion: Open Chat with visual selection (close alpha if open)",
+		},
 	},
 }

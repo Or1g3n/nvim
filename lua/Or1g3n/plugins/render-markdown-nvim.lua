@@ -40,7 +40,7 @@ return {
 				-- Likely because that language has background highlights itself.
 				-- Use a boolean to make behavior apply to all languages.
 				-- Borders above & below blocks will continue to be rendered.
-				disable_background = { "diff" },
+				-- disable_background = { "diff" },
 				-- Width of the code block background.
 				-- | block | width of the code block  |
 				-- | full  | full width of the window |

@@ -213,6 +213,7 @@ map.set("n", "vv", "V", { noremap = true, silent = true, desc = "Editor: ergonom
 map.set("n", "<Leader>y", '"+y', { noremap = true, silent = true, desc = "Editor: Copy motion into clipboard" })
 map.set("n", "<Leader>Y", '"+Y', { noremap = true, silent = true, desc = "Editor: Copy line into clipboard" })
 map.set("v", "<Leader>y", '"+y', { noremap = true, silent = true, desc = "Editor: Copy selection into clipboard" })
+map.set("v", "<C-c>", '"+y', { noremap = true, silent = true, desc = "Editor: Copy selection into clipboard" })
 map.set(
 	"x",
 	"<Leader>p",

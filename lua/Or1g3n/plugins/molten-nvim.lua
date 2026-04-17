@@ -215,7 +215,7 @@ return {
 		-- Virtual text settings
 		vim.g.molten_virt_text_output = true
 		vim.g.molten_virt_lines_off_by_1 = true
-		vim.g.molten_virt_text_max_lines = 25
+		vim.g.molten_virt_text_max_lines = 30
 
 		-- Define cell_tags based on format and filetype
 		local cell_tags = {

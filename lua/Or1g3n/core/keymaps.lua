@@ -1,5 +1,8 @@
 local map = vim.keymap -- for conciseness
 
+-- Restart Nvim
+map.set("n", "<Leader>rr", ":restart<CR>", { noremap = true, silent = true, desc = "Editor: Restart Neovim" })
+
 -- Escape trigger
 map.set("i", "jk", "<Esc>", { noremap = true, silent = true, desc = "Editor: Exit insert mode" })
 

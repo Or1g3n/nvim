@@ -105,12 +105,17 @@ return {
 		end
 
 		-- Yank in register full path of entry under cursor
-		local yank_path = function()
+		local yank_path = function(copy_to_clipboard)
+			copy_to_clipboard = copy_to_clipboard or false
 			local path = (MiniFiles.get_fs_entry() or {}).path
 			if path == nil then
 				return vim.notify("Cursor is not on valid entry")
 			end
-			vim.fn.setreg(vim.v.register, path)
+			if copy_to_clipboard then
+				vim.fn.setreg('+', path) -- system clipboard
+			else
+				vim.fn.setreg(vim.v.register, path)
+			end
 		end
 
 		-- Keymaps
@@ -134,6 +139,7 @@ return {
 				map.set("n", "g@", set_cwd, { buffer = buf_id, desc = "Set cwd" })
 				-- Map key for yank file path
 				map.set("n", "gy", yank_path, { buffer = buf_id, desc = "Yank path" })
+				map.set("n", "<Leader>gy", function() yank_path(true) end, { buffer = buf_id, desc = "Yank path" })
 				-- Escape to close
 				map.set("n", "<Esc>", function()
 					minifiles.close()

@@ -30,9 +30,18 @@ return {
 		end, { silent = true, desc = "vim-dadbob: Toggle DBUI" })
 	end,
 	config = function()
+		local function get_node_at_cursor()
+			local cursor = vim.api.nvim_win_get_cursor(0)
+			local row = cursor[1] - 1
+			local col = cursor[2]
+			local parser = vim.treesitter.get_parser(0)
+			local tree = parser:parse()[1]
+			local root = tree:root()
+			return root:named_descendant_for_range(row, col, row, col)
+		end
+
 		local function execute_sql_statement_under_cursor()
-			local ts_utils = require("nvim-treesitter.ts_utils")
-			local node = ts_utils.get_node_at_cursor()
+			local node = get_node_at_cursor()
 			while node and node:type() ~= "statement" do
 				node = node:parent()
 			end

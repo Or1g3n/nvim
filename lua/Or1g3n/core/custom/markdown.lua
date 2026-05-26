@@ -36,6 +36,56 @@ command("MarkdownToggleCheckBox", function(opts)
 	md_toggle_checkboxes(opts.line1, opts.line2)
 end, { desc = "Markdown: Toggle checkboxes", range = true }) -- enable range support
 
+-- Function to convert highlighted into code block
+local languages = {
+	"bash",
+	"c",
+	"cpp",
+	"csharp",
+	"css",
+	"go",
+	"html",
+	"java",
+	"javascript",
+	"json",
+	"lua",
+	"markdown",
+	"perl",
+	"php",
+	"powershell",
+	"python",
+	"ruby",
+	"rust",
+	"sh",
+	"sql",
+	"text",
+	"toml",
+	"typescript",
+	"yaml",
+}
+
+local function wrap_with_code_block(start_line, end_line)
+	local lines = vim.api.nvim_buf_get_lines(0, start_line - 1, end_line, false)
+	vim.ui.select(languages, { prompt = "Choose language:" }, function(lang)
+		if not lang then
+			return
+		end
+		table.insert(lines, 1, "```" .. lang)
+		table.insert(lines, "```")
+		vim.api.nvim_buf_set_lines(0, start_line - 1, end_line, false, lines)
+	end)
+end
+
+vim.api.nvim_create_user_command(
+	"MarkdownWrapCodeBlock",
+	function(opts)
+		wrap_with_code_block(opts.line1, opts.line2)
+	end,
+	{ desc = "Markdown: Wrap selection with code block", range = true }
+)
+
+vim.keymap.set("v", "<Leader>mb", ":MarkdownWrapCodeBlock<CR>", { desc = "Markdown: Wrap selection with code block" })
+
 -- Keymaps for Markdown editing
 -- Only active in Markdown files
 vim.api.nvim_create_autocmd("FileType", {

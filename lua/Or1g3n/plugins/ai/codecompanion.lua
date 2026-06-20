@@ -31,10 +31,10 @@ return {
 		},
 		strategies = {
 			chat = {
-				adapter = next(laci_pixtral) ~= nil and laci_pixtral.enabled and "laci_pixtral" or "copilot",
+				adapter = next(laci_pixtral) ~= nil and laci_pixtral.enabled and "laci_pixtral" or {name = "copilot", model = 'gpt-4.1'},
 			},
 			inline = {
-				adapter = next(laci_pixtral) ~= nil and laci_pixtral.enabled and "laci_pixtral" or "copilot",
+				adapter = next(laci_pixtral) ~= nil and laci_pixtral.enabled and "laci_pixtral" or {name = "copilot", model = 'gpt-4.1'},
 			},
 		},
 		opts = {
